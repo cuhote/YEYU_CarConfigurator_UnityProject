@@ -138,6 +138,10 @@ ParkingArea.unity      (Additive) : 주차장 2벌              ← 강유나
 | 제조사 웹 컨피규레이터 | 색상·트림·휠을 고르면 차량 외관을 보여준다 | 본 제품은 기능 옵션의 동작을 시나리오로 재현하고 선택 전후를 비교한다 |
 | 제조사 기능 소개 영상 | 기능 동작을 시각적으로 보여준다 | 본 제품은 사용자가 고른 외관·기능 조합으로 실행되고, 운전석·버드뷰 시점을 바꿀 수 있다 |
 
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/5bf74aea-9616-48a2-96df-ef0f23958c8e" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/7fe5189f-fc94-4493-8b6b-3d815f956670" />
+
+
 ### 2.2 제품 기능
 
 제품은 외관 선택 → 기능 선택 → 시나리오 비교의 3단계로 진행하며, 단계 사이는 로딩 없이 영역 전환으로 이동한다.
