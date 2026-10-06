@@ -140,6 +140,7 @@ ParkingArea.unity      (Additive) : 주차장 2벌              ← 강유나
 
 <img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/5bf74aea-9616-48a2-96df-ef0f23958c8e" />
 <img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/7fe5189f-fc94-4493-8b6b-3d815f956670" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/a993f396-6637-4348-a105-4afd0a2a5f43" />
 
 
 ### 2.2 제품 기능
