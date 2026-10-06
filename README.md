@@ -138,14 +138,6 @@ ParkingArea.unity      (Additive) : 주차장 2벌              ← 강유나
 | 제조사 웹 컨피규레이터 | 색상·트림·휠을 고르면 차량 외관을 보여준다 | 본 제품은 기능 옵션의 동작을 시나리오로 재현하고 선택 전후를 비교한다 |
 | 제조사 기능 소개 영상 | 기능 동작을 시각적으로 보여준다 | 본 제품은 사용자가 고른 외관·기능 조합으로 실행되고, 운전석·버드뷰 시점을 바꿀 수 있다 |
 
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/5bf74aea-9616-48a2-96df-ef0f23958c8e" />
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/476aabb3-e843-43c9-8fd2-ce458abe7807" />
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/cfbf31ca-0bd3-4acd-aca3-1376ce31513b" />
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/526dd344-ae37-4d26-90b5-a0e9dad0d3e8" />
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/1d3d0fb3-4143-4234-bacc-00b67358cc16" />
-<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/c4ed803a-48be-493e-bc36-50cb02e4792c" />
-
-
 
 ### 2.2 제품 기능
 
@@ -191,6 +183,15 @@ ParkingArea.unity      (Additive) : 주차장 2벌              ← 강유나
 | 1차 (Must) | FR-01~03, FR-05~06, FR-08~12, FR-15~18, FR-20~23, FR-26~29, FR-31~34, FR-36~39, NFR-01~07, NFR-09 | 2026.10.11 |
 | 2차 (Should) | FR-04, FR-19, FR-24, FR-30, FR-35, NFR-08 | 2026.10.13 |
 | 여유 시 (Could) | FR-07, FR-13, FR-14, FR-25 | 2026.10.13 |
+
+### 2.7 설계 화면
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/5bf74aea-9616-48a2-96df-ef0f23958c8e" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/476aabb3-e843-43c9-8fd2-ce458abe7807" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/cfbf31ca-0bd3-4acd-aca3-1376ce31513b" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/526dd344-ae37-4d26-90b5-a0e9dad0d3e8" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/1d3d0fb3-4143-4234-bacc-00b67358cc16" />
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/260d75ad-2e05-4181-9f7e-1e056f005fef" />
+
 
 ## 3. 기능 요구사항
 
