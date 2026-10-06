@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Enforces COMMIT_RULES.md §1: never commit directly on main.
+# Work must happen on feature/*, fix/*, docs/*, or chore/* branches
+# and reach main only through dev via PR.
+#
+# Also runs scripts/check-unity-meta.sh when anything under Assets/ is staged:
+# an asset committed without its .meta (or a .meta left behind after its asset
+# was deleted) breaks every reference to that asset on the other PC, and Unity
+# only reports it as a "Missing" slot at runtime. See CONVENTIONS.md §3.3.
+#
+# The same check runs in CI on push/PR (.github/workflows/meta-check.yml), so a
+# commit made without these hooks enabled is still caught before it lands on dev.
+
+set -euo pipefail
+
+branch="$(git symbolic-ref --short -q HEAD || true)"
+
+# Detached HEAD (e.g. rebase in progress) — nothing to enforce here.
+if [[ -z "$branch" ]]; then
+  exit 0
+fi
+
+if [[ "$branch" == "main" ]]; then
+  echo "pre-commit 훅: 'main' 브랜치에는 직접 커밋할 수 없습니다." >&2
+  echo "  feature/<기능명>, fix/<내용>, docs/<문서명>, chore/<내용> 중 하나로" >&2
+  echo "  브랜치를 만들고 dev를 거쳐 PR로 반영하세요. (COMMIT_RULES.md 참고)" >&2
+  echo "" >&2
+  echo "  예: git checkout -b feature/night-vision dev" >&2
+  exit 1
+fi
+
+if [[ "$branch" != "dev" ]] && [[ ! "$branch" =~ ^(feature|fix|docs|chore)/[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+  echo "pre-commit 훅 경고: 브랜치명 '$branch'가 규칙과 다릅니다." >&2
+  echo "  feature/<기능명>, fix/<내용>, docs/<문서명>, chore/<내용> 형식(소문자+하이픈)을 쓰세요." >&2
+  echo "  (COMMIT_RULES.md 참고. 이 경고는 커밋을 막지 않습니다.)" >&2
+fi
+
+if ! git diff --cached --quiet --diff-filter=ACDR -- Assets; then
+  repo_root="$(git rev-parse --show-toplevel)"
+  if ! bash "$repo_root/scripts/check-unity-meta.sh"; then
+    echo "" >&2
+    echo "pre-commit 훅: 에셋과 .meta 짝이 맞지 않습니다." >&2
+    echo "  위 파일을 함께 스테이징(git add)하거나 남은 .meta를 지운 뒤 다시 커밋하세요." >&2
+    exit 1
+  fi
+fi
+
+exit 0

@@ -1,0 +1,23 @@
+name: meta-check
+
+# Assets/ 아래 에셋·폴더와 .meta 짝이 맞는지 검사한다 (scripts/check-unity-meta.sh).
+# 로컬 .githooks/pre-commit도 같은 스크립트를 돌리지만, 훅은 클론 후
+# scripts/setup-git-hooks.sh를 실행한 PC에서만 동작한다. 여기서는 훅 활성화 여부와
+# 무관하게 항상 강제된다. pull_request 트리거는 PR 브랜치와 대상 브랜치(dev/main)를
+# 합친 커밋을 체크아웃하므로, 한 사람이 에셋을 지우고 다른 사람이 그 .meta를 고친
+# 경우처럼 각자 브랜치에서는 정상이지만 합치면 어긋나는 상황도 병합 전에 잡는다.
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  unity-meta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false  # 파일 이름만 보는 잡이라 모델·텍스처 등 LFS 객체는 안 받아도 된다.
+
+      - run: bash scripts/check-unity-meta.sh

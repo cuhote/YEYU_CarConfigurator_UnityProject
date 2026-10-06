@@ -126,14 +126,22 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │
 ├── Packages/                          ← 커밋 O
 ├── ProjectSettings/                   ← 커밋 O (레이어·태그·빌드 설정)
-├── Docs/
-│   ├── SRS.md
+├── docs/
+│   ├── WBS.md
 │   ├── WBS.xlsx
-│   ├── PROJECT_STRUCTURE.md
+│   ├── FOLDER_STRUCTURE.md            ← 이 문서
+│   ├── TroubleShooting/               ← 개발 중 발견된 문제/원인/해결 기록
 │   └── images/
+├── scripts/
+│   ├── setup-git-hooks.sh             ← .githooks/ 활성화 (클론 후 1회 실행)
+│   └── check-unity-meta.sh            ← 에셋 ↔ .meta 짝 검사 (훅·CI 공용)
+├── .githooks/                         ← commit-msg · pre-commit (COMMIT_RULES.md 강제)
+├── .github/workflows/                 ← meta-check (push·PR마다 .meta 검사)
+├── COMMIT_RULES.md                    ← 브랜치 전략 · 커밋 메시지 · PR 규칙
+├── CONVENTIONS.md                     ← 네이밍 · 파일 관리 · 폴더 담당 규칙
 ├── .gitignore
-├── .gitattributes                     ← Git LFS 설정
-└── README.md
+├── .gitattributes                     ← Git LFS 설정, 줄바꿈 규칙
+└── README.md                          ← SRS (요구사항 명세서)
 ```
 
 `Library/`, `Temp/`, `Logs/`, `UserSettings/`, `Build/`는 `.gitignore`로 제외한다.
