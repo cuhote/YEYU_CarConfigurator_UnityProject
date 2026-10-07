@@ -1,0 +1,274 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1860" height="1496" viewBox="0 0 1860 1496" font-family="Arial, 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans CJK KR', sans-serif">
+<defs>
+<marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="14" markerHeight="14" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#ffffff" stroke="#555555" stroke-width="1" stroke-dasharray="none"/></marker>
+<marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#555555" stroke-width="1.3" stroke-dasharray="none"/></marker>
+<marker id="dia" viewBox="0 0 16 10" refX="1" refY="5" markerWidth="16" markerHeight="10" orient="auto"><path d="M1 5 L8 1 L15 5 L8 9 Z" stroke-dasharray="none" fill="#ffffff" stroke="#555555" stroke-width="1"/></marker>
+<marker id="diaf" viewBox="0 0 16 10" refX="1" refY="5" markerWidth="16" markerHeight="10" orient="auto"><path d="M1 5 L8 1 L15 5 L8 9 Z" stroke-dasharray="none" fill="#555555" stroke="#555555" stroke-width="1"/></marker>
+</defs>
+<rect width="1860" height="1496" fill="#ffffff"/>
+<text x="930.0" y="44" text-anchor="middle" font-size="22" font-weight="bold" fill="#222">Class Diagram — 주행 파트 (김예은) · 기능 중심 차량 컨피규레이터</text>
+<text x="930.0" y="70" text-anchor="middle" font-size="13" fill="#666">주행 기능(나이트 비전 · 후륜 조향)과 그 기능이 사용하는 공통 클래스. Data는 왼쪽 아래에 분리.</text>
+<rect x="1250" y="92" width="16" height="14" fill="#DCE9F7" stroke="#555555"/>
+<text x="1272" y="104" font-size="12" fill="#333">Core</text>
+<rect x="1370" y="92" width="16" height="14" fill="#EDE4FA" stroke="#555555"/>
+<text x="1392" y="104" font-size="12" fill="#333">Scenario</text>
+<rect x="1490" y="92" width="16" height="14" fill="#E1F3E6" stroke="#555555"/>
+<text x="1512" y="104" font-size="12" fill="#333">Vehicle</text>
+<rect x="1610" y="92" width="16" height="14" fill="#FFE9D6" stroke="#555555"/>
+<text x="1632" y="104" font-size="12" fill="#333">Driving</text>
+<rect x="1730" y="92" width="16" height="14" fill="#EEEEEE" stroke="#555555"/>
+<text x="1752" y="104" font-size="12" fill="#333">Data</text>
+<rect x="40" y="1004" width="700" height="457" rx="8" fill="#FAFAFA" stroke="#999" stroke-dasharray="6 4"/>
+<rect x="40" y="1004" width="190" height="26" rx="4" fill="#E0E0E0" stroke="#999"/>
+<text x="50" y="1022" font-size="13" font-weight="bold" fill="#333">Data  (데이터·열거형)</text>
+<polyline points="570.0,400.0 570.0,278.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#tri)"/>
+<polyline points="930.0,400.0 930.0,310.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#tri)"/>
+<polyline points="1290.0,400.0 1290.0,246.0" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#tri)"/>
+<polyline points="1590.0,400.0 1590.0,355.0 1380.0,355.0 1380.0,246.0" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#tri)"/>
+<polyline points="360.0,180.0 420.0,180.0" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#dia)" marker-end="url(#open)"/>
+<text x="390.0" y="174.0" font-size="11" fill="#555" text-anchor="middle">1..3</text>
+<polyline points="1500.0,180.0 1440.0,180.0" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#dia)" marker-end="url(#open)"/>
+<text x="1470.0" y="174.0" font-size="11" fill="#555" text-anchor="middle">*</text>
+<polyline points="720.0,460.0 780.0,460.0" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#diaf)" marker-end="url(#open)"/>
+<polyline points="930.0,566.0 930.0,720.0" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#dia)" marker-end="url(#open)"/>
+<polyline points="855.0,566.0 855.0,687.0 570.0,687.0 570.0,720.0" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#dia)" marker-end="url(#open)"/>
+<polyline points="810.0,566.0 810.0,663.0 210.0,663.0 210.0,720.0" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#dia)" marker-end="url(#open)"/>
+<text x="510.0" y="657.0" font-size="11" fill="#555" text-anchor="middle">2</text>
+<polyline points="1650.0,582.0 1650.0,720.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="1656.0" y="655.0" font-size="11" fill="#555" text-anchor="start">SetRearSteer</text>
+<polyline points="1440.0,590.0 1470.0,590.0 1470.0,770.0 1500.0,770.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="1476.0" y="684.0" font-size="11" fill="#555" text-anchor="start">SetBrake</text>
+<polyline points="930.0,854.0 930.0,969.0 1650.0,969.0 1650.0,934.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="1290.0" y="963.0" font-size="11" fill="#555" text-anchor="middle">SetBrake / SetSteer</text>
+<polyline points="1290.0,630.0 1290.0,720.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="1296.0" y="679.0" font-size="11" fill="#555" text-anchor="start">CurrentTarget</text>
+<polyline points="1140.0,590.0 1110.0,590.0 1110.0,1071.2 1080.0,1071.2" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<polyline points="1800.0,509.2 1830.0,509.2 1830.0,1077.6 1800.0,1077.6" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<polyline points="1500.0,1091.0 1440.0,1091.0" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1470.0" y="1085.0" font-size="11" fill="#555" text-anchor="middle">use</text>
+<polyline points="60.0,170.2 20.0,170.2 20.0,1084.0 60.0,1084.0" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<polyline points="570.0,1144.0 570.0,1174.0" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<rect x="60" y="130" width="300" height="134" fill="#ffffff" stroke="#555555"/>
+<rect x="60" y="130" width="300" height="26" fill="#DCE9F7" stroke="#555555"/>
+<text x="210.0" y="149" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">ModeManager</text>
+<text x="68" y="175" font-size="12" fill="#222">- _areas: AreaBase[]</text>
+<text x="68" y="191" font-size="12" fill="#222">- _config: CarConfig</text>
+<text x="68" y="207" font-size="12" fill="#222">- _current: AppMode</text>
+<line x1="60" y1="218" x2="360" y2="218" stroke="#555555"/>
+<text x="68" y="237" font-size="12" fill="#222">+ SwitchTo(mode: AppMode): void</text>
+<text x="68" y="253" font-size="12" fill="#222">- LoadAreasAsync(): IEnumerator</text>
+<rect x="420" y="130" width="300" height="148" fill="#ffffff" stroke="#555555"/>
+<rect x="420" y="130" width="300" height="40" fill="#DCE9F7" stroke="#555555"/>
+<text x="570.0" y="146" text-anchor="middle" font-size="11" fill="#555">«abstract»</text>
+<text x="570.0" y="163" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-style="italic">AreaBase</text>
+<text x="428" y="189" font-size="12" fill="#222"># _root: GameObject</text>
+<text x="428" y="205" font-size="12" fill="#222">+ Root: GameObject</text>
+<line x1="420" y1="216" x2="720" y2="216" stroke="#555555"/>
+<text x="428" y="235" font-size="12" fill="#222">+ ResetArea(config: CarConfig): void</text>
+<text x="428" y="251" font-size="12" fill="#222">+ OnEnter(): void</text>
+<text x="428" y="267" font-size="12" fill="#222">+ OnExit(): void</text>
+<rect x="780" y="130" width="300" height="180" fill="#ffffff" stroke="#555555"/>
+<rect x="780" y="130" width="300" height="40" fill="#EDE4FA" stroke="#555555"/>
+<text x="930.0" y="146" text-anchor="middle" font-size="11" fill="#555">«abstract»</text>
+<text x="930.0" y="163" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-style="italic">ScenarioBase</text>
+<text x="788" y="189" font-size="12" fill="#222"># _cars: CarController[2]</text>
+<text x="788" y="205" font-size="12" fill="#222"># _result: ScenarioResult</text>
+<text x="788" y="221" font-size="12" fill="#222"># _isRunning: bool</text>
+<line x1="780" y1="232" x2="1080" y2="232" stroke="#555555"/>
+<text x="788" y="251" font-size="12" fill="#222">+ Prepare(): void</text>
+<text x="788" y="267" font-size="12" fill="#222">+ StartScenario(): void</text>
+<text x="788" y="283" font-size="12" fill="#222">+ EndScenario(): void</text>
+<text x="788" y="299" font-size="12" fill="#222"># OnTick(dt: float): void</text>
+<rect x="1140" y="130" width="300" height="116" fill="#ffffff" stroke="#555555"/>
+<rect x="1140" y="130" width="300" height="40" fill="#E1F3E6" stroke="#555555"/>
+<text x="1290.0" y="146" text-anchor="middle" font-size="11" fill="#555">«interface»</text>
+<text x="1290.0" y="163" text-anchor="middle" font-size="13" font-weight="bold" fill="#222" font-style="italic">ICarFeature</text>
+<text x="1148" y="189" font-size="12" fill="#222">+ FeatureId: FeatureId</text>
+<line x1="1140" y1="200" x2="1440" y2="200" stroke="#555555"/>
+<text x="1148" y="219" font-size="12" fill="#222">+ SetActive(on: bool): void</text>
+<text x="1148" y="235" font-size="12" fill="#222">+ ResetFeature(): void</text>
+<rect x="1500" y="130" width="300" height="86" fill="#ffffff" stroke="#555555"/>
+<rect x="1500" y="130" width="300" height="26" fill="#E1F3E6" stroke="#555555"/>
+<text x="1650.0" y="149" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">CarFeatureSwitch</text>
+<text x="1508" y="175" font-size="12" fill="#222">- _features: ICarFeature[]</text>
+<line x1="1500" y1="186" x2="1800" y2="186" stroke="#555555"/>
+<text x="1508" y="205" font-size="12" fill="#222">+ Apply(config: CarConfig, enable: bool): void</text>
+<rect x="420" y="400" width="300" height="150" fill="#ffffff" stroke="#555555"/>
+<rect x="420" y="400" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="570.0" y="419" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">DrivingArea</text>
+<text x="428" y="445" font-size="12" fill="#222">- _carOff: CarController</text>
+<text x="428" y="461" font-size="12" fill="#222">- _carOn: CarController</text>
+<text x="428" y="477" font-size="12" fill="#222">- _startPoses: Transform[2]</text>
+<text x="428" y="493" font-size="12" fill="#222">- _scenario: DrivingScenario</text>
+<line x1="420" y1="504" x2="720" y2="504" stroke="#555555"/>
+<text x="428" y="523" font-size="12" fill="#222">+ ResetArea(config: CarConfig): void</text>
+<text x="428" y="539" font-size="12" fill="#222">+ OnEnter(): void</text>
+<rect x="780" y="400" width="300" height="166" fill="#ffffff" stroke="#555555"/>
+<rect x="780" y="400" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="930.0" y="419" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">DrivingScenario</text>
+<text x="788" y="445" font-size="12" fill="#222">- _nightRoadTrigger: ScenarioTrigger</text>
+<text x="788" y="461" font-size="12" fill="#222">- _alleyTrigger: ScenarioTrigger</text>
+<text x="788" y="477" font-size="12" fill="#222">- _pedestrian: Pedestrian</text>
+<text x="788" y="493" font-size="12" fill="#222">- _offDriver: VirtualDriver</text>
+<text x="788" y="509" font-size="12" fill="#222">- _cruiseSpeedKmh: float = 60</text>
+<line x1="780" y1="520" x2="1080" y2="520" stroke="#555555"/>
+<text x="788" y="539" font-size="12" fill="#222"># OnTick(dt: float): void</text>
+<text x="788" y="555" font-size="12" fill="#222">- OnEnterAlley(car: CarController): void</text>
+<rect x="1140" y="400" width="300" height="230" fill="#ffffff" stroke="#555555"/>
+<rect x="1140" y="400" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="1290.0" y="419" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">NightVisionSensor</text>
+<text x="1148" y="445" font-size="12" fill="#222">- _car: CarController</text>
+<text x="1148" y="461" font-size="12" fill="#222">- _detectRange: float = 120</text>
+<text x="1148" y="477" font-size="12" fill="#222">- _ttcWarn: float = 4.0</text>
+<text x="1148" y="493" font-size="12" fill="#222">- _ttcBrake: float = 2.5</text>
+<text x="1148" y="509" font-size="12" fill="#222">- _targetMask: LayerMask</text>
+<text x="1148" y="525" font-size="12" fill="#222">+ CurrentTarget: Pedestrian</text>
+<text x="1148" y="541" font-size="12" fill="#222">+ CurrentTtc: float</text>
+<line x1="1140" y1="552" x2="1440" y2="552" stroke="#555555"/>
+<text x="1148" y="571" font-size="12" fill="#222">+ OnWarning: event Action&lt;bool&gt;</text>
+<text x="1148" y="587" font-size="12" fill="#222">+ SetActive(on: bool): void</text>
+<text x="1148" y="603" font-size="12" fill="#222">+ ResetFeature(): void</text>
+<text x="1148" y="619" font-size="12" fill="#222">- CalcTtc(dist: float, relSpeed: float): float</text>
+<rect x="1500" y="400" width="300" height="182" fill="#ffffff" stroke="#555555"/>
+<rect x="1500" y="400" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="1650.0" y="419" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">RearWheelSteering</text>
+<text x="1508" y="445" font-size="12" fill="#222">- _car: CarController</text>
+<text x="1508" y="461" font-size="12" fill="#222">- _counterMaxDeg: float = 10</text>
+<text x="1508" y="477" font-size="12" fill="#222">- _sameMaxDeg: float = 2</text>
+<text x="1508" y="493" font-size="12" fill="#222">- _lowSpeedKmh: float = 30</text>
+<text x="1508" y="509" font-size="12" fill="#222">- _highSpeedKmh: float = 60</text>
+<line x1="1500" y1="520" x2="1800" y2="520" stroke="#555555"/>
+<text x="1508" y="539" font-size="12" fill="#222">+ SetActive(on: bool): void</text>
+<text x="1508" y="555" font-size="12" fill="#222">+ ResetFeature(): void</text>
+<text x="1508" y="571" font-size="12" fill="#222">- CalcRearAngle(front: float, kmh: float): float</text>
+<rect x="60" y="720" width="300" height="102" fill="#ffffff" stroke="#555555"/>
+<rect x="60" y="720" width="300" height="26" fill="#EDE4FA" stroke="#555555"/>
+<text x="210.0" y="739" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">ScenarioTrigger</text>
+<text x="68" y="765" font-size="12" fill="#222">- _id: string</text>
+<line x1="60" y1="776" x2="360" y2="776" stroke="#555555"/>
+<text x="68" y="795" font-size="12" fill="#222">+ OnTriggered: event Action&lt;CarController&gt;</text>
+<text x="68" y="811" font-size="12" fill="#222">- OnTriggerEnter(other: Collider): void</text>
+<rect x="420" y="720" width="300" height="118" fill="#ffffff" stroke="#555555"/>
+<rect x="420" y="720" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="570.0" y="739" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">Pedestrian</text>
+<text x="428" y="765" font-size="12" fill="#222">- _startPos: Vector3</text>
+<text x="428" y="781" font-size="12" fill="#222">- _walkSpeed: float = 1.2</text>
+<line x1="420" y1="792" x2="720" y2="792" stroke="#555555"/>
+<text x="428" y="811" font-size="12" fill="#222">+ StartWalking(): void</text>
+<text x="428" y="827" font-size="12" fill="#222">+ ResetPedestrian(): void</text>
+<rect x="780" y="720" width="300" height="134" fill="#ffffff" stroke="#555555"/>
+<rect x="780" y="720" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="930.0" y="739" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">VirtualDriver</text>
+<text x="788" y="765" font-size="12" fill="#222">- _car: CarController</text>
+<text x="788" y="781" font-size="12" fill="#222">- _reactionTime: float = 1.0</text>
+<text x="788" y="797" font-size="12" fill="#222">- _visibleRange: float = 50</text>
+<line x1="780" y1="808" x2="1080" y2="808" stroke="#555555"/>
+<text x="788" y="827" font-size="12" fill="#222">+ OnHazardSeen(dist: float): void</text>
+<text x="788" y="843" font-size="12" fill="#222">+ ThreePointTurn(): IEnumerator</text>
+<rect x="1140" y="720" width="300" height="134" fill="#ffffff" stroke="#555555"/>
+<rect x="1140" y="720" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="1290.0" y="739" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">NightVisionDisplay</text>
+<text x="1148" y="765" font-size="12" fill="#222">- _irCamera: Camera</text>
+<text x="1148" y="781" font-size="12" fill="#222">- _rt: RenderTexture</text>
+<text x="1148" y="797" font-size="12" fill="#222">- _box: RectTransform</text>
+<line x1="1140" y1="808" x2="1440" y2="808" stroke="#555555"/>
+<text x="1148" y="827" font-size="12" fill="#222">+ Show(on: bool): void</text>
+<text x="1148" y="843" font-size="12" fill="#222">- UpdateBox(target: Pedestrian): void</text>
+<rect x="1500" y="720" width="300" height="214" fill="#ffffff" stroke="#555555"/>
+<rect x="1500" y="720" width="300" height="26" fill="#E1F3E6" stroke="#555555"/>
+<text x="1650.0" y="739" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">CarController</text>
+<text x="1508" y="765" font-size="12" fill="#222">- _wheels: WheelCollider[4]</text>
+<text x="1508" y="781" font-size="12" fill="#222">- _maxMotorTorque: float</text>
+<text x="1508" y="797" font-size="12" fill="#222">- _maxBrakeTorque: float</text>
+<text x="1508" y="813" font-size="12" fill="#222">- _maxSteerDeg: float = 35</text>
+<text x="1508" y="829" font-size="12" fill="#222">+ SpeedKmh: float</text>
+<line x1="1500" y1="840" x2="1800" y2="840" stroke="#555555"/>
+<text x="1508" y="859" font-size="12" fill="#222">+ SetThrottle(v: float): void</text>
+<text x="1508" y="875" font-size="12" fill="#222">+ SetSteer(v: float): void</text>
+<text x="1508" y="891" font-size="12" fill="#222">+ SetBrake(v: float): void</text>
+<text x="1508" y="907" font-size="12" fill="#222">+ SetRearSteer(deg: float): void</text>
+<text x="1508" y="923" font-size="12" fill="#222">+ ResetPose(p: Transform): void</text>
+<rect x="780" y="1024" width="300" height="118" fill="#ffffff" stroke="#555555"/>
+<rect x="780" y="1024" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="930.0" y="1043" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">SensorConeDrawer</text>
+<text x="788" y="1069" font-size="12" fill="#222">- _headlampRange: float = 50</text>
+<text x="788" y="1085" font-size="12" fill="#222">- _irRange: float = 120</text>
+<line x1="780" y1="1096" x2="1080" y2="1096" stroke="#555555"/>
+<text x="788" y="1115" font-size="12" fill="#222">+ Draw(origin: Transform): void</text>
+<text x="788" y="1131" font-size="12" fill="#222">+ Highlight(target: Pedestrian): void</text>
+<rect x="1140" y="1024" width="300" height="132" fill="#ffffff" stroke="#555555"/>
+<rect x="1140" y="1024" width="300" height="40" fill="#FFE9D6" stroke="#555555"/>
+<text x="1290.0" y="1040" text-anchor="middle" font-size="11" fill="#555">«static»</text>
+<text x="1290.0" y="1057" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">TurningRadiusCalculator</text>
+<line x1="1140" y1="1094" x2="1440" y2="1094" stroke="#555555"/>
+<text x="1148" y="1113" font-size="12" fill="#222">+ Radius(L: float, front: float, rear: float): float</text>
+<text x="1148" y="1129" font-size="12" fill="#222">+ Icr(car: Transform, L: float,</text>
+<text x="1148" y="1145" font-size="12" fill="#222">      front: float, rear: float): Vector3</text>
+<rect x="1500" y="1024" width="300" height="134" fill="#ffffff" stroke="#555555"/>
+<rect x="1500" y="1024" width="300" height="26" fill="#FFE9D6" stroke="#555555"/>
+<text x="1650.0" y="1043" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">TrajectoryDrawer</text>
+<text x="1508" y="1069" font-size="12" fill="#222">- _line: LineRenderer</text>
+<text x="1508" y="1085" font-size="12" fill="#222">- _icrMarker: Transform</text>
+<line x1="1500" y1="1096" x2="1800" y2="1096" stroke="#555555"/>
+<text x="1508" y="1115" font-size="12" fill="#222">+ AddPoint(p: Vector3): void</text>
+<text x="1508" y="1131" font-size="12" fill="#222">+ ShowIcr(icr: Vector3, r: float): void</text>
+<text x="1508" y="1147" font-size="12" fill="#222">+ Clear(): void</text>
+<rect x="60" y="1044" width="300" height="212" fill="#ffffff" stroke="#555555"/>
+<rect x="60" y="1044" width="300" height="40" fill="#EEEEEE" stroke="#555555"/>
+<text x="210.0" y="1060" text-anchor="middle" font-size="11" fill="#555">«ScriptableObject»</text>
+<text x="210.0" y="1077" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">CarConfig</text>
+<text x="68" y="1103" font-size="12" fill="#222">+ bodyColor: Color</text>
+<text x="68" y="1119" font-size="12" fill="#222">+ trimIndex: int</text>
+<text x="68" y="1135" font-size="12" fill="#222">+ wheelIndex: int</text>
+<text x="68" y="1151" font-size="12" fill="#222">+ nightVision: bool</text>
+<text x="68" y="1167" font-size="12" fill="#222">+ rearWheelSteering: bool</text>
+<text x="68" y="1183" font-size="12" fill="#222">+ valetParking: bool</text>
+<text x="68" y="1199" font-size="12" fill="#222">+ remoteParking: bool</text>
+<line x1="60" y1="1210" x2="360" y2="1210" stroke="#555555"/>
+<text x="68" y="1229" font-size="12" fill="#222">+ IsOn(id: FeatureId): bool</text>
+<text x="68" y="1245" font-size="12" fill="#222">+ CloneWithoutFeatures(): CarConfig</text>
+<rect x="420" y="1044" width="300" height="100" fill="#ffffff" stroke="#555555"/>
+<rect x="420" y="1044" width="300" height="40" fill="#EEEEEE" stroke="#555555"/>
+<text x="570.0" y="1060" text-anchor="middle" font-size="11" fill="#555">«ScriptableObject»</text>
+<text x="570.0" y="1077" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">FeatureDescriptions</text>
+<text x="428" y="1103" font-size="12" fill="#222">- _entries: Entry[]</text>
+<line x1="420" y1="1114" x2="720" y2="1114" stroke="#555555"/>
+<text x="428" y="1133" font-size="12" fill="#222">+ Get(id: FeatureId): string</text>
+<rect x="420" y="1174" width="300" height="118" fill="#ffffff" stroke="#555555"/>
+<rect x="420" y="1174" width="300" height="40" fill="#EEEEEE" stroke="#555555"/>
+<text x="570.0" y="1190" text-anchor="middle" font-size="11" fill="#555">«enumeration»</text>
+<text x="570.0" y="1207" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">FeatureId</text>
+<text x="428" y="1233" font-size="12" fill="#222">NightVision</text>
+<text x="428" y="1249" font-size="12" fill="#222">RearWheelSteering</text>
+<text x="428" y="1265" font-size="12" fill="#222">ValetParking</text>
+<text x="428" y="1281" font-size="12" fill="#222">RemoteParking</text>
+<rect x="60" y="1286" width="300" height="150" fill="#ffffff" stroke="#555555"/>
+<rect x="60" y="1286" width="300" height="26" fill="#EEEEEE" stroke="#555555"/>
+<text x="210.0" y="1305" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">ScenarioResult</text>
+<text x="68" y="1331" font-size="12" fill="#222">+ stopDistance: float</text>
+<text x="68" y="1347" font-size="12" fill="#222">+ minTtc: float</text>
+<text x="68" y="1363" font-size="12" fill="#222">+ turningRadius: float</text>
+<text x="68" y="1379" font-size="12" fill="#222">+ uTurnCount: int</text>
+<text x="68" y="1395" font-size="12" fill="#222">+ collided: bool</text>
+<line x1="60" y1="1406" x2="360" y2="1406" stroke="#555555"/>
+<text x="68" y="1425" font-size="12" fill="#222">+ Reset(): void</text>
+<rect x="420" y="1322" width="300" height="102" fill="#ffffff" stroke="#555555"/>
+<rect x="420" y="1322" width="300" height="40" fill="#EEEEEE" stroke="#555555"/>
+<text x="570.0" y="1338" text-anchor="middle" font-size="11" fill="#555">«enumeration»</text>
+<text x="570.0" y="1355" text-anchor="middle" font-size="13" font-weight="bold" fill="#222">AppMode</text>
+<text x="428" y="1381" font-size="12" fill="#222">Configurator</text>
+<text x="428" y="1397" font-size="12" fill="#222">Driving</text>
+<text x="428" y="1413" font-size="12" fill="#222">Parking</text>
+<polyline points="780,1470 830,1470" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#tri)"/>
+<text x="838" y="1474" font-size="12" fill="#333">상속</text>
+<polyline points="955,1470 1005,1470" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#tri)"/>
+<text x="1013" y="1474" font-size="12" fill="#333">인터페이스 구현</text>
+<polyline points="1130,1470 1180,1470" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#diaf)" marker-end="url(#open)"/>
+<text x="1188" y="1474" font-size="12" fill="#333">구성(소유)</text>
+<polyline points="1305,1470 1355,1470" fill="none" stroke="#555555" stroke-width="1.2" marker-start="url(#dia)" marker-end="url(#open)"/>
+<text x="1363" y="1474" font-size="12" fill="#333">집합(참조 보관)</text>
+<polyline points="1480,1470 1530,1470" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="1538" y="1474" font-size="12" fill="#333">호출·참조</text>
+<polyline points="1655,1470 1705,1470" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1713" y="1474" font-size="12" fill="#333">의존(사용)</text>
+</svg>

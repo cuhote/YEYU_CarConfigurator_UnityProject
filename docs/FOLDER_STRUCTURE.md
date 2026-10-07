@@ -22,7 +22,9 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   │   ├── ModeManager.cs
 │   │   │   │   ├── AreaBase.cs
 │   │   │   │   ├── AppMode.cs
-│   │   │   │   └── CarConfig.cs
+│   │   │   │   ├── CarConfig.cs
+│   │   │   │   ├── FeatureId.cs
+│   │   │   │   └── FeatureDescriptions.cs
 │   │   │   │
 │   │   │   ├── Vehicle/               ← 두 시나리오가 같이 쓰는 차량
 │   │   │   │   ├── CarController.cs
@@ -132,6 +134,8 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   ├── FOLDER_STRUCTURE.md            ← 이 문서
 │   ├── TroubleShooting/               ← 개발 중 발견된 문제/원인/해결 기록
 │   └── images/
+│       ├── class_diagram_driving.svg  ← 주행 파트 클래스 다이어그램 (9장)
+│       └── class_diagram_driving.drawio ← 위 그림의 편집용 원본 (diagrams.net)
 ├── scripts/
 │   ├── setup-git-hooks.sh             ← .githooks/ 활성화 (클론 후 1회 실행)
 │   └── check-unity-meta.sh            ← 에셋 ↔ .meta 짝 검사 (훅·CI 공용)
@@ -208,6 +212,8 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 | `Core/AreaBase.cs` | 영역 공통 부모: `Root`, `ResetArea(CarConfig)`, `OnEnter()`, `OnExit()` | FR-39 | |
 | `Core/AppMode.cs` | `enum AppMode { Configurator, Driving, Parking }` | FR-37 | |
 | `Core/CarConfig.cs` | ScriptableObject: 외관 3개 + 기능 4개, 비교용 복사본 생성 | FR-01~11 | |
+| `Core/FeatureId.cs` | `enum FeatureId { NightVision, RearWheelSteering, ValetParking, RemoteParking }` | NFR-06 | |
+| `Core/FeatureDescriptions.cs` | ScriptableObject: 기능별 설명 문장 (`Data/FeatureDescriptions.asset`) | FR-06 | |
 | `Vehicle/CarController.cs` | `WheelCollider` 구동, 스크립트로 가속·조향·제동·뒷바퀴 조향각 입력 | FR-10, NFR-02 | |
 | `Vehicle/CarAppearance.cs` | 색상·트림 파츠·휠 교체 | FR-01~03 | |
 | `Vehicle/CarFeatureSwitch.cs` | `CarConfig`대로 기능 컴포넌트 `enabled` 설정 | FR-08, FR-09 | |
@@ -269,7 +275,7 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 | 묶음 | 포함 파일 | 다른 작업이 기다리는 정도 | 담당 |
 |---|---|---|---|
 | 영역 전환 | `ModeManager`, `AreaBase`, `AppMode` | 높음 (두 영역 모두 상속) | |
-| 옵션 데이터 | `CarConfig` | 높음 (모든 파일이 참조) | |
+| 옵션 데이터 | `CarConfig`, `FeatureId`, `FeatureDescriptions` | 높음 (모든 파일이 참조) | |
 | 차량 | `CarController`, `CarFeatureSwitch`, `ICarFeature` | 높음 (기능 4종이 모두 의존) | |
 | 외관 | `CarAppearance` | 중간 | |
 | 카메라 | `SplitScreenManager`, `CameraSwitcher`, `ShowroomCamera` | 중간 | |
@@ -314,3 +320,52 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 | 프리팹 | PascalCase | `NightRoadCourse.prefab` |
 | 머티리얼 | `M_` 접두사 | `M_Body_Red`, `M_Cone_IR` |
 | 네임스페이스 | `Yeyu.<폴더>` | `Yeyu.Core`, `Yeyu.Driving` |
+
+---
+
+## 9. 클래스 설계 — 주행 파트
+
+주행 기능(나이트 비전·후륜 조향)을 만들 때 직접 작성하거나 호출하는 클래스만 그렸다. 데이터 클래스와 열거형은 왼쪽 아래 **Data** 영역에 따로 모았다.
+
+![주행 파트 클래스 다이어그램](./images/class_diagram_driving.svg)
+
+> 편집 원본: [`images/class_diagram_driving.drawio`](./images/class_diagram_driving.drawio) — [diagrams.net](https://app.diagrams.net)에서 열어 고친 뒤 **File → Export as → SVG**로 같은 이름에 덮어쓴다.
+
+### 9.1 그림 읽는 법
+
+| 표기 | 뜻 | 그림의 예 |
+|---|---|---|
+| 실선 + 빈 삼각형 | 상속 | `DrivingArea` → `AreaBase` |
+| 점선 + 빈 삼각형 | 인터페이스 구현 | `NightVisionSensor` → `ICarFeature` |
+| 채운 마름모 | 구성: 시작 쪽이 끝 쪽을 소유하고 수명을 같이한다 | `DrivingArea` ◆→ `DrivingScenario` |
+| 빈 마름모 | 집합: 참조를 들고 있지만 수명은 따로다 | `DrivingScenario` ◇→ `Pedestrian` |
+| 실선 + 열린 화살표 | 호출·참조 (선 위 글자는 호출하는 메서드) | `NightVisionSensor` → `CarController` (`SetBrake`) |
+| 점선 + 열린 화살표 | 의존: 메서드 안에서 잠깐 사용 | `TrajectoryDrawer` → `TurningRadiusCalculator` |
+| `+` / `-` / `#` | public / private / protected | |
+| 헤더 색 | 폴더 (`Core`, `Scenario`, `Vehicle`, `Driving`, `Data`) | |
+
+### 9.2 설계 원칙
+
+- **판단과 실행을 나눈다.** 기능 컴포넌트(`NightVisionSensor`, `RearWheelSteering`)와 `VirtualDriver`는 판단만 하고, 차를 움직이는 일은 모두 `CarController`의 `Set*()` 메서드로 요청한다. 두 차량이 같은 `CarController`를 쓰므로 분할 화면 비교가 공정하다 (NFR-02).
+- **옵션은 `ICarFeature`로만 켜고 끈다.** `CarFeatureSwitch`는 기능의 구체 타입을 모르고 `FeatureId`와 `SetActive()`만 쓴다 (NFR-06).
+- **수치는 `[SerializeField]`로 노출한다.** 그림의 `= 120`, `= 4.0` 같은 값은 SRS 초기값이며 Inspector에서 바꾼다 ([`CONVENTIONS.md`](../CONVENTIONS.md) 3.4절).
+- **Data는 동작이 없다.** `CarConfig`, `FeatureDescriptions`, `ScenarioResult`, 열거형은 값만 담고 다른 클래스를 호출하지 않는다.
+- **주행 클래스는 주차 클래스를 참조하지 않는다.** 그림에 `Parking/` 클래스가 없는 이유다.
+
+### 9.3 Data 클래스 위치
+
+그림에서는 한곳에 모았지만 파일은 역할에 맞는 폴더에 있다.
+
+| 클래스 | 파일 | 에셋 |
+|---|---|---|
+| `CarConfig` | `Scripts/Core/CarConfig.cs` | `Data/CarConfig.asset` |
+| `FeatureDescriptions` | `Scripts/Core/FeatureDescriptions.cs` | `Data/FeatureDescriptions.asset` |
+| `FeatureId` | `Scripts/Core/FeatureId.cs` | - |
+| `AppMode` | `Scripts/Core/AppMode.cs` | - |
+| `ScenarioResult` | `Scripts/Scenario/ScenarioResult.cs` | - (실행 중에만 존재) |
+
+### 9.4 그림에서 생략한 것
+
+- `Camera/`(`SplitScreenManager`, `CameraSwitcher`)와 `UI/`(`ScenarioHUD`)는 주행 클래스가 값을 넘겨주기만 해서 그림을 단순하게 하려고 뺐다. 시점 전환과 수치 표시는 5.1절을 본다.
+- `DrivingArea` → `CarController`(차량 2대), `ScenarioBase` → `ScenarioResult`, `CarFeatureSwitch` → `CarConfig` 참조는 상자 안 필드·매개변수로만 표시했다.
+- 공통 클래스의 공개 메서드 이름은 6장 "먼저 합의할 것"을 따른다. 합의 결과가 다르면 이 그림도 함께 고친다 ([`COMMIT_RULES.md`](../COMMIT_RULES.md) 6절).
