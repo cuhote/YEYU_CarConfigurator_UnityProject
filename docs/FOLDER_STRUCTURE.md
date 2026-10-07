@@ -21,6 +21,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   ├── Core/                  ← 앱 뼈대: 영역 전환, 옵션 데이터
 │   │   │   │   ├── ModeManager.cs
 │   │   │   │   ├── AreaBase.cs
+│   │   │   │   ├── ConfiguratorArea.cs
 │   │   │   │   ├── AppMode.cs
 │   │   │   │   ├── CarConfig.cs
 │   │   │   │   ├── FeatureId.cs
@@ -134,8 +135,8 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   ├── FOLDER_STRUCTURE.md            ← 이 문서
 │   ├── TroubleShooting/               ← 개발 중 발견된 문제/원인/해결 기록
 │   └── images/
-│       ├── class_diagram_driving.svg  ← 주행 파트 클래스 다이어그램 (9장)
-│       └── class_diagram_driving.drawio ← 위 그림의 편집용 원본 (diagrams.net)
+│       ├── class_diagram.svg          ← 전체 클래스 연결도 (9장)
+│       └── class_diagram.drawio       ← 위 그림의 편집용 원본 (diagrams.net)
 ├── scripts/
 │   ├── setup-git-hooks.sh             ← .githooks/ 활성화 (클론 후 1회 실행)
 │   └── check-unity-meta.sh            ← 에셋 ↔ .meta 짝 검사 (훅·CI 공용)
@@ -210,6 +211,7 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 |---|---|---|---|
 | `Core/ModeManager.cs` | 영역 씬 3개 Additive 로드, 영역 켜고 끄기, 활성 씬 지정 | FR-36~38 | |
 | `Core/AreaBase.cs` | 영역 공통 부모: `Root`, `ResetArea(CarConfig)`, `OnEnter()`, `OnExit()` | FR-39 | |
+| `Core/ConfiguratorArea.cs` | `AreaBase` 상속, 쇼룸 영역: 미리보기 차량 외관 적용, 쇼룸 카메라 | FR-01~04, FR-36 | |
 | `Core/AppMode.cs` | `enum AppMode { Configurator, Driving, Parking }` | FR-37 | |
 | `Core/CarConfig.cs` | ScriptableObject: 외관 3개 + 기능 4개, 비교용 복사본 생성 | FR-01~11 | |
 | `Core/FeatureId.cs` | `enum FeatureId { NightVision, RearWheelSteering, ValetParking, RemoteParking }` | NFR-06 | |
@@ -274,7 +276,7 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 
 | 묶음 | 포함 파일 | 다른 작업이 기다리는 정도 | 담당 |
 |---|---|---|---|
-| 영역 전환 | `ModeManager`, `AreaBase`, `AppMode` | 높음 (두 영역 모두 상속) | |
+| 영역 전환 | `ModeManager`, `AreaBase`, `ConfiguratorArea`, `AppMode` | 높음 (두 영역 모두 상속) | |
 | 옵션 데이터 | `CarConfig`, `FeatureId`, `FeatureDescriptions` | 높음 (모든 파일이 참조) | |
 | 차량 | `CarController`, `CarFeatureSwitch`, `ICarFeature` | 높음 (기능 4종이 모두 의존) | |
 | 외관 | `CarAppearance` | 중간 | |
@@ -323,34 +325,35 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 
 ---
 
-## 9. 클래스 설계 — 주행 파트
+## 9. 클래스 설계 — 전체 연결도
 
-주행 기능(나이트 비전·후륜 조향)을 만들 때 직접 작성하거나 호출하는 클래스만 그렸다. 데이터 클래스와 열거형은 왼쪽 아래 **Data** 영역에 따로 모았다.
+`Assets/_Project/Scripts/`의 모든 클래스가 서로 어떻게 이어지는지 한 장으로 그렸다. 필드·메서드는 넣지 않고 **클래스 이름과 관계만** 표시한다 (각 클래스의 역할은 5장). 점선 틀은 폴더이고, 데이터 클래스와 열거형은 왼쪽 아래 **Data** 틀에 따로 모았다.
 
-![주행 파트 클래스 다이어그램](./images/class_diagram_driving.svg)
+![전체 클래스 연결도](./images/class_diagram.svg)
 
-> 편집 원본: [`images/class_diagram_driving.drawio`](./images/class_diagram_driving.drawio) — [diagrams.net](https://app.diagrams.net)에서 열어 고친 뒤 **File → Export as → SVG**로 같은 이름에 덮어쓴다.
+> 편집 원본: [`images/class_diagram.drawio`](./images/class_diagram.drawio) — [diagrams.net](https://app.diagrams.net)에서 열면 상자 위치는 같고 선은 자동으로 다시 그려진다. 고친 뒤 **File → Export as → SVG**로 `class_diagram.svg`에 덮어쓴다.
 
-### 9.1 그림 읽는 법
+### 9.1 선 읽는 법
 
-| 표기 | 뜻 | 그림의 예 |
+| 선 | 뜻 | 예 |
 |---|---|---|
 | 실선 + 빈 삼각형 | 상속 | `DrivingArea` → `AreaBase` |
 | 점선 + 빈 삼각형 | 인터페이스 구현 | `NightVisionSensor` → `ICarFeature` |
-| 채운 마름모 | 구성: 시작 쪽이 끝 쪽을 소유하고 수명을 같이한다 | `DrivingArea` ◆→ `DrivingScenario` |
-| 빈 마름모 | 집합: 참조를 들고 있지만 수명은 따로다 | `DrivingScenario` ◇→ `Pedestrian` |
-| 실선 + 열린 화살표 | 호출·참조 (선 위 글자는 호출하는 메서드) | `NightVisionSensor` → `CarController` (`SetBrake`) |
-| 점선 + 열린 화살표 | 의존: 메서드 안에서 잠깐 사용 | `TrajectoryDrawer` → `TurningRadiusCalculator` |
-| `+` / `-` / `#` | public / private / protected | |
-| 헤더 색 | 폴더 (`Core`, `Scenario`, `Vehicle`, `Driving`, `Data`) | |
+| 채운 마름모 → | 소유: 함께 만들어지고 함께 사라진다 | `UIManager` ◆→ `FeaturePanel` |
+| 빈 마름모 → | 보관: 참조를 필드로 들고 있다 | `ModeManager` ◇→ `AreaBase` |
+| 실선 → | 호출 | `NightVisionSensor` → `CarController` |
+| 점선 → | 사용: 메서드 안에서 잠깐 참조 | `ValetAgent` ⇢ `AStarPlanner` |
 
-### 9.2 설계 원칙
+### 9.2 연결 흐름 요약
 
-- **판단과 실행을 나눈다.** 기능 컴포넌트(`NightVisionSensor`, `RearWheelSteering`)와 `VirtualDriver`는 판단만 하고, 차를 움직이는 일은 모두 `CarController`의 `Set*()` 메서드로 요청한다. 두 차량이 같은 `CarController`를 쓰므로 분할 화면 비교가 공정하다 (NFR-02).
-- **옵션은 `ICarFeature`로만 켜고 끈다.** `CarFeatureSwitch`는 기능의 구체 타입을 모르고 `FeatureId`와 `SetActive()`만 쓴다 (NFR-06).
-- **수치는 `[SerializeField]`로 노출한다.** 그림의 `= 120`, `= 4.0` 같은 값은 SRS 초기값이며 Inspector에서 바꾼다 ([`CONVENTIONS.md`](../CONVENTIONS.md) 3.4절).
-- **Data는 동작이 없다.** `CarConfig`, `FeatureDescriptions`, `ScenarioResult`, 열거형은 값만 담고 다른 클래스를 호출하지 않는다.
-- **주행 클래스는 주차 클래스를 참조하지 않는다.** 그림에 `Parking/` 클래스가 없는 이유다.
+1. **옵션 선택**: `ExteriorPanel`·`FeaturePanel`이 `CarConfig`에 값을 쓰고, `FeaturePanel`의 시작 버튼이 `ModeManager.SwitchTo()`를 부른다.
+2. **영역 전환**: `ModeManager`가 `AreaBase` 3개(`ConfiguratorArea`, `DrivingArea`, `ParkingArea`)를 켜고 끄며, `UIManager`에 모드별 패널을 바꾸게 한다.
+3. **차량 준비**: 각 영역의 `ResetArea()`가 `CarAppearance`(외관)와 `CarFeatureSwitch`(기능 켜기·끄기)를 부르고, `CarFeatureSwitch`는 `ICarFeature`로만 기능을 다룬다.
+4. **시나리오 진행**: `DrivingScenario`·`ParkingScenario`가 `ScenarioBase`를 상속하고, `ScenarioTrigger`로 구간 이벤트를 받고, `ScenarioResult`에 결과를 남긴다. 화면은 `SplitScreenManager`·`CameraSwitcher`가 나눈다.
+5. **차량 제어**: 기능 4종(`NightVisionSensor`, `RearWheelSteering`, `ValetAgent`, `RemoteParking`)과 `VirtualDriver`는 판단만 하고, 차를 움직이는 일은 모두 `CarController`에 요청한다.
+6. **결과 표시**: `ScenarioHUD`가 시점 버튼으로 `CameraSwitcher`를 부르고, `ResultPanel`이 `ScenarioResult`를 읽는다.
+
+**경계 규칙**: `Driving/`과 `Parking/` 사이에는 선이 없다. 두 파트는 `Core`·`Scenario`·`Vehicle`을 통해서만 만난다.
 
 ### 9.3 Data 클래스 위치
 
@@ -364,8 +367,11 @@ ModeManager ──(SwitchTo)──▶ AreaBase
 | `AppMode` | `Scripts/Core/AppMode.cs` | - |
 | `ScenarioResult` | `Scripts/Scenario/ScenarioResult.cs` | - (실행 중에만 존재) |
 
-### 9.4 그림에서 생략한 것
+### 9.4 그림에서 생략한 선
 
-- `Camera/`(`SplitScreenManager`, `CameraSwitcher`)와 `UI/`(`ScenarioHUD`)는 주행 클래스가 값을 넘겨주기만 해서 그림을 단순하게 하려고 뺐다. 시점 전환과 수치 표시는 5.1절을 본다.
-- `DrivingArea` → `CarController`(차량 2대), `ScenarioBase` → `ScenarioResult`, `CarFeatureSwitch` → `CarConfig` 참조는 상자 안 필드·매개변수로만 표시했다.
-- 공통 클래스의 공개 메서드 이름은 6장 "먼저 합의할 것"을 따른다. 합의 결과가 다르면 이 그림도 함께 고친다 ([`COMMIT_RULES.md`](../COMMIT_RULES.md) 6절).
+선이 너무 많아지지 않도록 아래 관계는 그리지 않았다.
+
+- 시각화 클래스(`SensorConeDrawer`, `TrajectoryDrawer`, `ReservationCellDrawer`, `DoorSwingDrawer`) → `DebugDraw`, 그리고 여러 클래스 → `Units`
+- `AreaBase`·`CarAppearance`·`CarFeatureSwitch` → `CarConfig`: 메서드 매개변수로 받기만 한다
+
+클래스를 추가하거나 관계가 바뀌면 그림과 이 장을 같은 PR에서 고친다 ([`COMMIT_RULES.md`](../COMMIT_RULES.md) 6절).
