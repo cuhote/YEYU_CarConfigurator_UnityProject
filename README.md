@@ -186,8 +186,7 @@ ParkingArea.unity      (Additive) : 주차장 2벌              ← 강유나
 
 ### 2.7 설계 화면
 <img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/5bf74aea-9616-48a2-96df-ef0f23958c8e" />
-![Uploading Gemini_Generated_Image_5xef125xef125xef.png…]()
-
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/476aabb3-e843-43c9-8fd2-ce458abe7807" />
 <img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/cfbf31ca-0bd3-4acd-aca3-1376ce31513b" />
 <img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/526dd344-ae37-4d26-90b5-a0e9dad0d3e8" />
 <img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/1d3d0fb3-4143-4234-bacc-00b67358cc16" />
