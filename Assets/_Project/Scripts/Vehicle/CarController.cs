@@ -14,6 +14,13 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform[] _wheelSpins;         // Wheels_FL_MD, FR, RL, RR
     [SerializeField] private float _wheelRadius = 0.33f;      // 바퀴 반지름 (m)
 
+    [Header("지면 따라가기")]
+    [SerializeField] private LayerMask _groundMask = 1;      // 지면으로 볼 레이어 (기본: Default)
+    [SerializeField] private float _groundRayHeight = 5f;    // 레이를 쏘기 시작할 높이 (m)
+    [SerializeField] private float _groundRayLength = 20f;   // 레이 길이 (m)
+
+    private float _headingDeg;   // 위에서 본 진행 방향 (도)
+
     private float _speedMps; //현재 속도 (m/s). 내부 계산용
     private float _frontSteerAngle; //현재 앞바퀴 조향각 (도)
     private float _rearSteerAngle; //현재 뒷바퀴 조향각 (도)
@@ -28,7 +35,11 @@ public class CarController : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _headingDeg = transform.eulerAngles.y;
     }
+
+
+
 
 
     void FixedUpdate()
@@ -41,20 +52,57 @@ public class CarController : MonoBehaviour
 
         //직진 
         float distance = _speedMps * dt; 
-
-        Vector3 newPosition= _rb.position + transform.forward *distance;
-        _rb.MovePosition(newPosition);
-
-       //회전 
-        float front =Mathf.Tan(_frontSteerAngle*Mathf.Deg2Rad); //도를 라디안
-        float rear = Mathf.Tan(_rearSteerAngle*Mathf.Deg2Rad);
+        // 회전: 자전거 모델은 위에서 본 진행 방향만 바꾼다
+        float front = Mathf.Tan(_frontSteerAngle * Mathf.Deg2Rad);
+        float rear = Mathf.Tan(_rearSteerAngle * Mathf.Deg2Rad);
         float yawRate = _speedMps / _wheelBase * (front - rear);   // 라디안/초
-        float yawDegrees = yawRate * Mathf.Rad2Deg * dt;           // 라디안을 도 , 이번 프레임에 돌 각도(도)
+        _headingDeg += yawRate * Mathf.Rad2Deg * dt;
 
-        Quaternion newRotation = _rb.rotation * Quaternion.Euler(0f, yawDegrees, 0f); // y축 기준으로 회전
+        Quaternion flatRotation = Quaternion.Euler(0f, _headingDeg, 0f);
+        Vector3 flatForward = flatRotation * Vector3.forward;
+
+        // 이동: 지금 향한 방향(경사 포함)으로 간 거리만큼
+        Vector3 newPosition = _rb.position + transform.forward * distance;
+        Quaternion newRotation = flatRotation;
+
+        // 지면 따라가기: 뒤축과 앞축 아래의 지면을 찾아 높이와 기울기를 맞춘다
+        if (TryGetGround(newPosition, out Vector3 rearGround) &&
+            TryGetGround(newPosition + flatForward * _wheelBase, out Vector3 frontGround))
+        {
+            newPosition.y = rearGround.y;
+            newRotation = Quaternion.LookRotation(frontGround - rearGround, Vector3.up);
+        }
+
+        _rb.MovePosition(newPosition);
         _rb.MoveRotation(newRotation);
 
+    //     Vector3 newPosition= _rb.position + transform.forward *distance;
+    //     _rb.MovePosition(newPosition);
+
+    //    //회전 
+    //     float front =Mathf.Tan(_frontSteerAngle*Mathf.Deg2Rad); //도를 라디안
+    //     float rear = Mathf.Tan(_rearSteerAngle*Mathf.Deg2Rad);
+    //     float yawRate = _speedMps / _wheelBase * (front - rear);   // 라디안/초
+    //     float yawDegrees = yawRate * Mathf.Rad2Deg * dt;           // 라디안을 도 , 이번 프레임에 돌 각도(도)
+
+    //     Quaternion newRotation = _rb.rotation * Quaternion.Euler(0f, yawDegrees, 0f); // y축 기준으로 회전
+        // _rb.MoveRotation(newRotation);
+
         UpdateWheelVisuals(distance);
+    }
+    private bool TryGetGround(Vector3 point, out Vector3 groundPoint)
+    {
+        Vector3 origin = point + Vector3.up * _groundRayHeight;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, _groundRayLength,
+                            _groundMask, QueryTriggerInteraction.Ignore))
+        {
+            groundPoint = hit.point;
+            return true;
+        }
+
+        groundPoint = point;
+        return false;
     }
     // 속도를 순간적으로 바꾸기 (서서히 가속 )
     public void SetSpeed(float kmh)
@@ -104,6 +152,7 @@ public class CarController : MonoBehaviour
 
             // 후진일 때는 차의 뒤쪽이 진행 방향
             Vector3 heading = reverse ? -transform.forward : transform.forward;
+            heading.y = 0f;
             float angle = Vector3.SignedAngle(heading, toTarget, Vector3.up);
             SetSteer(reverse ? -angle : angle);
 
@@ -127,6 +176,7 @@ public class CarController : MonoBehaviour
         _frontSteerAngle = 0f;
         _rearSteerAngle = 0f;
         _spinAngle = 0f;
+        _headingDeg = pose.rotation.eulerAngles.y;
     }
 
     private void UpdateWheelVisuals(float distance)
