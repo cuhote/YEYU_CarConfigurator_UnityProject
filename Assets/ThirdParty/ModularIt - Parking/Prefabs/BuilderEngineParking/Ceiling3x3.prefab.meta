@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: beb1f968c81f6ea4d9d02e84e7e2cace
+timeCreated: 1519910750
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/BuilderEngineParking/Ceiling3x3.prefab
+  uploadId: 239057

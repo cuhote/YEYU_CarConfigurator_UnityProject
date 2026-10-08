@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2c376f678b7804340a750538a7fa1b8d
+timeCreated: 1493668502
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Models/Wall&Ground/Materials/Wall1_AlbedoTransparency.mat
+  uploadId: 239057

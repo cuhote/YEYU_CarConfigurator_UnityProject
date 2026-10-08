@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0356ad44081792444a3e1db7eed7ab5f
+timeCreated: 1494260864
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Limiters/Corner_Limiter_Simple.prefab
+  uploadId: 239057

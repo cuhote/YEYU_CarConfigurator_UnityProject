@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 427bf7c0cd3b22e42aeb27efc1855727
+timeCreated: 1492120614
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Door.prefab
+  uploadId: 239057

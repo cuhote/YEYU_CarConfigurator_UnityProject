@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0dc5fed394566064d8d4421a8b9876ed
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274828
+  packageName: URP Lab Studio
+  packageVersion: 1.0.0
+  assetPath: Assets/Settings/URP Fog/URPFogVolumeProfile 1.asset
+  uploadId: 988052

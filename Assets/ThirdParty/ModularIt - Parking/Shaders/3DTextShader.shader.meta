@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b6e9e70be63852d4cb9f335c123e9fec
+timeCreated: 1487704346
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Shaders/3DTextShader.shader
+  uploadId: 239057

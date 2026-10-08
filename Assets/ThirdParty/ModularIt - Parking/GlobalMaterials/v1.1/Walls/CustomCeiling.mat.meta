@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c7344b46f1d48334ab6c7715e6f19726
+timeCreated: 1494001809
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/GlobalMaterials/v1.1/Walls/CustomCeiling.mat
+  uploadId: 239057

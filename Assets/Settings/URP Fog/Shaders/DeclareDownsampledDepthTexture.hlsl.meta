@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8b8ef91968a1bb147a1e3f10a9e896ef
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274828
+  packageName: URP Lab Studio
+  packageVersion: 1.0.0
+  assetPath: Assets/Settings/URP Fog/Shaders/DeclareDownsampledDepthTexture.hlsl
+  uploadId: 988052

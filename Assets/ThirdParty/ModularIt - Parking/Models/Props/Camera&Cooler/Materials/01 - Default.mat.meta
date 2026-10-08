@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 84e1a5fda4e0d1a4db05ae285ebd9be5
+timeCreated: 1519932918
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Models/Props/Camera&Cooler/Materials/01 - Default.mat
+  uploadId: 239057

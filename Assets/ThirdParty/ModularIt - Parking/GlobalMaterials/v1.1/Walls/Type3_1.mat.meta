@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 82b998d41e922e2419947092a0e35748
+timeCreated: 1493670217
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/GlobalMaterials/v1.1/Walls/Type3_1.mat
+  uploadId: 239057

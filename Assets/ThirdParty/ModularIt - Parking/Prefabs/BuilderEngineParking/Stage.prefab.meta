@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 27966b20fec2f0445a2ae415bc280627
+timeCreated: 1492109952
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/BuilderEngineParking/Stage.prefab
+  uploadId: 239057

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d5eca7827b4bfec4b867b07e0cdeb84f
+timeCreated: 1494079592
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Sign/SpeedLimit.prefab
+  uploadId: 239057

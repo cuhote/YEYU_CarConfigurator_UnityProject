@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6a05087ef90fe314b926c5bde8c0fdf1
+timeCreated: 1494338434
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Electrical/Electric_track_2way1.prefab
+  uploadId: 239057

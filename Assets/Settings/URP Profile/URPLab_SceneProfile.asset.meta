@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f8a25d67ce086504fb7dfe58c02ccc5c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274828
+  packageName: URP Lab Studio
+  packageVersion: 1.0.0
+  assetPath: Assets/Settings/URP Profile/URPLab_SceneProfile.asset
+  uploadId: 988052

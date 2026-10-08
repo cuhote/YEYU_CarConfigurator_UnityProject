@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b3cffda4e58b4ad46831d63a259c750b
+timeCreated: 1493668572
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Columns/Column1_OldMats.prefab
+  uploadId: 239057

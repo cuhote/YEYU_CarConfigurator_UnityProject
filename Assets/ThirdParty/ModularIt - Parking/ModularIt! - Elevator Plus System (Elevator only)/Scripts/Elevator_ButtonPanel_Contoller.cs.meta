@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 06bd98ee68c2ceb4594e17012ec7f7db
+timeCreated: 1509145876
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/ModularIt! - Elevator Plus System (Elevator only)/Scripts/Elevator_ButtonPanel_Contoller.cs
+  uploadId: 239057

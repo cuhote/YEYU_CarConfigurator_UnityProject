@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dcedc159d69ad8b418b2ec966c75c31b
+timeCreated: 1494079604
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Sign/Turn.prefab
+  uploadId: 239057

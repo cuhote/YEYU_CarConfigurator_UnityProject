@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5dce11a9316ee8b43bdd67b40c12419e
+timeCreated: 1494338474
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Electrical/Electric_track_holder_4.prefab
+  uploadId: 239057

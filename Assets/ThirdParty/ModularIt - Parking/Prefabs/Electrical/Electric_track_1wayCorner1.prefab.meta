@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 60e48c7249f209c46b27e4ae4a636f0c
+timeCreated: 1494338428
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Electrical/Electric_track_1wayCorner1.prefab
+  uploadId: 239057
