@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 0c77a9b0ac420b847a6657c467b36680
+guid: ddf1b20df9693fa4bbdc3319e0fc8b65
 AssetOrigin:
   serializedVersion: 1
   productId: 52628
   packageName: Kajaman's Roads - Free
   packageVersion: 1.0.1
-  assetPath: Assets/KajamansRoads/Materials/6RoadMob.mat
+  assetPath: Assets/ThirdParty/KajamansRoads/Materials/2RoadMob.mat
   uploadId: 110399
 NativeFormatImporter:
   externalObjects: {}

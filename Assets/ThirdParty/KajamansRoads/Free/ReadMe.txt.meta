@@ -5,7 +5,7 @@ AssetOrigin:
   productId: 52628
   packageName: Kajaman's Roads - Free
   packageVersion: 1.0.1
-  assetPath: Assets/KajamansRoads/Free/ReadMe.txt
+  assetPath: Assets/ThirdParty/KajamansRoads/Free/ReadMe.txt
   uploadId: 110399
 TextScriptImporter:
   externalObjects: {}

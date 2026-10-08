@@ -5,7 +5,7 @@ AssetOrigin:
   productId: 52628
   packageName: Kajaman's Roads - Free
   packageVersion: 1.0.1
-  assetPath: Assets/KajamansRoads/Materials/DefaultPhysicsMaterial.physicMaterial
+  assetPath: Assets/ThirdParty/KajamansRoads/Materials/DefaultPhysicsMaterial.physicMaterial
   uploadId: 110399
 NativeFormatImporter:
   externalObjects: {}
