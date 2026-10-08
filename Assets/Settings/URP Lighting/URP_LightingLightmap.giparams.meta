@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a9f6c66888b760e4697ae16d20b64cf6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274828
+  packageName: URP Lab Studio
+  packageVersion: 1.0.0
+  assetPath: Assets/Settings/URP Lighting/URP_LightingLightmap.giparams
+  uploadId: 988052

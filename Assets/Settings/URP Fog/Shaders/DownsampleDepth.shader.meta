@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cffeaeec0396a2c4dad475266cc8dfeb
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274828
+  packageName: URP Lab Studio
+  packageVersion: 1.0.0
+  assetPath: Assets/Settings/URP Fog/Shaders/DownsampleDepth.shader
+  uploadId: 988052

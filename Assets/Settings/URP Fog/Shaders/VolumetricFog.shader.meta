@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 08f816187f9af0244a95556ee0cab83f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 274828
+  packageName: URP Lab Studio
+  packageVersion: 1.0.0
+  assetPath: Assets/Settings/URP Fog/Shaders/VolumetricFog.shader
+  uploadId: 988052
