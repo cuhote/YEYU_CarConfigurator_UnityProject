@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 
@@ -8,6 +9,8 @@ public abstract class AreaBase : MonoBehaviour
     [SerializeField] private GameObject _root;
     [SerializeField] protected Camera _leftCam;
     [SerializeField] protected Camera _rightCam;
+    [SerializeField] private AppMode _mode;
+    [SerializeField] private Color _ambientColor;
 
     // 값을 밖에서 읽을 수 있게 내보내줌 (프로퍼티)
     public GameObject Root => _root;
@@ -19,19 +22,33 @@ public abstract class AreaBase : MonoBehaviour
 
     public virtual void OnEnter()
     {
-
+        ApplyLighting();
+        SetSplitCameras(true);
     }
 
     public virtual void OnExit()
     {
-
+        SetSplitCameras(false);
     }
     protected virtual void ApplyLighting()
     {
-
+        RenderSettings.ambientMode =AmbientMode.Flat;
+        RenderSettings.ambientLight =_ambientColor;
     }
     protected virtual void SetSplitCameras(bool enabled)
-    {
+    {   
+        if(_leftCam != null)
+        {
+            _leftCam.rect= new Rect(0,0,0.5f,1);
+            _leftCam.enabled = enabled;
+        }
 
+        if(_rightCam != null)
+        {
+            _rightCam.rect= new Rect(0.5f,0,0.5f,1);
+            _rightCam.enabled = enabled;
+        }
+        
     }
+
 }
