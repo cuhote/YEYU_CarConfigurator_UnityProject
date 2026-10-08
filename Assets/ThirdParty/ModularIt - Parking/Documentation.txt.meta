@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2153a33657d62a04593cba99c4564b41
+timeCreated: 1492177480
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Documentation.txt
+  uploadId: 239057

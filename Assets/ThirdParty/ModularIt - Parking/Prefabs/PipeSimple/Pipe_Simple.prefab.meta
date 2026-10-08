@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8b6b2cafa85e07140ad96438ad9e5371
+timeCreated: 1491827845
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/PipeSimple/Pipe_Simple.prefab
+  uploadId: 239057

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e0e84af499e1f1d469427c36864bffe4
+timeCreated: 1519941433
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 36300000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Demo_Scene/OcclusionCullingData.asset
+  uploadId: 239057

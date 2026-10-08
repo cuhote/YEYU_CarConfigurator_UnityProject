@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 52c9f32d12b82b0498a40ff2a1c757cc
+timeCreated: 1494076599
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Models/Props/Signs/Materials/signs.mat
+  uploadId: 239057

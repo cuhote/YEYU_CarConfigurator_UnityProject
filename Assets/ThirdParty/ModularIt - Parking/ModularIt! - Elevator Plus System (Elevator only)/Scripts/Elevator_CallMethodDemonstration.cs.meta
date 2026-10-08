@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 4f027b9dfe975cd46abf59ed6e0afb6b
+timeCreated: 1509192725
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/ModularIt! - Elevator Plus System (Elevator only)/Scripts/Elevator_CallMethodDemonstration.cs
+  uploadId: 239057

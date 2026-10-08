@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ad2fd670742166f42a1d7ba180b17426
+timeCreated: 1494251478
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Columns/Column_Small_Round.prefab
+  uploadId: 239057

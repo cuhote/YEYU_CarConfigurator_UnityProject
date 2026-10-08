@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f4e176c91e8edcf4da4d2255e2a16f2f
+timeCreated: 1494184863
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/VentilaionBox1-1/Ventilation_box_90degrees.prefab
+  uploadId: 239057

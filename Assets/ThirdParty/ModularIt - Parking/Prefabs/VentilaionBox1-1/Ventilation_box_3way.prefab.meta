@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0ee42b10089a5144494877a2d8a30643
+timeCreated: 1494184861
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/VentilaionBox1-1/Ventilation_box_3way.prefab
+  uploadId: 239057

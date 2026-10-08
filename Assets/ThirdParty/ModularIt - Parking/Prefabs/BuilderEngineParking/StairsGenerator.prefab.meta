@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6210d88c5751b3e42bfb32cb1cd37375
+timeCreated: 1492109960
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/BuilderEngineParking/StairsGenerator.prefab
+  uploadId: 239057

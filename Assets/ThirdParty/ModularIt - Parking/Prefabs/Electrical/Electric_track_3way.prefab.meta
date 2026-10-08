@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e6d5563d7a4eb5e4fb1efaea431f8669
+timeCreated: 1494338444
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/Electrical/Electric_track_3way.prefab
+  uploadId: 239057

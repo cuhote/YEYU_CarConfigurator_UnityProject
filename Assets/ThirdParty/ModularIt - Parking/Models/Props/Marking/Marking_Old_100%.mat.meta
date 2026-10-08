@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 139c510cd9de8064c9657c65b241575e
+timeCreated: 1493675243
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Models/Props/Marking/Marking_Old_100%.mat
+  uploadId: 239057

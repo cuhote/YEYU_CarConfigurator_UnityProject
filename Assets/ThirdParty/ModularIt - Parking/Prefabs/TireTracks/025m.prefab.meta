@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5f4d9d5f481b7814185fb14bd3027583
+timeCreated: 1494171392
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 84284
+  packageName: ModularIt! Parking
+  packageVersion: 1.2elevator1.2
+  assetPath: Assets/ModularIt - Parking/Prefabs/TireTracks/025m.prefab
+  uploadId: 239057
