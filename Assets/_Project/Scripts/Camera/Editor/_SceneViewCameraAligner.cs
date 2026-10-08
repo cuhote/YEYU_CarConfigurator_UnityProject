@@ -5,7 +5,7 @@ using UnityEngine;
 // 씬 뷰에서 지금 보고 있는 시점을 카메라에 한 번 복사한다 (게임 뷰가 씬 뷰와 같아진다).
 // 메뉴: Yeyu > Camera > Align Camera To Scene View (Ctrl+Alt+Shift+F)
 //       Yeyu > Camera > Align Selected To Scene View (Ctrl+Alt+Shift+G)
-public static class SceneViewCameraAligner
+public static class _SceneViewCameraAligner
 {
     [MenuItem("Yeyu/Camera/Align Camera To Scene View %&#f")]
     public static void AlignCameraToSceneView()
