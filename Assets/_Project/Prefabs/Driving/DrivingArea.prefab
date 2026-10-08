@@ -31,7 +31,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7127517727884526278}
+  - {fileID: 5224756764299665885}
   m_Father: {fileID: 8069550022007363362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7080580218246050961
@@ -123,6 +125,7 @@ GameObject:
   - component: {fileID: 4826697798150471674}
   - component: {fileID: 6820123322951466405}
   - component: {fileID: 650343888910517863}
+  - component: {fileID: 1768280347594880551}
   m_Layer: 0
   m_Name: LeftCam
   m_TagString: Untagged
@@ -240,6 +243,52 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1768280347594880551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2827477367110300653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df407386bb4d324eaa0ca536683121e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraAnchors
+  _driver: {fileID: 7127517727884526278}
+  _birdEye: {fileID: 5224756764299665885}
+  _fixed: {fileID: 7127517727884526278}
+--- !u!1 &3071530140796369995
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5224756764299665885}
+  m_Layer: 0
+  m_Name: BirdViewTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5224756764299665885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3071530140796369995}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.19442742, y: 0.68783104, z: -0.19950372, w: 0.67028713}
+  m_LocalPosition: {x: -2.3621826, y: 2.1166708, z: -0.07564432}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8944004384600444535}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3575701568185548770
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +300,7 @@ GameObject:
   - component: {fileID: 1756301651711059678}
   - component: {fileID: 5688905683087578368}
   - component: {fileID: 288316051551311395}
+  - component: {fileID: 1930655693533179427}
   m_Layer: 0
   m_Name: RightCam
   m_TagString: Untagged
@@ -368,6 +418,21 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1930655693533179427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3575701568185548770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df407386bb4d324eaa0ca536683121e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraAnchors
+  _driver: {fileID: 7127517727884526278}
+  _birdEye: {fileID: 5224756764299665885}
+  _fixed: {fileID: 7127517727884526278}
 --- !u!1 &7965349748474046292
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,3 +485,34 @@ MonoBehaviour:
   _rightCam: {fileID: 5688905683087578368}
   _mode: 1
   _ambientColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!1 &8746661297147912249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7127517727884526278}
+  m_Layer: 0
+  m_Name: DriverViewTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7127517727884526278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746661297147912249}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.19798651, y: 0.6756541, z: -0.19597225, w: 0.6825598}
+  m_LocalPosition: {x: -0.80529785, y: 0.700581, z: 0.010336749}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8944004384600444535}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
