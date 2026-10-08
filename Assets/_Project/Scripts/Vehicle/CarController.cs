@@ -8,6 +8,11 @@ public class CarController : MonoBehaviour
     [SerializeField] private float _maxSteerRate = 30f; //조향각이 바뀌는 최대 속도 (도/초)
     [SerializeField] private float _accel = 3f;   // 가속도 (m/s²)
 
+    [Header("바퀴 연출")]
+    [SerializeField] private Transform[] _frontSteerPivots;   // TransformRotate_FL, FR
+    [SerializeField] private Transform[] _rearSteerPivots;    // TransformRotate_RL, RR
+    [SerializeField] private Transform[] _wheelSpins;         // Wheels_FL_MD, FR, RL, RR
+    [SerializeField] private float _wheelRadius = 0.33f;      // 바퀴 반지름 (m)
 
     private float _speedMps; //현재 속도 (m/s). 내부 계산용
     private float _frontSteerAngle; //현재 앞바퀴 조향각 (도)
@@ -16,12 +21,15 @@ public class CarController : MonoBehaviour
     private float _targetSpeedMps;   // 목표 속도 (m/s)
     private float _decel = 3f;          // 지금 적용 중인 감속도 (m/s²)
 
+    private float _spinAngle; //바퀴 회전각 (도)
+
     public float SpeedKmh => _speedMps * 3.6f;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
+
 
     void FixedUpdate()
     { 
@@ -46,7 +54,7 @@ public class CarController : MonoBehaviour
         Quaternion newRotation = _rb.rotation * Quaternion.Euler(0f, yawDegrees, 0f); // y축 기준으로 회전
         _rb.MoveRotation(newRotation);
 
-        
+        UpdateWheelVisuals(distance);
     }
     // 속도를 순간적으로 바꾸기 (서서히 가속 )
     public void SetSpeed(float kmh)
@@ -118,6 +126,29 @@ public class CarController : MonoBehaviour
         _targetSpeedMps = 0f;
         _frontSteerAngle = 0f;
         _rearSteerAngle = 0f;
+        _spinAngle = 0f;
     }
+
+    private void UpdateWheelVisuals(float distance)
+ {
+    // 굴리기: 간 거리 ÷ 반지름 = 돈 각도(라디안)
+    _spinAngle += distance / _wheelRadius * Mathf.Rad2Deg;
+
+    foreach (Transform wheel in _wheelSpins)
+    {
+        wheel.localRotation = Quaternion.Euler(_spinAngle, 0f, 0f);
+    }
+
+    // 꺾기
+    foreach (Transform pivot in _frontSteerPivots)
+    {
+        pivot.localRotation = Quaternion.Euler(0f, _frontSteerAngle, 0f);
+    }
+
+    foreach (Transform pivot in _rearSteerPivots)
+    {
+        pivot.localRotation = Quaternion.Euler(0f, _rearSteerAngle, 0f);
+    }
+  }
 
 }
