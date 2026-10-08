@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda88c4c89d250a4f9c6d49cf98edd51, type: 3}
+  m_Name: CarConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Yeyu.Core.CarConfig
+  _bodyColor: 0
+  _trimIndex: 0
+  _wheelIndex: 0
+  _nightVision: 1
+  _rearWheelSteering: 1
+  _valetParking: 1
+  _remoteParking: 1
