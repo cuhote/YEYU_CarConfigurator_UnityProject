@@ -21,7 +21,7 @@
 | 머티리얼 | `M_` 접두사 | `M_Body_Red`, `M_Cone_IR` |
 | 네임스페이스 | `Yeyu.<폴더>` | `Yeyu.Core`, `Yeyu.Driving` |
 | 레이어·태그 | `PascalCase` | `Vehicle`, `NightVisionOnly`, `CourseA` |
-| 브랜치명 | 소문자 + 하이픈 | `feature/night-vision` |
+| 브랜치명 | 소문자 + 하이픈 | `feature/yuna-night-vision` |
 
 **한글 금지**: 폴더, 파일명, 클래스·변수명, 씬 안의 오브젝트 이름, 레이어·태그, 브랜치명, 커밋 제목(`type`/`scope`)에 한글을 쓰지 않는다. 한글은 주석, 문서, 화면에 표시되는 UI 문구에만 쓴다. (단, 커밋 `subject`는 한글 — [`COMMIT_RULES.md`](./COMMIT_RULES.md) 참고)
 

@@ -9,14 +9,14 @@
 |---|---|---|
 | `main` | ← `dev` | 발표·제출용 안정 버전. 동결 시점에 태그를 붙인다 |
 | `dev` | ← `feature/*` 등 | 통합 브랜치. 매일 1회 이상 빌드 성공 상태를 유지한다 (SRS NFR-08) |
-| `feature/<기능명>` | → `dev` | 기능 개발 (`feature/night-vision`, `feature/valet-parking`) |
+| `feature/<이름>-<기능명>` | → `dev` | 기능 개발 (`feature/yuna-night-vision`, `feature/yuna-valet-parking`) |
 | `fix/<내용>` | → `dev` | 버그 수정 (`fix/split-screen-ratio`) |
 | `docs/<문서명>` | → `dev` | 문서 작업 (`docs/srs-v0-3`) |
 | `chore/<내용>` | → `dev` | 빌드·설정 변경 (`chore/gitignore-update`) |
 
 **절대 규칙: `main`에 직접 커밋하지 않는다.** 항상 `feature/`, `fix/`, `docs/`, `chore/` 중 하나로 브랜치를 만들고, `dev`를 거쳐 PR로만 `main`에 반영한다.
 
-브랜치명 형식: 소문자 + 하이픈 (`feature/night-vision`). 브랜치명 자체에는 한글을 쓰지 않는다.
+브랜치명 형식: 소문자 + 하이픈 (`feature/yuna-night-vision`). `feature/` 브랜치는 작업자 이름을 기능명 앞에 붙인다. 브랜치명 자체에는 한글을 쓰지 않는다.
 
 작업 흐름: `dev`에서 브랜치 생성 → 작업 → `dev`로 Pull Request → 상대 확인 후 병합.
 
