@@ -101,9 +101,11 @@ git config core.hooksPath .githooks
 
 로컬 훅은 스크립트를 실행한 PC에서만 동작한다. 같은 `.meta` 검사를 GitHub Actions `meta-check`(`.github/workflows/meta-check.yml`)가 `dev`·`main`으로 가는 push와 PR마다 다시 돌린다. `pull_request` 트리거는 PR 브랜치와 대상 브랜치를 합친 상태를 검사하므로, 각자 브랜치에서는 정상이지만 합치면 어긋나는 경우도 병합 전에 걸린다.
 
+`main`으로 가는 PR은 GitHub Actions `pr-target-check`(`.github/workflows/pr-target-check.yml`)가 출발 브랜치를 검사해, `dev`가 아니면 실패시킨다. `main` 브랜치 보호 규칙에서 `dev-only` 검사를 필수 상태 검사로 지정해 두어야 실패한 PR의 병합이 막힌다.
+
 `.meta` 검사는 Unity 프로젝트를 만들기 전(`ProjectSettings/ProjectVersion.txt`가 없는 상태)에는 건너뛴다.
 
-훅 스크립트를 수정해야 하면 `.githooks/commit-msg`, `.githooks/pre-commit`, `scripts/check-unity-meta.sh`, `.github/workflows/meta-check.yml`을 고치고, 변경 사유를 6절 변경 절차에 따라 기록한다.
+훅 스크립트를 수정해야 하면 `.githooks/commit-msg`, `.githooks/pre-commit`, `scripts/check-unity-meta.sh`, `.github/workflows/meta-check.yml`, `.github/workflows/pr-target-check.yml`을 고치고, 변경 사유를 6절 변경 절차에 따라 기록한다.
 
 ## 6. 규칙 변경 절차
 

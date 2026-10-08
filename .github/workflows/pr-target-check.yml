@@ -1,0 +1,23 @@
+name: pr-target-check
+
+# main으로 가는 PR은 dev에서 온 것만 통과시킨다 (COMMIT_RULES.md 1절·3절).
+# feature/fix/docs/chore 브랜치를 실수로 main에 바로 PR하면 이 검사가 실패한다.
+# 이 검사만으로는 병합 버튼이 잠기지 않는다. GitHub 저장소 설정에서 main 브랜치
+# 보호 규칙의 필수 상태 검사(required status check)로 `dev-only`를 지정해야 막힌다.
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dev-only:
+    runs-on: ubuntu-latest
+    steps:
+      - name: main 대상 PR의 출발 브랜치 확인
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [[ "$HEAD_REF" != "dev" || "$HEAD_REPO" != "$GITHUB_REPOSITORY" ]]; then
+            echo "::error::main으로는 dev에서만 PR을 보낼 수 있습니다. PR의 대상(base) 브랜치를 dev로 바꾸세요."
+            exit 1
+          fi
