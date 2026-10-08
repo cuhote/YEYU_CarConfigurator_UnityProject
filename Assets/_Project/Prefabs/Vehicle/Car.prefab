@@ -32169,7 +32169,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
-  _speedKmh: 0
+  _wheelBase: 2.883
+  _maxSteerAngle: 35
+  _maxSteerRate: 30
+  _accel: 3
+  _frontSteerPivots:
+  - {fileID: 55409408050304239}
+  - {fileID: 6259639908267387650}
+  _rearSteerPivots:
+  - {fileID: 6669033302954508493}
+  - {fileID: 8349125911611273534}
+  _wheelSpins:
+  - {fileID: 528466300141775781}
+  - {fileID: 7401650453009165552}
+  - {fileID: 3608684668551282161}
+  - {fileID: 6699102469590250514}
+  _wheelRadius: 0.33
 --- !u!1 &4929813398609776042
 GameObject:
   m_ObjectHideFlags: 0
