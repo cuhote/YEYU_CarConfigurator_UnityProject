@@ -36,7 +36,7 @@
 | 커밋 | 3D 모델·텍스처·오디오·폰트 (Git LFS) | 재현에 필요한 산출물. 용량이 커서 LFS로 관리 |
 | 커밋 | `docs/` 문서와 이미지 (LFS 제외) | GitHub에서 바로 열려야 한다 |
 | 제외 | `Library/`, `Temp/`, `Obj/`, `Logs/`, `MemoryCaptures/`, `Recordings/` | Unity가 재생성하며 충돌을 만든다 |
-| 제외 | `UserSettings/`, `.vs/`, `.vscode/`, `.idea/`, `*.csproj`, `*.sln` | 개인 환경 설정, IDE가 재생성 |
+| 제외 | `UserSettings/`, `.vs/`, `.vscode/`, `.idea/`, `*.csproj`, `*.sln`, `*.slnx` | 개인 환경 설정, IDE가 재생성 |
 | 제외 | `Build/`, `Builds/`, `*.apk`, `*.unitypackage` | 빌드 산출물. 용량이 크고 빌드로 재생성된다 |
 | 제외 | `~$*` (Office 잠금 파일), `.DS_Store`, `Thumbs.db` | OS·Office가 만드는 임시 파일 |
 
