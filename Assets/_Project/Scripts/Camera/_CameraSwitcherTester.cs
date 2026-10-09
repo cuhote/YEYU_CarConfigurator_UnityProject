@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 // CameraSwitcher 동작 확인용 테스트 스크립트.
 // 영역(주행/주차)에 들어간 뒤 그 영역의 좌·우 카메라로 Bind하는 흐름을 버튼으로 흉내 낸다.
 // (Button OnClick은 enum 인자를 받지 못해서 Switch(CameraView)를 직접 연결할 수 없다)
-public class CameraSwitcherTester : MonoBehaviour
+public class _CameraSwitcherTester : MonoBehaviour
 {
     [SerializeField]
     private CameraSwitcher _switcher;

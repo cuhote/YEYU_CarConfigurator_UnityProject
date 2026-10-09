@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 // UI-02 기능 선택 화면 프리팹을 목업 치수(1920×1080 기준)대로 조립한다.
 // 메뉴: Yeyu > UI > Build Feature Panel Prefab / Add Feature Panel To Scene
-public static class FeaturePanelBuilder
+public static class _FeaturePanelBuilder
 {
     private const string IconDir = "Assets/_Project/UI/Icons/";
     private const string FontDir = "Assets/_Project/UI/Fonts/";
