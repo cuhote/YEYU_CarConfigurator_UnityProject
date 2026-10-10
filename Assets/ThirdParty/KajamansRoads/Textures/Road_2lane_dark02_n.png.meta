@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: d0c8825c4e57ebc42ab4f1f4acaf14ed
+guid: 3b88c54e1b097ea4f9cbaa7791d4eb88
 AssetOrigin:
   serializedVersion: 1
   productId: 52628
   packageName: Kajaman's Roads - Free
   packageVersion: 1.0.1
-  assetPath: Assets/KajamansRoads/Textures/Guardrails01.png
+  assetPath: Assets/ThirdParty/KajamansRoads/Textures/Road_2lane_dark02_n.png
   uploadId: 110399
 TextureImporter:
   internalIDToNameTable: []
@@ -14,8 +14,8 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
-    sRGBTexture: 1
-    linearTexture: 0
+    sRGBTexture: 0
+    linearTexture: 1
     fadeOut: 0
     borderMipMap: 0
     mipMapsPreserveCoverage: 0
@@ -24,7 +24,7 @@ TextureImporter:
     mipMapFadeDistanceEnd: 3
   bumpmap:
     convertToNormalMap: 0
-    externalNormalMap: 0
+    externalNormalMap: 1
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
@@ -63,7 +63,7 @@ TextureImporter:
   spriteTessellationMethod: 0
   spriteTessellationDetail: -1
   spriteGeometrySubdivision: -1
-  textureType: 0
+  textureType: 1
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1

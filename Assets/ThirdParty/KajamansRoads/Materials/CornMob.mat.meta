@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: d07e65a7ea4251342bccc1ac50e4f453
+guid: 722fc5104832c4544b183a83e470029e
 AssetOrigin:
   serializedVersion: 1
   productId: 52628
   packageName: Kajaman's Roads - Free
   packageVersion: 1.0.1
-  assetPath: Assets/KajamansRoads/Materials/GuardRailMob.mat
+  assetPath: Assets/ThirdParty/KajamansRoads/Materials/CornMob.mat
   uploadId: 110399
 NativeFormatImporter:
   externalObjects: {}
