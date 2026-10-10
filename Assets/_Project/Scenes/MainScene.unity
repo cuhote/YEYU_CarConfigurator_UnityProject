@@ -640,6 +640,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2117522034899723372, guid: 489e74c8bf574854b8035d4e82a97e6f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2117522034899723372, guid: 489e74c8bf574854b8035d4e82a97e6f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7965349748474046292, guid: 489e74c8bf574854b8035d4e82a97e6f, type: 3}
       propertyPath: m_Name
       value: DrivingArea
@@ -1110,6 +1118,7 @@ MonoBehaviour:
   - {fileID: 837098388}
   - {fileID: 90688166}
   _configAsset: {fileID: 11400000, guid: 316aff60c2c0e0444b4d4189884cc1bb, type: 2}
+  _cameraSwitcher: {fileID: 1791855124}
 --- !u!114 &1791855124
 MonoBehaviour:
   m_ObjectHideFlags: 0
