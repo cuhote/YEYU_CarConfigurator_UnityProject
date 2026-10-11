@@ -65,8 +65,13 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void Press(int dir)
     {
+        Debug.Log($"[RemoteParking] Press({dir}) 호출됨");
+
         if (State != RemoteState.Moving && State != RemoteState.Boardable)
+        {
+            Debug.Log($"[RemoteParking] Press 취소: 상태가 {State}임 (Moving 또는 Boardable 필요)");
             return;
+        }
 
         if (_car == null)
         {
@@ -76,10 +81,11 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
         if (_proximity != null && _proximity.IsBlocked)
         {
-            Debug.LogWarning("[RemoteParking] Press: 전방/후방에 장애물이 있어 이동할 수 없습니다");
+            Debug.Log("[RemoteParking] Press 취소: 전방/후방에 장애물이 있습니다 (IsBlocked=true)");
             return;
         }
 
+        Debug.Log($"[RemoteParking] Press: {(dir > 0 ? "전진" : "후진")} {_speedKmh}km/h 시작");
         _isMoving = true;
         _stopTimer = _stopTime;
         _car.SetSpeed(dir > 0 ? _speedKmh : -_speedKmh);
@@ -87,9 +93,15 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void Release()
     {
-        if (_car == null)
-            return;
+        Debug.Log("[RemoteParking] Release() 호출됨");
 
+        if (_car == null)
+        {
+            Debug.LogError("[RemoteParking] Release: _car가 null입니다");
+            return;
+        }
+
+        Debug.Log("[RemoteParking] Release: 정지 신호 (5m/s² 감속)");
         _stopTimer = _stopTime;
         _isMoving = false;
         _car.Brake(5f);
@@ -97,9 +109,11 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void Board()
     {
+        Debug.Log("[RemoteParking] Board() 호출됨");
+
         if (State != RemoteState.Boardable)
         {
-            Debug.LogWarning("[RemoteParking] Board: 현재 탑승할 수 없습니다 (State: " + State + ")");
+            Debug.Log($"[RemoteParking] Board 취소: 상태가 {State}임 (Boardable 필요)");
             return;
         }
 
@@ -108,6 +122,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
         if (_cameraSwitcher != null)
         {
+            Debug.Log("[RemoteParking] Board: SetRightDriverView() 호출");
             _cameraSwitcher.SetRightDriverView();
         }
         else
@@ -118,6 +133,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void SetActive(bool active)
     {
+        Debug.Log($"[RemoteParking] SetActive({active})");
         gameObject.SetActive(active);
         if (!active)
         {
@@ -127,6 +143,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void ResetFeature()
     {
+        Debug.Log("[RemoteParking] ResetFeature() 호출됨");
         State = RemoteState.Idle;
         _stopTimer = 0f;
         _isMoving = false;
@@ -134,6 +151,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         if (_car != null)
         {
             _car.Brake(5f);
+            Debug.Log("[RemoteParking] ResetFeature: 차량 정지");
         }
     }
 }
