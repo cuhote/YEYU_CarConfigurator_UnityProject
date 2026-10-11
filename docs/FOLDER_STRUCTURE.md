@@ -1,8 +1,11 @@
+<aside>
+
 # 프로젝트 파일 구조
 
 > 기능 중심 차량 컨피규레이터 · 팀 YEYU · 기준: SRS v0.7 (MainScene + 영역 씬 Additive 로드) · 클래스 다이어그램 2차 피드백 반영
-> 클래스 단위 설계(속성·메서드·관계)는 [`CLASS_DESIGN.md`](./CLASS_DESIGN.md), 장면별 수치는 [`SCENARIO.md`](./SCENARIO.md)를 본다.
-> 공통 파일의 담당은 WBS 배정을 6장에 옮겨 적었다. 19:00 회의에서 확정한다.
+클래스 단위 설계(속성·메서드·관계)는 `CLASS_DESIGN.md`, 장면별 수치는 `SCENARIO.md`를 본다.
+공통 파일의 담당은 WBS 배정을 6장에 옮겨 적었다. 19:00 회의에서 확정한다.
+> 
 
 ---
 
@@ -35,6 +38,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   │
 │   │   │   ├── Camera/                ← 시점 전환 (분할 카메라 켜고 끄기는 AreaBase)
 │   │   │   │   ├── CameraSwitcher.cs
+│   │   │   │   ├── CameraAnchors.cs
 │   │   │   │   └── ShowroomCamera.cs
 │   │   │   │
 │   │   │   ├── Scenario/              ← 시나리오 공통 틀 (장면 순서, 재시작)
@@ -68,6 +72,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   │   ├── ParkingScenario.cs
 │   │   │   │   ├── Valet/
 │   │   │   │   │   ├── GridMap.cs
+│   │   │   │   │   ├── ParkingSlot.cs
 │   │   │   │   │   ├── ParkingSlotAllocator.cs
 │   │   │   │   │   ├── ReservationTable.cs
 │   │   │   │   │   └── ValetAgent.cs
@@ -152,7 +157,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 ## 2. 폴더 구분 원칙
 
 | 구분 | 폴더 | 누가 수정하나 |
-|---|---|---|
+| --- | --- | --- |
 | 공통 | `Core/`, `Vehicle/`, `Camera/`, `Scenario/`, `UI/`, `Utils/` | 6장에서 정한 담당자만. 다른 사람은 수정 전에 알림 |
 | 주행 전용 | `Scripts/Driving/`, `Prefabs/Driving/`, `DrivingArea.unity` | 김예은 |
 | 주차 전용 | `Scripts/Parking/`, `Prefabs/Parking/`, `ParkingArea.unity` | 강유나 |
@@ -165,7 +170,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 ## 3. 씬 구성
 
 | 씬 | 루트 오브젝트 | 들어가는 것 | 조명 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `MainScene` | `App` | `ModeManager`, `UIManager`, `ScreenHistory`, 공통 Canvas, `EventSystem`, `AudioListener` 1개 | 없음 |
 | `ConfiguratorArea` | `ConfiguratorRoot` (X=0) | 쇼룸, 턴테이블, 미리보기 차량, `ShowroomCamera`, `ConfiguratorArea` | 밝은 실내 |
 | `DrivingArea` | `DrivingRoot` (X=2000) | 코스 A(X=2000)·B(X=3000), 차량 2대, 보행자, 골목, 분할 카메라 2대 | 야간 |
@@ -216,7 +221,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 ### 5.1 공통 파일
 
 | 파일 | 역할 | 관련 요구사항 | 담당 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `Core/ModeManager.cs` | 영역 씬 3개 Additive 로드, 영역 켜고 끄기, 활성 씬 지정, 일시정지 해제 후 전환 | FR-36~38 | 김예은 |
 | `Core/AreaBase.cs` | 영역 공통 부모: `Root`, `ResetArea(CarConfig)`, `OnEnter()`, `OnExit()`. `OnEnter()`에서 영역별 ambient 조명 적용, 영역 카메라 2대를 왼쪽·오른쪽 Viewport로 나눠 켜고 끔 | FR-11, FR-38, FR-39 | 김예은 |
 | `Core/AppMode.cs` | `enum AppMode { Configurator, Driving, Parking }` | FR-37 | 김예은 |
@@ -228,6 +233,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 | `Vehicle/CarFeatureSwitch.cs` | `CarConfig`대로 차량에 붙은 기능 컴포넌트 켜고 끄기 | FR-08, FR-09 | 김예은 |
 | `Vehicle/ICarFeature.cs` | 차량에 붙는 기능 공통 인터페이스 (`FeatureId`, `SetActive(bool)`, `ResetFeature()`). 구현: NightVisionSensor, RearWheelSteering, RemoteParking | NFR-06 | 김예은 |
 | `Camera/CameraSwitcher.cs` | AreaBase가 켠 카메라 2대의 시점 전환: 운전석 ↔ 버드뷰 동시 전환, 스마트키 장면 고정 시점, [탑승] 시 오른쪽만 운전석 시점 | FR-12, FR-31, FR-65 | 강유나 |
+| `Camera/CameraAnchors.cs` | 카메라 오브젝트에 붙는 시점 위치 보관: 운전석·버드뷰·고정 Transform 3개를 Inspector로 연결, `CameraSwitcher`가 `Bind` 때 꺼내 사용 | FR-12, FR-31, FR-65 | 강유나 |
 | `Camera/ShowroomCamera.cs` | 쇼룸 마우스 드래그 회전 | FR-04 | 공동 |
 | `Scenario/ScenarioBase.cs` | 시나리오 공통 흐름: 장면 목록, 꺼진 장면 건너뛰기, 동시 출발, 자동 전환(0.5초 페이드), 토글 시 재시작 | FR-11, FR-48, FR-57, FR-62, FR-63, NFR-02 | 공동 |
 | `Scenario/ScenarioTrigger.cs` | 구간 트리거 콜라이더 → 이벤트 발생 | FR-17, FR-21 | 공동 |
@@ -242,7 +248,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 ### 5.2 주행 파트 (김예은)
 
 | 파일 | 역할 | 관련 요구사항 |
-|---|---|---|
+| --- | --- | --- |
 | `Driving/DrivingArea.cs` | `AreaBase` 상속, 장면별·차량별 시작 위치 보관(나이트 비전 A·B, 골목 A·B)과 `GetStartPose()`, 코스 A·B 리셋, 차량 2대에 설정 적용 | FR-08, FR-39 |
 | `Driving/DrivingScenario.cs` | `ScenarioBase` 상속, 장면 목록: 나이트 비전 → 후륜 조향. 운전자 2명(A·B)을 같은 타이머로 출발 | FR-11, FR-57 |
 | `Driving/VirtualDriver.cs` | 두 차량 공통 운전자: 경로·속도 프로파일 주행, 헤드램프 50m 인지 → 반응 1.5초 → 6.0m/s² 급제동, 센서의 감속 요청 수행, 골목 유턴 웨이포인트(왼쪽 3회·오른쪽 1회) | FR-11, FR-17, FR-21 |
@@ -256,7 +262,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 ### 5.3 주차 파트 (강유나)
 
 | 파일 | 역할 | 관련 요구사항 |
-|---|---|---|
+| --- | --- | --- |
 | `Parking/ParkingArea.cs` | `AreaBase` 상속, 장면별·차량별 시작 위치 보관(발렛 E·NPC1·NPC2 × A·B, 스마트키 A·B)과 `GetStartPose()`, 주차장 A·B 리셋(차량, 주차면, 탑승 상태), `valetParking` 값으로 주차장 B 예약 테이블 ON/OFF (A는 항상 OFF) | FR-09, FR-27, FR-28, FR-39 |
 | `Parking/ParkingScenario.cs` | `ScenarioBase` 상속, 장면 목록: 발렛 → 스마트키 | FR-11, FR-57 |
 | `Valet/GridMap.cs` | 주차장 격자 맵 (셀 2.5m, 20×12), 위치 ↔ 셀 변환 | FR-26 |
@@ -270,6 +276,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 | `Visualization/DoorSwingDrawer.cs` | 문 열림 반경, 겹치면 빨강·안 겹치면 초록, 탑승 가능 판정(`CanOpen`) | FR-34, FR-35 |
 
 > 주차 파트는 클래스 1차 피드백(5~9번)에 따라 경로 공급부·A*·구동부 분리·궤적 계산·Pure Pursuit 클래스를 없애고 웨이포인트 추종으로 단순화했다. 강유나 검토 후 바뀔 수 있다.
+> 
 
 ---
 
@@ -278,11 +285,12 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 공통 파일은 두 파트가 모두 기다리는 선행 작업이다. 같은 묶음은 한 사람이 맡아야 인터페이스가 흔들리지 않는다. 아래 담당은 WBS 배정을 옮겨 적은 것이며 19:00 회의에서 확정한다.
 
 | 묶음 | 포함 파일 | 다른 작업이 기다리는 정도 | 담당 | WBS |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | 영역 전환·조명·분할 카메라 | `ModeManager`, `AreaBase`, `AppMode` | 높음 (세 영역 모두 상속) | 김예은 | B.1 |
 | 차량 | `CarController`, `CarFeatureSwitch`, `ICarFeature` | 높음 (주행·주차 모든 차량이 의존) | 김예은 | B.2 |
 | 옵션 데이터 | `CarConfig`, `FeaturePanel` | 높음 (모든 파일이 참조) | 강유나 | B.4 |
-| 카메라 | `CameraSwitcher` | 중간 | 강유나 | B.5 |
+| 카메라 | `CameraSwitcher` ,
+`CameraAnchors` | 중간 | 강유나 | B.5 |
 | 화면 이동 | `ScreenHistory`, `NavigationBar`, `UIManager` | 중간 | 강유나 | B.6 |
 | 외관·쇼룸 | `ConfiguratorArea`, `CarAppearance`, `ExteriorPanel`, `ShowroomCamera` | 중간 | 공동 | E.0 |
 | 시나리오 UI | `OptionCardPanel`, `ScenarioHUD` | 중간 | 김예은 | E.10 |
@@ -304,7 +312,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 ## 7. 레이어·태그 (ProjectSettings 공유)
 
 | 종류 | 이름 | 용도 |
-|---|---|---|
+| --- | --- | --- |
 | Layer | `Vehicle` | 차량 충돌·감지 |
 | Layer | `Pedestrian` | 나이트 비전 감지 대상 |
 | Layer | `Obstacle` | 원격 주차 근접 정지, 발렛 앞 차량 감지 |
@@ -319,7 +327,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 ## 8. 네이밍 규칙
 
 | 대상 | 규칙 | 예 |
-|---|---|---|
+| --- | --- | --- |
 | 스크립트·클래스 | PascalCase, 파일명 = 클래스명 (인터페이스는 `I` 접두) | `NightVisionSensor.cs`, `ICarFeature.cs` |
 | 공개 메서드 | PascalCase | `ResetArea()` |
 | private 필드 | `_camelCase` | `_detectRange` |
@@ -327,3 +335,4 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 | 프리팹 | PascalCase | `NightRoadCourse.prefab` |
 | 머티리얼 | `M_` 접두사 | `M_Body_Red`, `M_Cone_IR` |
 | 네임스페이스 | `Yeyu.<폴더>` | `Yeyu.Core`, `Yeyu.Driving` |
+</aside>
