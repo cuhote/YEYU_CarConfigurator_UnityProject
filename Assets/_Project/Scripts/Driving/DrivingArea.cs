@@ -8,9 +8,27 @@ public class DrivingArea : AreaBase
     [SerializeField] private Transform [] _nightVisionStarts;
     [SerializeField] private Transform [] _rearSteerStarts;
 
+    [SerializeField] private NightVisionSensor _nightVisionSensor; //야간 시야 센서
+    // [SerializeField] private RearWheelSteeringSensor _rearSteerSensor; //후륜 조향 센서
+
+    [SerializeField] VirtualDriver _driverA;
+    [SerializeField] VirtualDriver _driverB;
+
     public const int SceneNightVision = 0;
     public const int SceneRearSteer = 1;
 
+    private int _scene;
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        
+        if(_scene == SceneNightVision)
+        {
+            if(_driverA != null) _driverA.Drive();
+            if(_driverB != null) _driverB.Drive();
+        }
+    }
     public Pose GetStartPose(int scene, int car)
     {
         Transform[] starts;
@@ -36,10 +54,10 @@ public class DrivingArea : AreaBase
     }
     public override void ResetArea(CarConfig config)
     {
-        int scene = SceneNightVision;
+        _scene = SceneNightVision;
         if(config != null && ! config.NightVision && config.RearWheelSteering)
         {
-            scene = SceneRearSteer;
+            _scene = SceneRearSteer;
         } 
     
         if(_carA == null)
@@ -48,7 +66,7 @@ public class DrivingArea : AreaBase
         }
         else
         {
-            _carA.ResetPose(GetStartPose(scene, 0));
+            _carA.ResetPose(GetStartPose(_scene, 0));
         }
 
         if(_carB == null)
@@ -57,9 +75,25 @@ public class DrivingArea : AreaBase
         }
         else
         {
-            _carB.ResetPose(GetStartPose(scene, 1));
+            _carB.ResetPose(GetStartPose(_scene, 1));
         }
-              // TODO 보행자 초기화 (Pedestrian.ResetPose)
-        // TODO config에 따라 차 B의 기능 켜기/끄기 (NightVisionSensor.SetActive)
+
+        if(_driverA != null) _driverA.ResetDriver();
+        if(_driverB != null) _driverB.ResetDriver();
+
+        if(_nightVisionSensor != null)
+        {
+            _nightVisionSensor.ResetFeature();
+            _nightVisionSensor.SetActive(config != null && config.NightVision);
+        }
+
+        // [SerializeField] private RearWheelSteeringSensor _rearSteerSensor; //후륜 조향 센서
+        // if(_rearSteerSensor != null)
+        // {
+        // //     _driverA.ResetDriver();
+        // //     _driverB.ResetDriver();
+        // //     _rearSteerSensor.ResetFeature();
+        // //     _rearSteer.SetActive(config != null && config.RearWheelSteering);
+        // }
     }
 }
