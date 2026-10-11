@@ -20,6 +20,23 @@ public class _ParkingAreaTester : MonoBehaviour
 
     private CarController[] _cars;
 
+    //Valet 후진 테스트
+    [SerializeField]
+    private ParkingSlot _testSlot;
+    [SerializeField]
+    private CarController _testCar;
+
+    //Valet 에이전트 테스트
+    [SerializeField]
+    private ValetAgent _valetAgent;
+
+    //스마트키 원격 주차 테스트
+    [SerializeField]
+    private RemoteParking _remoteParking;
+
+    private bool _upPressed = false;
+    private bool _downPressed = false;
+
     private void Start()
     {
         if (_area == null)
@@ -35,15 +52,56 @@ public class _ParkingAreaTester : MonoBehaviour
     private void Update()
     {
         Keyboard keyboard = Keyboard.current;
-        if (keyboard == null || _area == null || _cars == null)
+        if (keyboard == null)
             return;
 
-        if (keyboard.digit1Key.wasPressedThisFrame) EnterArea();
-        if (keyboard.digit2Key.wasPressedThisFrame) MoveCars();
-        if (keyboard.digit3Key.wasPressedThisFrame) StopCars();
-        if (keyboard.digit4Key.wasPressedThisFrame) ResetArea();
-        if (keyboard.digit5Key.wasPressedThisFrame) LogStartPoses();
-        if (keyboard.digit6Key.wasPressedThisFrame) AssignSlot();
+        if (_area != null && _cars != null)
+        {
+            if (keyboard.digit1Key.wasPressedThisFrame) EnterArea();
+            if (keyboard.digit2Key.wasPressedThisFrame) MoveCars();
+            if (keyboard.digit3Key.wasPressedThisFrame) StopCars();
+            if (keyboard.digit4Key.wasPressedThisFrame) ResetArea();
+            if (keyboard.digit5Key.wasPressedThisFrame) LogStartPoses();
+            if (keyboard.digit6Key.wasPressedThisFrame) AssignSlot();
+            if (keyboard.digit7Key.wasPressedThisFrame) ReverseTest();
+            if (keyboard.digit8Key.wasPressedThisFrame) ValetTest();
+        }
+
+        if (keyboard.digit9Key.wasPressedThisFrame) SmartKeyEnter();
+
+        // 방향키 위/아래 - 누르고 있는 동안 Press, 뗄 때 Release
+        if (_remoteParking != null)
+        {
+            if (keyboard.upArrowKey.isPressed)
+            {
+                if (!_upPressed)
+                {
+                    _upPressed = true;
+                    _remoteParking.Press(1);
+                }
+            }
+            else if (_upPressed)
+            {
+                _upPressed = false;
+                _remoteParking.Release();
+            }
+
+            if (keyboard.downArrowKey.isPressed)
+            {
+                if (!_downPressed)
+                {
+                    _downPressed = true;
+                    _remoteParking.Press(-1);
+                }
+            }
+            else if (_downPressed)
+            {
+                _downPressed = false;
+                _remoteParking.Release();
+            }
+
+            if (keyboard.enterKey.wasPressedThisFrame) SmartKeyBoard();
+        }
     }
 
     // 영역에 들어갈 때 ModeManager가 하는 일을 흉내 낸다
@@ -99,12 +157,16 @@ public class _ParkingAreaTester : MonoBehaviour
         float scale = Screen.height / 360f;
         GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
 
-        GUILayout.BeginArea(new Rect(8, 8, 190, 130), GUI.skin.box);
+        GUILayout.BeginArea(new Rect(8, 8, 210, 185), GUI.skin.box);
         GUILayout.Label("ParkingArea 테스트");
         GUILayout.Label("1 영역 진입   4 ResetArea");
         GUILayout.Label("2 차량 전진   3 차량 정지");
         GUILayout.Label("5 시작 위치 출력");
-        GUILayout.Label("6 주차면 배정");
+        GUILayout.Label("6 주차면 배정   7 후진 테스트");
+        GUILayout.Label("8 발렛 에이전트");
+        GUILayout.Label("9 스마트키 진입");
+        GUILayout.Label("↑/↓ 누르는 동안 이동");
+        GUILayout.Label("Enter 탑승");
         GUILayout.EndArea();
     }
     // 빈 주차면을 하나 배정받아 Id를 출력. null이면 만차
@@ -121,5 +183,61 @@ public class _ParkingAreaTester : MonoBehaviour
             Debug.Log("[_ParkingAreaTester] 만차 (AssignEmpty가 null 반환)", this);
         else
             Debug.Log($"[_ParkingAreaTester] 배정된 주차면 Id: {slot.Id}", this);
+    }
+    
+    //후진 테스트
+    private void ReverseTest()
+    {
+        if (_testSlot == null || _testCar == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] testSlot 또는 testCar가 비어 있음", this);
+            return;
+        }
+
+        Vector3[] route = _testSlot.GetReverseRoute();
+        _testCar.StopAllCoroutines();
+        _testCar.ResetPose(_testSlot.GetEntryPose());
+        _testCar.StartCoroutine(_testCar.Follow(route, 5f, true));
+        Debug.Log($"[_ParkingAreaTester] 후진 시작: 점 {route.Length}개, 목표 {_testSlot.transform.position}", this);
+    }
+
+    //발렛 에이전트 테스트
+    private void ValetTest()
+    {
+        if (_valetAgent == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] ValetAgent가 비어 있음", this);
+            return;
+        }
+
+        _valetAgent.StartCoroutine(_valetAgent.Go());
+        Debug.Log("[_ParkingAreaTester] ValetAgent.Go() 시작", this);
+    }
+
+    //스마트키 원격 주차 진입
+    private void SmartKeyEnter()
+    {
+        if (_switcher == null || _remoteParking == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] CameraSwitcher 또는 RemoteParking이 비어 있음", this);
+            return;
+        }
+
+        _remoteParking.SetActive(true);
+        _switcher.SetFixedView(true);
+        Debug.Log("[_ParkingAreaTester] 스마트키 장면 진입: FixedView ON, RemoteParking ON", this);
+    }
+
+    //스마트키 탑승
+    private void SmartKeyBoard()
+    {
+        if (_remoteParking == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] RemoteParking이 비어 있음", this);
+            return;
+        }
+
+        _remoteParking.Board();
+        Debug.Log("[_ParkingAreaTester] 탑승 시도", this);
     }
 }
