@@ -10,7 +10,7 @@ public class ParkingArea : AreaBase
     //[SerializeField]
     //private ResevervationTable _tableB;
     [SerializeField]
-    private ParkingSlotAllocator _slots;
+    private ParkingSlotAllocator[] _slots;
     //[SerializeField]
     //private ParkingScenario _scenario;
     [SerializeField]
@@ -37,14 +37,16 @@ public class ParkingArea : AreaBase
         }
 
         //V TODO 슬롯 초기화(ResetSlots)
-        if(_slots == null)
+        for(int i=0;i<_slots.Length;i++)
         {
-            Debug.LogError("[ParkingArea] ResetArea: _slots가 비어 있음 (Inspector 연결 확인)");
+            if(_slots[i] == null)
+            {
+                Debug.LogError($"[ParkingArea] ResetArea: _slots[{i}]가 비어 있음 (Inspector 연결 확인)");
+                continue;
+            }
+                _slots[i].ResetSlots();
         }
-        else
-        {
-            _slots.ResetSlots();
-        }
+
 
         //TODO 예약 테이블
         //config 나중에
