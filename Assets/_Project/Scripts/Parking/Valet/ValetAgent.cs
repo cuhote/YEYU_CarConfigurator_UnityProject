@@ -22,6 +22,13 @@ public class ValetAgent : MonoBehaviour
     private const float _retryInterval = 0.2f;
     private HashSet<Vector2Int> _usedCells = new HashSet<Vector2Int>();
 
+    // 후진 직접 제어용
+    private float _reverseStartTime;
+    private int _reverseClosestIndex = 0;
+    private Vector3[] _reverseRoute;
+    private Vector3 _reverseEndPos;
+    private Quaternion _parkingRot;
+
     private void Update()
     {
         if (State == AgentState.Waiting)
@@ -51,6 +58,100 @@ public class ValetAgent : MonoBehaviour
                 }
             }
         }
+
+        // 후진 직접 제어
+        if (State == AgentState.Reversing && _car != null && _reverseRoute != null)
+        {
+            float elapsedTime = Time.time - _reverseStartTime;
+
+            // 15초 안전장치
+            if (elapsedTime > 15f)
+            {
+                FinishReverse("시간 초과(15초)");
+                return;
+            }
+
+            Rigidbody rb = _car.GetComponent<Rigidbody>();
+            if (rb == null)
+                return;
+
+            Vector3 rbPos = rb.position;
+
+            // (1) 가장 가까운 점의 인덱스 구하기 (이전 인덱스보다 작아지지 않게)
+            float minDist = float.MaxValue;
+            int closestIndex = _reverseClosestIndex;
+
+            for (int i = _reverseClosestIndex; i < _reverseRoute.Length; i++)
+            {
+                float dist = Vector3.Distance(rbPos, _reverseRoute[i]);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    closestIndex = i;
+                }
+            }
+
+            _reverseClosestIndex = closestIndex;
+
+            // 마지막 점까지 거리
+            float distToEnd = Vector3.Distance(rbPos, _reverseEndPos);
+
+            // (4) 종료 조건: 가장 가까운 인덱스가 마지막 점이거나 거리 0.5m 이하
+            if (closestIndex == _reverseRoute.Length - 1 || distToEnd <= 0.5f)
+            {
+                FinishReverse("도착");
+                return;
+            }
+
+            // (2) 가장 가까운 인덱스에서 1.0m 이상 앞선 첫 점을 목표로
+            int targetIndex = closestIndex;
+            for (int i = closestIndex + 1; i < _reverseRoute.Length; i++)
+            {
+                float dist = Vector3.Distance(rbPos, _reverseRoute[i]);
+                if (dist >= 1.0f)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            // 목표가 없으면 마지막 점 사용
+            if (targetIndex == closestIndex && closestIndex < _reverseRoute.Length - 1)
+            {
+                targetIndex = _reverseRoute.Length - 1;
+            }
+
+            // (3) 후진 조향 계산 (Follow와 같은 방식)
+            Vector3 toTarget = _reverseRoute[targetIndex] - rbPos;
+            toTarget.y = 0f;
+
+            Vector3 heading = -_car.transform.forward;  // 후진이므로 반대 방향
+            heading.y = 0f;
+            float angle = Vector3.SignedAngle(heading, toTarget, Vector3.up);
+
+            _car.SetSteer(-angle);  // Follow와 동일한 반대 부호 처리
+            _car.SetSpeed(-5f);     // 후진 (음수)
+        }
+    }
+
+    private void FinishReverse(string reason)
+    {
+        _car.Brake(5f);
+
+        Vector3 snapPos = new Vector3(_reverseEndPos.x, _car.transform.position.y, _reverseEndPos.z);
+        _car.ResetPose(new Pose(snapPos, _parkingRot));
+
+        State = AgentState.Parked;
+        Debug.Log($"[ValetAgent #{_carId}] 후진 종료: {reason}, 주차 위치에 스냅");
+        Debug.Log($"[ValetAgent #{_carId}] State: {State}");
+
+        // 사용된 셀 Release
+        foreach (Vector2Int cell in _usedCells)
+        {
+            if (_table != null)
+                _table.Release(_carId, cell);
+        }
+        _usedCells.Clear();
     }
 
     public IEnumerator Go()
@@ -115,27 +216,22 @@ public class ValetAgent : MonoBehaviour
             yield break;
         }
 
+        // 후진 직접 제어 준비
+        Vector3 routeDir = (reverseRoute[reverseRoute.Length - 2] - reverseRoute[reverseRoute.Length - 1]).normalized;
+        _parkingRot = Quaternion.LookRotation(routeDir, Vector3.up);
+        _reverseRoute = reverseRoute;
+        _reverseEndPos = reverseRoute[reverseRoute.Length - 1];
+        _reverseStartTime = Time.time;
+        _reverseClosestIndex = 0;
+
         State = AgentState.Reversing;
         Debug.Log($"[ValetAgent #{_carId}] State: {State}");
-        yield return _car.Follow(reverseRoute, 5f, true);
 
-        Vector3 routeDir = (reverseRoute[reverseRoute.Length - 2] - reverseRoute[reverseRoute.Length - 1]).normalized;
-        Quaternion parkingRot = Quaternion.LookRotation(routeDir, Vector3.up);
-
-        _car.ResetPose(new Pose(_assignedSlot.transform.position, parkingRot));
-        _car.Brake(3f);
-        Debug.Log($"[ValetAgent #{_carId}] 후진 완료, 주차 위치에 스냅");
-
-        State = AgentState.Parked;
-        Debug.Log($"[ValetAgent #{_carId}] State: {State}");
-
-        // 사용된 셀 Release
-        foreach (Vector2Int cell in _usedCells)
+        // Update에서 후진 로직이 처리될 때까지 기다리기
+        while (State == AgentState.Reversing)
         {
-            if (_table != null)
-                _table.Release(_carId, cell);
+            yield return null;
         }
-        _usedCells.Clear();
     }
 
     private bool TryReserve(List<Vector2Int> cells)
@@ -204,6 +300,7 @@ public class ValetAgent : MonoBehaviour
         State = AgentState.Idle;
         _assignedSlot = null;
         _usedCells.Clear();
+        _reverseRoute = null;
 
         if (_car != null)
         {
