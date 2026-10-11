@@ -28,6 +28,8 @@ public class GridMap : MonoBehaviour
         return c.x >= 0 && c.x < _width && c.y >= 0 && c.y < _height;
     }
 
+    public float CellSize => _cellSize;
+
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

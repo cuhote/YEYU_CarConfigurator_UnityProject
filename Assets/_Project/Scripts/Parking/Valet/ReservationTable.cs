@@ -111,4 +111,20 @@ public class ReservationTable : MonoBehaviour
         _outOfBoundsCells.Clear();
         Debug.Log("[ReservationTable] Clear: 모든 예약 및 범위 밖 셀 기록 초기화");
     }
+
+    public List<Vector2Int> GetReservedCells(int carId, float currentTime)
+    {
+        List<Vector2Int> cells = new List<Vector2Int>();
+        int timeSlot = Mathf.FloorToInt(currentTime / _slotTime);
+
+        foreach (var kvp in _reservations)
+        {
+            if (kvp.Key.timeSlot == timeSlot && kvp.Value == carId)
+            {
+                cells.Add(kvp.Key.cell);
+            }
+        }
+
+        return cells;
+    }
 }
