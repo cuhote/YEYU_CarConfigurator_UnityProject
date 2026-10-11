@@ -10,6 +10,7 @@ public class NightVisionSensor : MonoBehaviour,ICarFeature
     [SerializeField] private float _ttcWarn =4.0f; // 경고 시간 (초)
     [SerializeField] private float _ttcBrake = 2.5f; // 제동 시간 (초)
     [SerializeField] private float _brakeDeceleration = 5.0f; // 요청할 감속도(m/s²)
+    [SerializeField] private float _frontOffset = 3.6f; //차 원점 (뒷바퀴 축)에서 앞범퍼까지 거리 
 
     private bool _active; //가능이 켜져 있는지
     private bool _warning; //경고 중인지
@@ -35,6 +36,7 @@ public class NightVisionSensor : MonoBehaviour,ICarFeature
         Vector3 toPedestrian = _pedestrian.transform.position - _car.transform.position;
 
         float dot = Vector3.Dot(toPedestrian, _car.transform.forward);
+        dot -= _frontOffset;
         if(dot <= 0f || dot >_detectRange)
         {
             Target = null;

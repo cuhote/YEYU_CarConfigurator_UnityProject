@@ -14,6 +14,7 @@ public class VirtualDriver : MonoBehaviour
 
     [SerializeField] private float _brakeDeceleration = 6f; //제동 감속도
 
+    [SerializeField] private float _frontOffset = 3.6f;
 
     private bool _driving; //주행 중인지 여부
     private bool _braking;  //제동 중인지 여부
@@ -54,9 +55,8 @@ public class VirtualDriver : MonoBehaviour
         if(!_pedestrianDetected)
         {
             Vector3 toPedestrian = _pedestrian.transform.position - _car.transform.position;
-
-
             float dot = Vector3.Dot(toPedestrian, _car.transform.forward);
+            dot -= _frontOffset;
             if (dot > 0f && dot <= _headlampRange)
             {
                 _pedestrianDetected = true;
