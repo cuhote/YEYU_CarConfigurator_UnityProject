@@ -9,10 +9,10 @@ public class DrivingArea : AreaBase
     [SerializeField] private Transform [] _rearSteerStarts;
 
     [SerializeField] private NightVisionSensor _nightVisionSensor; //야간 시야 센서
-    // [SerializeField] private RearWheelSteeringSensor _rearSteerSensor; //후륜 조향 센서
+    [SerializeField] private RearWheelSteering _rearSteer; //후륜 조향 센서
 
-    [SerializeField] VirtualDriver _driverA;
-    [SerializeField] VirtualDriver _driverB;
+    [SerializeField] private VirtualDriver _driverA;
+    [SerializeField] private VirtualDriver _driverB;
 
     public const int SceneNightVision = 0;
     public const int SceneRearSteer = 1;
@@ -86,14 +86,12 @@ public class DrivingArea : AreaBase
             _nightVisionSensor.ResetFeature();
             _nightVisionSensor.SetActive(config != null && config.NightVision);
         }
+        if(_rearSteer !=null)
+        {
+            _rearSteer.ResetFeature();
+            _rearSteer.SetActive(config != null && config.RearWheelSteering);
+        }
 
-        // [SerializeField] private RearWheelSteeringSensor _rearSteerSensor; //후륜 조향 센서
-        // if(_rearSteerSensor != null)
-        // {
-        // //     _driverA.ResetDriver();
-        // //     _driverB.ResetDriver();
-        // //     _rearSteerSensor.ResetFeature();
-        // //     _rearSteer.SetActive(config != null && config.RearWheelSteering);
-        // }
+        
     }
 }
