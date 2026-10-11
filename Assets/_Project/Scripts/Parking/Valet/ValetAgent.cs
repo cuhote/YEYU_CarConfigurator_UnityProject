@@ -40,10 +40,15 @@ public class ValetAgent : MonoBehaviour
             Vector3 carPos = _car.transform.position;
             Vector3 carForward = _car.transform.forward;
 
-            if (Physics.Raycast(carPos, carForward, _stopDistance, LayerMask.GetMask("Vehicle")))
+            int vehicleLayer = LayerMask.GetMask("Vehicle");
+            if (Physics.Raycast(carPos, carForward, out RaycastHit hit, _stopDistance, vehicleLayer))
             {
-                _car.Brake(5f);
-                Debug.Log($"[ValetAgent] 앞 차량 감지, 정지");
+                // 자신이 아닌 다른 차량만 감지 (IsTrigger 제외)
+                if (hit.collider.gameObject != gameObject && !hit.collider.isTrigger)
+                {
+                    _car.Brake(5f);
+                    Debug.Log($"[ValetAgent #{_carId}] 앞 차량({hit.collider.name}) 감지, 정지");
+                }
             }
         }
     }
@@ -52,12 +57,12 @@ public class ValetAgent : MonoBehaviour
     {
         if (_car == null)
         {
-            Debug.LogError("[ValetAgent] Go: _car가 null입니다");
+            Debug.LogError($"[ValetAgent #{_carId}] Go: _car가 null입니다");
             yield break;
         }
         if (_allocator == null)
         {
-            Debug.LogError("[ValetAgent] Go: _allocator가 null입니다");
+            Debug.LogError($"[ValetAgent #{_carId}] Go: _allocator가 null입니다");
             yield break;
         }
 
@@ -65,7 +70,7 @@ public class ValetAgent : MonoBehaviour
         if (_assignedSlot == null)
         {
             State = AgentState.Full;
-            Debug.Log($"[ValetAgent] State: {State}");
+            Debug.Log($"[ValetAgent #{_carId}] State: {State}");
             yield break;
         }
 
@@ -78,22 +83,27 @@ public class ValetAgent : MonoBehaviour
         pathCells.AddRange(reverseCells);
 
         // 예약 시도
+        bool waitingLogged = false;
         while (!TryReserve(pathCells))
         {
             State = AgentState.Waiting;
-            Debug.Log($"[ValetAgent] State: {State}");
+            if (!waitingLogged)
+            {
+                Debug.Log($"[ValetAgent #{_carId}] State: {State}");
+                waitingLogged = true;
+            }
             yield return new WaitForSeconds(_retryInterval);
         }
 
         State = AgentState.Moving;
-        Debug.Log($"[ValetAgent] State: {State}");
+        Debug.Log($"[ValetAgent #{_carId}] State: {State}");
         yield return _car.Follow(globalPath, 10f, false);
 
-        Debug.Log("[ValetAgent] 전역 이동 완료");
+        Debug.Log($"[ValetAgent #{_carId}] 전역 이동 완료");
 
         Pose entryPose = _assignedSlot.GetEntryPose();
         _car.ResetPose(entryPose);
-        Debug.Log("[ValetAgent] 진입 자세 세팅 완료");
+        Debug.Log($"[ValetAgent #{_carId}] 진입 자세 세팅 완료");
 
         yield return new WaitForFixedUpdate();
         _car.Brake(3f);
@@ -101,12 +111,12 @@ public class ValetAgent : MonoBehaviour
 
         if (reverseRoute == null || reverseRoute.Length < 2)
         {
-            Debug.LogError("[ValetAgent] Go: 후진 경로가 없거나 점이 부족합니다");
+            Debug.LogError($"[ValetAgent #{_carId}] Go: 후진 경로가 없거나 점이 부족합니다");
             yield break;
         }
 
         State = AgentState.Reversing;
-        Debug.Log($"[ValetAgent] State: {State}");
+        Debug.Log($"[ValetAgent #{_carId}] State: {State}");
         yield return _car.Follow(reverseRoute, 5f, true);
 
         Vector3 routeDir = (reverseRoute[reverseRoute.Length - 2] - reverseRoute[reverseRoute.Length - 1]).normalized;
@@ -114,10 +124,10 @@ public class ValetAgent : MonoBehaviour
 
         _car.ResetPose(new Pose(_assignedSlot.transform.position, parkingRot));
         _car.Brake(3f);
-        Debug.Log("[ValetAgent] 후진 완료, 주차 위치에 스냅");
+        Debug.Log($"[ValetAgent #{_carId}] 후진 완료, 주차 위치에 스냅");
 
         State = AgentState.Parked;
-        Debug.Log($"[ValetAgent] State: {State}");
+        Debug.Log($"[ValetAgent #{_carId}] State: {State}");
 
         // 사용된 셀 Release
         foreach (Vector2Int cell in _usedCells)
@@ -132,7 +142,7 @@ public class ValetAgent : MonoBehaviour
     {
         if (_table == null || !_table.IsOn)
         {
-            Debug.Log($"[ValetAgent] TryReserve: 예약 OFF, 예약 없이 진행");
+            Debug.Log($"[ValetAgent #{_carId}] TryReserve: 예약 OFF, 예약 없이 진행");
             return true;
         }
 
@@ -166,11 +176,19 @@ public class ValetAgent : MonoBehaviour
         Vector3 carPos = _car.transform.position;
         Vector3 entryPos = slot.GetEntryPose().position;
 
+        Transform lotTransform = _map.transform.parent;
+        float laneWorldZ = _laneZ;
+        if (lotTransform != null)
+        {
+            Vector3 laneWorldPoint = lotTransform.TransformPoint(new Vector3(0, 0, _laneZ));
+            laneWorldZ = laneWorldPoint.z;
+        }
+
         return new Vector3[]
         {
             carPos,
-            new Vector3(carPos.x, carPos.y, _laneZ),
-            new Vector3(entryPos.x, entryPos.y, _laneZ),
+            new Vector3(carPos.x, carPos.y, laneWorldZ),
+            new Vector3(entryPos.x, entryPos.y, laneWorldZ),
             entryPos
         };
     }
