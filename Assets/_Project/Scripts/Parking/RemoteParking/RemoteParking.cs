@@ -65,11 +65,11 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void Press(int dir)
     {
-        Debug.Log($"[RemoteParking] Press({dir}) 호출됨");
+        Debug.Log($"[RemoteParking] Press({dir}) 호출됨, 현재 State: {State}");
 
-        if (State != RemoteState.Moving && State != RemoteState.Boardable)
+        if (State == RemoteState.Boarded)
         {
-            Debug.Log($"[RemoteParking] Press 취소: 상태가 {State}임 (Moving 또는 Boardable 필요)");
+            Debug.Log("[RemoteParking] Press 취소: Boarded 상태에서는 조작 불가");
             return;
         }
 
@@ -85,6 +85,13 @@ public class RemoteParking : MonoBehaviour, ICarFeature
             return;
         }
 
+        // Idle → Moving 또는 Boardable → Moving
+        if (State == RemoteState.Idle || State == RemoteState.Boardable)
+        {
+            State = RemoteState.Moving;
+            Debug.Log($"[RemoteParking] State: Idle/Boardable → Moving");
+        }
+
         Debug.Log($"[RemoteParking] Press: {(dir > 0 ? "전진" : "후진")} {_speedKmh}km/h 시작");
         _isMoving = true;
         _stopTimer = _stopTime;
@@ -93,7 +100,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     public void Release()
     {
-        Debug.Log("[RemoteParking] Release() 호출됨");
+        Debug.Log($"[RemoteParking] Release() 호출됨, 현재 State: {State}");
 
         if (_car == null)
         {
@@ -105,6 +112,17 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         _stopTimer = _stopTime;
         _isMoving = false;
         _car.Brake(5f);
+
+        // Moving → Idle, Boardable 유지
+        if (State == RemoteState.Moving)
+        {
+            State = RemoteState.Idle;
+            Debug.Log("[RemoteParking] State: Moving → Idle");
+        }
+        else if (State == RemoteState.Boardable)
+        {
+            Debug.Log("[RemoteParking] State: Boardable 유지");
+        }
     }
 
     public void Board()
