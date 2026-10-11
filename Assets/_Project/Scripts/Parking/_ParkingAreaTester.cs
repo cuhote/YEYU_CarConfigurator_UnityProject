@@ -34,9 +34,6 @@ public class _ParkingAreaTester : MonoBehaviour
     [SerializeField]
     private RemoteParking _remoteParking;
 
-    private bool _upPressed = false;
-    private bool _downPressed = false;
-
     private void Start()
     {
         if (_area == null)
@@ -69,34 +66,24 @@ public class _ParkingAreaTester : MonoBehaviour
 
         if (keyboard.digit9Key.wasPressedThisFrame) SmartKeyEnter();
 
-        // 방향키 위/아래 - 누르고 있는 동안 Press, 뗄 때 Release
+        // 방향키 위/아래 - 누르는 동안 매 프레임 Press, 떼는 순간 Release
         if (_remoteParking != null)
         {
             if (keyboard.upArrowKey.isPressed)
             {
-                if (!_upPressed)
-                {
-                    _upPressed = true;
-                    _remoteParking.Press(1);
-                }
+                _remoteParking.Press(1);
             }
-            else if (_upPressed)
+            if (keyboard.upArrowKey.wasReleasedThisFrame)
             {
-                _upPressed = false;
                 _remoteParking.Release();
             }
 
             if (keyboard.downArrowKey.isPressed)
             {
-                if (!_downPressed)
-                {
-                    _downPressed = true;
-                    _remoteParking.Press(-1);
-                }
+                _remoteParking.Press(-1);
             }
-            else if (_downPressed)
+            if (keyboard.downArrowKey.wasReleasedThisFrame)
             {
-                _downPressed = false;
                 _remoteParking.Release();
             }
 

@@ -60,6 +60,14 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         {
             State = RemoteState.Boardable;
             Debug.Log("[RemoteParking] State: Boardable");
+
+            // Boardable이 되는 순간 자동으로 Brake
+            _isMoving = false;
+            if (_car != null)
+            {
+                _car.Brake(5f);
+                Debug.Log("[RemoteParking] Boardable 진입: 자동 Brake 적용");
+            }
         }
     }
 
