@@ -5,10 +5,10 @@ public class ParkingArea : AreaBase
 {
     [SerializeField]
     private GridMap _map;
-    //[SerializeField]
-    //private ResevervationTable _tableA;
-    //[SerializeField]
-    //private ResevervationTable _tableB;
+    [SerializeField]
+    private ReservationTable _tableA;
+    [SerializeField]
+    private ReservationTable _tableB;
     [SerializeField]
     private ParkingSlotAllocator[] _slots;
     //[SerializeField]
@@ -36,7 +36,6 @@ public class ParkingArea : AreaBase
             _cars[i].ResetPose(GetStartPose(SceneValet, i));
         }
 
-        //V TODO 슬롯 초기화(ResetSlots)
         for(int i=0;i<_slots.Length;i++)
         {
             if(_slots[i] == null)
@@ -44,12 +43,30 @@ public class ParkingArea : AreaBase
                 Debug.LogError($"[ParkingArea] ResetArea: _slots[{i}]가 비어 있음 (Inspector 연결 확인)");
                 continue;
             }
-                _slots[i].ResetSlots();
+            _slots[i].ResetSlots();
         }
 
+        // 예약 테이블 초기화
+        if (_tableA != null)
+        {
+            _tableA.SetOn(false);
+            _tableA.Clear();
+        }
+        else
+        {
+            Debug.LogError("[ParkingArea] ResetArea: _tableA가 null입니다");
+        }
 
-        //TODO 예약 테이블
-        //config 나중에
+        if (_tableB != null)
+        {
+            bool valetParkingEnabled = config != null ? config.ValetParking : true;
+            _tableB.SetOn(valetParkingEnabled);
+            _tableB.Clear();
+        }
+        else
+        {
+            Debug.LogError("[ParkingArea] ResetArea: _tableB가 null입니다");
+        }
     }
 
     public Pose GetStartPose(int scene , int car)

@@ -34,6 +34,12 @@ public class _ParkingAreaTester : MonoBehaviour
     [SerializeField]
     private RemoteParking _remoteParking;
 
+    //발렛 에이전트 배열 테스트
+    [SerializeField]
+    private ValetAgent[] _valetAgents;
+    [SerializeField]
+    private ReservationTable _tableB;
+
     private void Start()
     {
         if (_area == null)
@@ -65,6 +71,10 @@ public class _ParkingAreaTester : MonoBehaviour
         }
 
         if (keyboard.digit9Key.wasPressedThisFrame) SmartKeyEnter();
+
+        if (keyboard.digit0Key.wasPressedThisFrame) ToggleTableB();
+
+        if (keyboard.digit8Key.wasPressedThisFrame) StartAllAgents();
 
         // 방향키 위/아래 - 누르는 동안 매 프레임 Press, 떼는 순간 Release
         if (_remoteParking != null)
@@ -226,5 +236,39 @@ public class _ParkingAreaTester : MonoBehaviour
 
         _remoteParking.Board();
         Debug.Log("[_ParkingAreaTester] 탑승 시도", this);
+    }
+
+    //모든 발렛 에이전트 시작
+    private void StartAllAgents()
+    {
+        if (_valetAgents == null || _valetAgents.Length == 0)
+        {
+            Debug.LogError("[_ParkingAreaTester] _valetAgents가 비어 있음", this);
+            return;
+        }
+
+        foreach (ValetAgent agent in _valetAgents)
+        {
+            if (agent != null)
+            {
+                agent.StartGo();
+            }
+        }
+
+        Debug.Log($"[_ParkingAreaTester] {_valetAgents.Length}개 발렛 에이전트 시작", this);
+    }
+
+    //예약 테이블 B 토글
+    private void ToggleTableB()
+    {
+        if (_tableB == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] _tableB가 비어 있음", this);
+            return;
+        }
+
+        bool newState = !_tableB.IsOn;
+        _tableB.SetOn(newState);
+        Debug.Log($"[_ParkingAreaTester] ReservationTable B: {newState}", this);
     }
 }
