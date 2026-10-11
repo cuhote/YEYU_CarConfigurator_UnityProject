@@ -6,24 +6,9 @@ public class DoorSwingDrawer : MonoBehaviour
     [SerializeField] private float _requiredGap = 0.6f;
     [SerializeField] private Vector3 _hingeOffset = new Vector3(-0.95f, 0f, 1.3f);
 
-    private Material _greenMaterial;
-    private Material _redMaterial;
     private int _visualizationLayer;
-
-    private void Start()
-    {
-        _visualizationLayer = LayerMask.NameToLayer("Visualization");
-        if (_visualizationLayer == -1)
-        {
-            Debug.LogError("[DoorSwingDrawer] 'Visualization' 레이어가 없습니다");
-        }
-
-        _greenMaterial = new Material(Shader.Find("Standard"));
-        _greenMaterial.color = new Color(0, 1, 0, 0.3f);
-
-        _redMaterial = new Material(Shader.Find("Standard"));
-        _redMaterial.color = new Color(1, 0, 0, 0.3f);
-    }
+    private bool _lastCanOpenState = true;
+    private string[] _lastObstacleNames = new string[0];
 
     public bool CanOpen()
     {
@@ -45,14 +30,21 @@ public class DoorSwingDrawer : MonoBehaviour
         LayerMask obstacleLayer = LayerMask.GetMask("Obstacle", "Vehicle");
         Collider[] colliders = Physics.OverlapBox(boxCenter, boxHalfExtents, boxRotation, obstacleLayer);
 
-        return colliders.Length == 0;
+        // 상태 변화를 감지해 로그 출력
+        bool canOpen = colliders.Length == 0;
+        if (canOpen != _lastCanOpenState)
+        {
+            _lastCanOpenState = canOpen;
+
+            string obstacleInfo = canOpen ? "없음" : string.Join(", ", System.Array.ConvertAll(colliders, c => c.gameObject.name));
+            Debug.Log($"[DoorSwingDrawer] CanOpen() = {canOpen}, 겹침 대상: {obstacleInfo}");
+        }
+
+        return canOpen;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        if (_visualizationLayer == -1)
-            _visualizationLayer = LayerMask.NameToLayer("Visualization");
-
         Vector3 carPos = transform.position;
         Vector3 carRight = transform.right;
         Vector3 carForward = transform.forward;
@@ -61,8 +53,9 @@ public class DoorSwingDrawer : MonoBehaviour
         Vector3 doorBasePos = carPos + carRight * _hingeOffset.x + carForward * _hingeOffset.z;
         Vector3 doorTipPos = doorBasePos - carRight * _doorLength;
 
-        // 시각화 색상
-        Color color = CanOpen() ? new Color(0, 1, 0, 0.3f) : new Color(1, 0, 0, 0.3f);
+        // 시각화 색상 (상태에 따라 초록/빨강)
+        bool canOpen = CanOpen();
+        Color color = canOpen ? new Color(0, 1, 0, 0.3f) : new Color(1, 0, 0, 0.3f);
         Gizmos.color = color;
 
         // 문 열림 영역 호 그리기
