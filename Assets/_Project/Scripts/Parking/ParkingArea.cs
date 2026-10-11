@@ -70,7 +70,9 @@ public class ParkingArea : AreaBase
         }
 
         Transform t = starts[car];
-        return new Pose(t.position, t.rotation);
+        Vector3 pos = t.position;
+        pos.y = 0f;
+        return new Pose(pos, t.rotation);
 
 
     }
