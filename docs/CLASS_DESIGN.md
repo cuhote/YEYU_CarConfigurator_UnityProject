@@ -1,25 +1,10 @@
+<aside>
+
 # 클래스 설계서
 
 > 팀 YEYU · 작성 김예은 · 2026.10.07 · 기준: SRS v0.7, `FOLDER_STRUCTURE.md` 5장 · 클래스 다이어그램 1·2차 피드백 반영본
-> 파일 하나 = 클래스 하나. 이름은 `CONVENTIONS.md`(private 필드 `_camelCase`, 네임스페이스 `Yeyu.<폴더>`)를 따른다.
-
-## 1차 피드백 반영
-
-| 번호 | 피드백 | 반영 |
-| --- | --- | --- |
-| 0 | FeaturePanel의 ScriptableObject 과함 | `FeatureDescriptions` 삭제. `FeaturePanel._descriptionTexts: TMP_Text[4]`에 Inspector로 입력 |
-| 1 | 오른쪽 차량 운전자 없음 | 두 차량 모두 `VirtualDriver`가 운전. 오른쪽만 기능 컴포넌트 ON, 센서는 `RequestBrake()`로 운전자에게 감속 요청 |
-| 2 | 조명 전환 책임 없음 | `AreaBase.ApplyLighting()` 추가, `OnEnter()`에서 영역별 ambient 적용 |
-| 3 | 측정 책임 없음 | 측정·결과 기록 자체를 범위에서 제외: `ScenarioResult`, `ResultPanel` 삭제 (SRS v0.7 FR-13·UI-05 삭제) |
-| 4 | 차량 원위치 불가 | `CarController.ResetPose(Pose)` 추가 (위치·속도·조향각 초기화) |
-| 5 | ValetAgent가 ICarFeature 구현 | `ValetAgent`는 일반 클래스로 변경 (예약 테이블 처리 방식은 2차 피드백 1번에서 다시 수정) |
-| 6 | IPathProvider + Waypoint + AStar | 셋 다 삭제, 웨이포인트는 `ValetAgent._route`로 흡수 (SRS FR-46·NFR-10 삭제) |
-| 7 | IVehicleDriver + BicycleModelDriver 중복 | 둘 다 삭제, 구동은 `CarController` 하나(자전거 모델)로 통일 (SRS FR-43 수정, NFR-11 삭제) |
-| 8 | ReverseParkingPlanner + PurePursuitController | 둘 다 삭제, 후진은 미리 찍은 `_reverseRoute` 웨이포인트 추종 (SRS FR-40·41 수정, FR-45 삭제) |
-| 9 | Drawer 6개 + DebugDraw | `DrivingDrawer`, `ParkingDrawer`로 통합, `DoorSwingDrawer`만 유지, `DebugDraw` 삭제 |
-| 10 | AreaBase, ScenarioBase, ICarFeature 좋음 | 유지 |
-
-결과: 클래스 54개 → 41개.
+파일 하나 = 클래스 하나. 이름은 `CONVENTIONS.md`(private 필드 `_camelCase`, 네임스페이스 `Yeyu.<폴더>`)를 따른다.
+> 
 
 ## 2차 피드백 반영
 
@@ -27,6 +12,20 @@
 | --- | --- | --- |
 | 1 | `ReservationTable`이 `ICarFeature`를 구현하지만 주차장에 있어 `CarFeatureSwitch`가 찾을 수 없음 | `ICarFeature` 구현 제거. `ParkingArea.ResetArea(config)`가 `SetOn(valetParking)`으로 직접 켜고 끔. `ICarFeature` 구현은 차량에 붙는 3종(NightVisionSensor, RearWheelSteering, RemoteParking)만 남음 |
 | 2 | `ResetPose(Pose)`의 시작 위치를 누가 저장하는지 없음 | `DrivingArea`·`ParkingArea`에 장면별·차량별 시작 위치 `_startPoses`와 `GetStartPose(장면, 차량)` 추가. `CarController`는 위치를 저장하지 않고 받은 Pose로만 복귀 |
+- 2차 클래스다이어그램 피드백
+    
+    1.ReservationTable이 ICarFeature 구현 (필수수정) → 기능을 켜고 끄는 CarFeatureSwitch는 Car.prefab에 붙은 기능만 찾습니다. 그런데 ReservationTable은 차가 아니라 ParkingArea에 있어서 CarFeatureSwitch가 찾을 수 없습니다. ICarFeature를 빼고 ParkingArea.ResetArea(config)에서 valetParking 값으로 직접 켜고 끄는 게 더 단순함!
+    
+    2.ResetPose(Pose) → 시작 위치 Pose를 누가 저장하는지 정해야 함. DrivingArea와 ParkingArea가 차량별 시작 위치를 들고 있으면 될듯.
+    
+- 개발 과정 중 추가
+    
+    - 3차 반영: `CameraAnchors` 추가. 이유: `Bind(Camera, Camera)`만으로는 운전석·버드뷰·고정 시점의 목적지를 알 수 없어 카메라별로 앵커 3개를 보관하는 컴포넌트가 필요함 (클래스 41 → 42)
+    
+    - 4차 반영: `ParkingArea`의 `_startPoses`를 `_valetStarts`(6)·`_smartKeyStarts`(2)로 분리하고 `_cars`(6) 추가. 이유: 장면별 시작 위치를 인덱스 계산 없이 읽기 쉽게 하고, `ResetArea`가 차량 6대를 알아야 하기 때문
+    
+    - 5차 반영: ParkingSlot 추가. 이유: Allocator가 보관하는 주차면의 데이터(진입 준비 지점, 후진 웨이포인트, 점유 상태)를 담을 타입이 없었음 (클래스 43개)
+    
 
 ## 표기법
 
@@ -37,7 +36,7 @@
 | 기울임 (Mermaid `*`) | 추상 메서드 |
 | `«interface»` `«abstract»` `«enumeration»` `«ScriptableObject»` `«static»` | 스테레오 타입 |
 | `[*]` `[0..1]` `[2]` | 다중성: 개수 미정 / 0개 또는 1개 / 고정 개수 |
-| `<\|--` / `<\|..` | 상속 / 실체화(인터페이스 구현) |
+| `<|--` / `<|..` | 상속 / 실체화(인터페이스 구현) |
 | `o--` / `*--` | 집합(참조만, 씬에 따로 존재) / 합성(같은 오브젝트의 일부) |
 | `-->` / `..>` | 연관(필드로 보유) / 의존(인자로 받거나 잠깐 호출) |
 
@@ -187,11 +186,22 @@ classDiagram
   class CameraSwitcher {
     -_left: Camera
     -_right: Camera
-    +Current: CameraView
+    -_leftAnchors: CameraAnchors
+    -_rightAnchors: CameraAnchors
+    +CurrentView: CameraView
     +Bind(Camera, Camera) void
     +SwitchTo(CameraView) void
     +SetFixedView(bool) void
     +SetRightDriverView() void
+    -ApplyView(Camera,CameraAnchors,CameraView) void
+  }
+    class CameraAnchors {
+    -_driver: Transform
+    -_birdEye: Transform
+    -_fixed: Transform
+    +Driver: Transform
+    +BirdEye: Transform
+    +Fixed: Transform
   }
   class CameraView {
     <<enumeration>>
@@ -245,6 +255,7 @@ classDiagram
   ScenarioBase "1" o-- "*" ScenarioTrigger
   ScenarioBase --> CameraSwitcher
   CameraSwitcher ..> CameraView
+  CameraSwitcher ..> CameraAnchors : Bind 때 꺼내 씀
   OptionCardPanel ..> ScenarioBase : RestartCurrentScene
   UIManager o-- ExteriorPanel
   UIManager o-- FeaturePanel
@@ -393,9 +404,11 @@ classDiagram
     -_map: GridMap
     -_tableA: ReservationTable
     -_tableB: ReservationTable
-    -_slots: ParkingSlotAllocator
+    -_slots: ParkingSlotAllocator[2]
     -_scenario: ParkingScenario
-    -_startPoses: Transform[*]
+    -_cars: CarController[6]
+    -_valetStarts: Transform[6]
+    -_smartKeyStarts: Transform[2]
     +ResetArea(CarConfig) void
     +GetStartPose(int, int) Pose
   }
@@ -412,6 +425,17 @@ classDiagram
     -_height: int = 12
     +WorldToCell(Vector3) Vector2Int
     +CellToWorld(Vector2Int) Vector3
+  }
+  class ParkingSlot {
+    -_id: int
+    -_initiallyOccupied: bool
+    -_entryPoint: Transform
+    -_reverseRoute: Transform[*]
+    +Id: int
+    +IsOccupied: bool
+    +EntryPoint: Transform
+    +ReverseRoute: Transform[*]
+    +ResetSlot() void
   }
   class ParkingSlotAllocator {
     -_slots: ParkingSlot[*]
@@ -471,7 +495,8 @@ classDiagram
   ParkingArea "1" *-- "1" GridMap
   ParkingArea "1" *-- "2" ReservationTable : SetOn(A false, B valetParking)
   ParkingScenario ..> ParkingArea : GetStartPose
-  ParkingArea "1" *-- "1" ParkingSlotAllocator
+  ParkingArea "1" *-- "2" ParkingSlotAllocator
+  ParkingSlotAllocator "1" o-- "*" ParkingSlot
   ParkingArea "1" *-- "1" ParkingScenario
   ParkingScenario "1" o-- "*" ValetAgent : E, NPC1, NPC2 x2
   ValetAgent --> CarController : 운전
@@ -494,13 +519,13 @@ classDiagram
 | --- | --- | --- |
 | `Yeyu.Core` | ModeManager, AreaBase, AppMode, CarConfig, ConfiguratorArea, ScreenHistory | 6 |
 | `Yeyu.Vehicle` | CarController, CarAppearance, CarFeatureSwitch, ICarFeature | 4 |
-| `Yeyu.Camera` | CameraSwitcher (+ CameraView), ShowroomCamera | 2 |
+| `Yeyu.Camera` | CameraSwitcher (+ CameraView), CameraAnchors, ShowroomCamera | 3 |
 | `Yeyu.Scenario` | ScenarioBase, ScenarioTrigger | 2 |
 | `Yeyu.UI` | UIManager, ExteriorPanel, FeaturePanel, ScenarioHUD, OptionCardPanel, NavigationBar | 6 |
 | `Yeyu.Utils` | Units | 1 |
 | `Yeyu.Driving` | DrivingArea, DrivingScenario, VirtualDriver, Pedestrian, NightVisionSensor, NightVisionDisplay, RearWheelSteering, TurningRadiusCalculator, DrivingDrawer | 9 |
-| `Yeyu.Parking` | ParkingArea, ParkingScenario, GridMap, ParkingSlotAllocator, ReservationTable, ValetAgent, RemoteParking, SmartKeyUI, ProximityStop, ParkingDrawer, DoorSwingDrawer | 11 |
-| 합계 | | 41 |
+| `Yeyu.Parking` | ParkingArea, ParkingScenario, GridMap, ParkingSlot,  ParkingSlotAllocator, ReservationTable, ValetAgent, RemoteParking, SmartKeyUI, ProximityStop, ParkingDrawer, DoorSwingDrawer | 12 |
+| 합계 |  | 43 |
 
 ## CarConfig 기능 값과 켜는 곳
 
@@ -510,3 +535,4 @@ classDiagram
 | rearWheelSteering | RearWheelSteering | 차량 (`CarFeatureSwitch`) | 주행 2 |
 | valetParking | ReservationTable (ICarFeature 아님) | 주차장 B (`ParkingArea.ResetArea()`가 `SetOn(valetParking)`) | 주차 1 |
 | remoteParking | RemoteParking | 차량 (`CarFeatureSwitch`) | 주차 2 |
+</aside>
