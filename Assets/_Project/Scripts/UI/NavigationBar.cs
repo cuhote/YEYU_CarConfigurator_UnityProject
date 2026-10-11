@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class NavigationBar : MonoBehaviour
 {
-    [SerializeField] private Button _backButton;
-    [SerializeField] private Button _homeButton;
+    [SerializeField] public Button _backButton;
+    [SerializeField] public Button _homeButton;
     private ScreenHistory _screenHistory;
     private UIManager _uiManager;
 
