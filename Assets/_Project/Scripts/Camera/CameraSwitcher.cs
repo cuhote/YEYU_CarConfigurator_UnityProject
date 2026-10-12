@@ -15,6 +15,10 @@ public class CameraSwitcher : MonoBehaviour
     // 영역에 들어올 때 카메라 2대를 받아서 보관 = 주차에 카메라2개, 주행에 카메라2대 등이 있음
     // AreaBase.OnEnter() 뒤에서 Bind(주행왼카메라,주행오카메라) 하면 주행 카메라들을 다뤄
     // 영역 전환 할 때마다 호출됨
+    
+    public void SwitchToDriver(){Switch(CameraView.Driver);}
+    public void SwitchToBirdView(){Switch(CameraView.BirdEye);}
+    
     public void Bind(Camera left, Camera right)
     {
         // 1. 이전 영역의 상태 지우기
