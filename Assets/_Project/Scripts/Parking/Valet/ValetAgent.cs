@@ -20,7 +20,18 @@ public class ValetAgent : MonoBehaviour
     private ParkingSlot _assignedSlot;
     private float _waitTimer = 0f;
     private const float _retryInterval = 0.2f;
-    private HashSet<Vector2Int> _usedCells = new HashSet<Vector2Int>();
+    private const float _waitWarnSeconds = 15f;
+    private const float _tailMargin = 1.0f;   // 뒤차축에서 차 꽁무니까지 여유 (m)
+    private HashSet<Vector2Int> _usedCells = new HashSet<Vector2Int>();   // 지금 점유 중인 셀 전체
+    private List<Vector2Int> _forwardCells = new List<Vector2Int>();      // 전진 경로 셀 (지나가는 순서)
+    private HashSet<Vector2Int> _reverseCells = new HashSet<Vector2Int>(); // 후진 구간 셀 (Parked까지 유지)
+    private int _passedCount = 0;   // _forwardCells에서 이미 지나간 개수
+    private bool _blocked = false;                // 앞차 때문에 멈춘 상태인지
+
+    //레이캐스트 : 선->박스
+    private const float _noseOffset = 3.75f;  //뒤차축~차 코까지 (m)
+    private const float _detectHalfWidth = 2.3f; //감지 상자 반폭 : 차 폭 + @
+    private static readonly Collider[] _detectHits = new Collider[8];
 
     // 후진 직접 제어용
     private float _reverseStartTime;
@@ -44,19 +55,36 @@ public class ValetAgent : MonoBehaviour
         // IsOn == false일 때 앞 차량 감지
         if ((_table == null || !_table.IsOn) && State == AgentState.Moving)
         {
-            Vector3 carPos = _car.transform.position;
-            Vector3 carForward = _car.transform.forward;
+            // 레이캐스트를 박스로 바꿔서 필요없음
+            // Vector3 carPos = _car.transform.position;
+            // Vector3 carForward = _car.transform.forward;
 
-            int vehicleLayer = LayerMask.GetMask("Vehicle");
-            if (Physics.Raycast(carPos, carForward, out RaycastHit hit, _stopDistance, vehicleLayer))
+            // int vehicleLayer = LayerMask.GetMask("Vehicle");
+
+            //if (Physics.Raycast(carPos, carForward, out RaycastHit hit, _stopDistance, vehicleLayer) && hit.collider.gameObject != gameObject)
+            // 충돌 후 다시 출발하기 위해 bolockedNow에 담음
+            //bool blockedNow = Physics.Raycast(carPos, carForward, out RaycastHit hit, _stopDistance, vehicleLayer) && hit.collider.gameObject != gameObject;
+            // 레이캐스트를 박스로(IsFrontBlocked)
+            bool blockedNow = IsFrontBlocked(out Collider blocker);
+            if (blockedNow && !_blocked) //감지됨 & 막힘상태false
             {
                 // 자신이 아닌 다른 차량만 감지 (IsTrigger 제외)
-                if (hit.collider.gameObject != gameObject && !hit.collider.isTrigger)
-                {
-                    _car.Brake(5f);
-                    Debug.Log($"[ValetAgent #{_carId}] 앞 차량({hit.collider.name}) 감지, 정지");
-                }
+                // if (hit.collider.gameObject != gameObject && !hit.collider.isTrigger)
+                _blocked = true;
+                _car.Brake(5f);
+                Debug.Log($"[ValetAgent #{_carId}] 앞 차량({blocker.name}) 감지, 정지");
             }
+            else if(!blockedNow && _blocked){
+                _blocked = false;
+                _car.SetSpeed(10f);
+                Debug.Log($"[ValetAgent #{_carId}] 앞이 비어 다시 출발");
+            }
+        }
+
+        // 지나간 전진 셀 반납
+        if (State == AgentState.Moving)
+        {
+            ReleasePassedCells();
         }
 
         // 후진 직접 제어
@@ -145,13 +173,73 @@ public class ValetAgent : MonoBehaviour
         Debug.Log($"[ValetAgent #{_carId}] 후진 종료: {reason}, 주차 위치에 스냅");
         Debug.Log($"[ValetAgent #{_carId}] State: {State}");
 
-        // 사용된 셀 Release
+        // 남은 셀(후진 구간) Release
+        ReleaseAllCells();
+    }
+
+    // 차 코 앞 _stopDistance 구간에 다른 차가 있는지 본다
+    private bool IsFrontBlocked(out Collider blocker){
+        Transform t = _car.transform;
+        Vector3 halfExtents = new Vector3(_detectHalfWidth, 0.5f, _stopDistance * 0.5f);
+        Vector3 center = t.position + t.forward * (_noseOffset + _stopDistance * 0.5f) + Vector3.up * 0.7f;
+
+        int count =  Physics.OverlapBoxNonAlloc(center, halfExtents, _detectHits, t.rotation, LayerMask.GetMask("Vehicle"), QueryTriggerInteraction.Collide);
+        for (int i = 0; i < count; i++)
+        {
+            // 내 차의 콜라이더는 제외
+            if (_detectHits[i].transform.IsChildOf(t))
+                continue;
+
+            blocker = _detectHits[i];
+            return true;
+        }
+
+        blocker = null;
+        return false;
+    }
+
+    // 차 꽁무니가 있는 셀보다 앞 순서의 전진 셀을 반납한다
+    private void ReleasePassedCells()
+    {
+        if (_car == null || _map == null || _forwardCells.Count == 0)
+            return;
+
+        Vector3 tailPos = _car.transform.position - _car.transform.forward * _tailMargin;
+        Vector2Int tailCell = _map.WorldToCell(tailPos);
+
+        int index = _forwardCells.IndexOf(tailCell, _passedCount);
+        if (index > _passedCount)
+            ReleaseForwardCells(index);
+    }
+
+    // _forwardCells의 endIndex 앞까지 반납. 후진 구간과 겹치는 셀은 남겨 둔다
+    private void ReleaseForwardCells(int endIndex)
+    {
+        for (int i = _passedCount; i < endIndex; i++)
+        {
+            Vector2Int cell = _forwardCells[i];
+            if (_reverseCells.Contains(cell))
+                continue;
+
+            if (_table != null)
+                _table.Release(_carId, cell);
+            _usedCells.Remove(cell);
+        }
+        _passedCount = endIndex;
+    }
+
+    // 점유 중인 셀을 전부 반납한다
+    private void ReleaseAllCells()
+    {
         foreach (Vector2Int cell in _usedCells)
         {
             if (_table != null)
                 _table.Release(_carId, cell);
         }
         _usedCells.Clear();
+        _forwardCells.Clear();
+        _reverseCells.Clear();
+        _passedCount = 0;
     }
 
     public IEnumerator Go()
@@ -167,6 +255,9 @@ public class ValetAgent : MonoBehaviour
             yield break;
         }
 
+        // 다시 출발하는 경우 이전에 잡고 있던 셀부터 반납
+        ReleaseAllCells();
+
         _assignedSlot = _allocator.AssignEmpty();
         if (_assignedSlot == null)
         {
@@ -177,14 +268,17 @@ public class ValetAgent : MonoBehaviour
 
         // 경로 계산 및 예약 시도
         Vector3[] globalPath = CalculateGlobalPath(_assignedSlot);
-        List<Vector2Int> pathCells = GetPathCells(globalPath);
+        List<Vector2Int> forwardCells = GetPathCells(globalPath);
         Vector3[] reverseRoute = _assignedSlot.GetReverseRoute();
         List<Vector2Int> reverseCells = GetPathCells(reverseRoute);
 
+        List<Vector2Int> pathCells = new List<Vector2Int>(forwardCells);
         pathCells.AddRange(reverseCells);
 
         // 예약 시도
         bool waitingLogged = false;
+        bool waitWarned = false;
+        float waitStartTime = Time.time;
         while (!TryReserve(pathCells))
         {
             State = AgentState.Waiting;
@@ -193,14 +287,26 @@ public class ValetAgent : MonoBehaviour
                 Debug.Log($"[ValetAgent #{_carId}] State: {State}");
                 waitingLogged = true;
             }
+            if (!waitWarned && Time.time - waitStartTime > _waitWarnSeconds)
+            {
+                Debug.LogWarning($"[ValetAgent #{_carId}] {_waitWarnSeconds}초 넘게 Waiting 중 (다른 차가 셀을 반납하지 않음)");
+                waitWarned = true;
+            }
             yield return new WaitForSeconds(_retryInterval);
         }
+
+        _forwardCells = forwardCells;
+        _reverseCells = new HashSet<Vector2Int>(reverseCells);
+        _passedCount = 0;
 
         State = AgentState.Moving;
         Debug.Log($"[ValetAgent #{_carId}] State: {State}");
         yield return _car.Follow(globalPath, 10f, false);
 
         Debug.Log($"[ValetAgent #{_carId}] 전역 이동 완료");
+
+        // 전진이 끝났으니 남은 전진 셀 반납 (후진 구간 셀은 유지)
+        ReleaseForwardCells(_forwardCells.Count);
 
         Pose entryPose = _assignedSlot.GetEntryPose();
         _car.ResetPose(entryPose);
@@ -257,11 +363,21 @@ public class ValetAgent : MonoBehaviour
         if (_map == null)
             return cells;
 
-        foreach (Vector3 point in path)
+        // 점과 점 사이도 반 칸 간격으로 찍어서 지나가는 셀을 빠짐없이 모은다
+        float step = _map.CellSize * 0.5f;
+        for (int i = 0; i < path.Length; i++)
         {
-            Vector2Int cell = _map.WorldToCell(point);
-            if (!cells.Contains(cell))
-                cells.Add(cell);
+            int samples = 1;
+            if (i > 0)
+                samples = Mathf.Max(1, Mathf.CeilToInt(Vector3.Distance(path[i - 1], path[i]) / step));
+
+            for (int s = 1; s <= samples; s++)
+            {
+                Vector3 point = (i == 0) ? path[0] : Vector3.Lerp(path[i - 1], path[i], (float)s / samples);
+                Vector2Int cell = _map.WorldToCell(point);
+                if (!cells.Contains(cell))
+                    cells.Add(cell);
+            }
         }
 
         return cells;
@@ -299,7 +415,7 @@ public class ValetAgent : MonoBehaviour
 
         State = AgentState.Idle;
         _assignedSlot = null;
-        _usedCells.Clear();
+        ReleaseAllCells();
         _reverseRoute = null;
 
         if (_car != null)

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 public class ReservationTable : MonoBehaviour
 {
-    [SerializeField] private float _slotTime = 0.5f;
     [SerializeField] private GridMap _map;
 
     private bool _isOn = false;
-    private Dictionary<(Vector2Int cell, int timeSlot), int> _reservations = new Dictionary<(Vector2Int, int), int>();
+    // 셀 → 점유 중인 차량 id. 시간 구분 없이 Release될 때까지 유지된다
+    private Dictionary<Vector2Int, int> _reservations = new Dictionary<Vector2Int, int>();
     private HashSet<Vector2Int> _outOfBoundsCells = new HashSet<Vector2Int>();
+    // 차량별로 마지막에 기록한 실패 원인 (재시도마다 같은 로그가 반복되지 않게)
+    private Dictionary<int, (Vector2Int cell, int occupantId)> _lastBlocked = new Dictionary<int, (Vector2Int, int)>();
 
     public bool IsOn => _isOn;
 
@@ -26,6 +28,7 @@ public class ReservationTable : MonoBehaviour
         Debug.Log($"[ReservationTable] SetOn({on})");
     }
 
+    // startTime은 쓰지 않는다 (셀 단위 점유). 호출하는 쪽을 바꾸지 않으려고 남겨 둠
     public bool TryReserve(int carId, List<Vector2Int> cells, float startTime)
     {
         if (!_isOn)
@@ -59,48 +62,41 @@ public class ReservationTable : MonoBehaviour
             validCells.Add(cell);
         }
 
-        // 유효한 셀들에 대해 점유 확인
-        int timeSlot = Mathf.FloorToInt(startTime / _slotTime);
+        // 하나라도 다른 차가 점유 중이면 아무것도 기록하지 않고 실패
         foreach (Vector2Int cell in validCells)
         {
-            if (_reservations.TryGetValue((cell, timeSlot), out int occupantId))
+            if (_reservations.TryGetValue(cell, out int occupantId) && occupantId != carId)
             {
-                Debug.Log($"[ReservationTable] TryReserve 실패: 셀 {cell} 타임슬롯 {timeSlot}은 차량 {occupantId}가 점유 중");
+                bool sameAsLast = _lastBlocked.TryGetValue(carId, out var last)
+                    && last.cell == cell && last.occupantId == occupantId;
+                if (!sameAsLast)
+                {
+                    _lastBlocked[carId] = (cell, occupantId);
+                    Debug.Log($"[ReservationTable] TryReserve 실패: 차량 {carId}, 셀 {cell}은 차량 {occupantId}가 점유 중");
+                }
                 return false;
             }
         }
 
-        // 예약 기록
+        // 모두 비었거나 내 것: 전부 내 id로 기록
         foreach (Vector2Int cell in validCells)
         {
-            _reservations[(cell, timeSlot)] = carId;
+            _reservations[cell] = carId;
         }
+        _lastBlocked.Remove(carId);
 
         int excludedCount = cells.Count - validCells.Count;
         string excludeMsg = excludedCount > 0 ? $", {excludedCount}개 범위 밖 제외" : "";
-        Debug.Log($"[ReservationTable] TryReserve 성공: 차량 {carId}, {validCells.Count}개 셀 예약, 시작시간 {startTime:F2}s{excludeMsg}");
+        Debug.Log($"[ReservationTable] TryReserve 성공: 차량 {carId}, {validCells.Count}개 셀 예약{excludeMsg}");
         return true;
     }
 
+    // 내 것일 때만 지운다
     public void Release(int carId, Vector2Int cell)
     {
-        List<(Vector2Int, int)> keysToRemove = new List<(Vector2Int, int)>();
-
-        foreach (var kvp in _reservations)
+        if (_reservations.TryGetValue(cell, out int occupantId) && occupantId == carId)
         {
-            if (kvp.Key.cell == cell && kvp.Value == carId)
-            {
-                keysToRemove.Add(kvp.Key);
-            }
-        }
-
-        foreach (var key in keysToRemove)
-        {
-            _reservations.Remove(key);
-        }
-
-        if (keysToRemove.Count > 0)
-        {
+            _reservations.Remove(cell);
             Debug.Log($"[ReservationTable] Release: 차량 {carId}, 셀 {cell}");
         }
     }
@@ -109,19 +105,20 @@ public class ReservationTable : MonoBehaviour
     {
         _reservations.Clear();
         _outOfBoundsCells.Clear();
+        _lastBlocked.Clear();
         Debug.Log("[ReservationTable] Clear: 모든 예약 및 범위 밖 셀 기록 초기화");
     }
 
+    // currentTime은 쓰지 않는다 (셀 단위 점유)
     public List<Vector2Int> GetReservedCells(int carId, float currentTime)
     {
         List<Vector2Int> cells = new List<Vector2Int>();
-        int timeSlot = Mathf.FloorToInt(currentTime / _slotTime);
 
         foreach (var kvp in _reservations)
         {
-            if (kvp.Key.timeSlot == timeSlot && kvp.Value == carId)
+            if (kvp.Value == carId)
             {
-                cells.Add(kvp.Key.cell);
+                cells.Add(kvp.Key);
             }
         }
 
