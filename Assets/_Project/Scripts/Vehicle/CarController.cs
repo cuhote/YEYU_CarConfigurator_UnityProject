@@ -133,7 +133,7 @@ public class CarController : MonoBehaviour
     public IEnumerator Follow(Vector3[] points, float kmh, bool reverse)
     {
         const float lookAhead = 2.0f;    // 이 거리보다 가까운 점은 지나친 것으로 본다
-        const float arriveDist = 0.3f;   // 마지막 점에 이만큼 가까워지면 도착
+        const float arriveDist = 0.8f;   // 마지막 점에 이만큼 가까워지면 도착
 
         SetSpeed(reverse ? -kmh : kmh);
 

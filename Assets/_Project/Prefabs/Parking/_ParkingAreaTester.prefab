@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3382809241879328173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4681734711413399708}
+  - component: {fileID: 8726900531558474264}
+  m_Layer: 0
+  m_Name: _ParkingAreaTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4681734711413399708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382809241879328173}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.35764, y: 0, z: 4.35765}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8726900531558474264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382809241879328173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a3f69e0d60d6ed4a8a761ac8c576396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_ParkingAreaTester
+  _area: {fileID: 0}
+  _switcher: {fileID: 0}
+  _config: {fileID: 11400000, guid: 316aff60c2c0e0444b4d4189884cc1bb, type: 2}
+  _testSpeedKmh: 5
+  _allocator: {fileID: 0}
+  _testSlot: {fileID: 0}
+  _testCar: {fileID: 0}
+  _valetAgent: {fileID: 0}
+  _remoteParking: {fileID: 0}
+  _valetAgents:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _tableB: {fileID: 0}

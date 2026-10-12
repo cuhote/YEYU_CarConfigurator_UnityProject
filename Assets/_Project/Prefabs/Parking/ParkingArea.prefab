@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4643051390786920020}
   - component: {fileID: 6861564170285042809}
+  - component: {fileID: 6892208110465116721}
   m_Layer: 0
   m_Name: ParkingArea
   m_TagString: Untagged
@@ -54,7 +55,12 @@ MonoBehaviour:
   _mode: 2
   _ambientColor: {r: 0.24705884, g: 0.24705884, b: 0.24705884, a: 0}
   _map: {fileID: 0}
-  _slots: {fileID: 0}
+  _tableA: {fileID: 5421721739396154317}
+  _tableB: {fileID: 9127938039930618591}
+  _slots:
+  - {fileID: 2146746718351119114}
+  - {fileID: 2908171694162203160}
+  _scenario: {fileID: 6892208110465116721}
   _cars:
   - {fileID: 929276304110542831}
   - {fileID: 4842619118209640850}
@@ -70,6 +76,43 @@ MonoBehaviour:
   - {fileID: 4789660136149794945}
   - {fileID: 6368282505620398789}
   _smartKeyStarts: []
+--- !u!114 &6892208110465116721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13888785588697887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4b082f189f3ed4daf73247b47f1cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingScenario
+  _fadeTime: 0.5
+  _fade: {fileID: 0}
+  _area: {fileID: 6861564170285042809}
+  _agents:
+  - {fileID: 2853353356129348008}
+  - {fileID: 3134143736403932017}
+  - {fileID: 799294776208320331}
+  - {fileID: 1299294785171728570}
+  - {fileID: 2229166797015265891}
+  - {fileID: 4505440374870206041}
+  _remote: {fileID: 8287444631807190644}
+  _smartKeyCars:
+  - {fileID: 4336921303063257339}
+  - {fileID: 702269660951175657}
+  _switcher: {fileID: 0}
+  _hideInSmartKey:
+  - {fileID: 6467366015158087515}
+  - {fileID: 7805181649729220169}
+  _hideInValet:
+  - {fileID: 8666031468261859667}
+  - {fileID: 3217895302599450162}
+  - {fileID: 5607770779072946241}
+  - {fileID: 1817592509341703968}
+  _valetTimeout: 120
+  _resultHold: 2
 --- !u!1 &4040178729575073973
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraAnchors
   _driver: {fileID: 6968012128822244638}
   _birdEye: {fileID: 3629591176833065576}
-  _fixed: {fileID: 1843989824095963665}
+  _fixed: {fileID: 5635784478211143974}
 --- !u!1 &5916216213873955014
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraAnchors
   _driver: {fileID: 6134600228109530124}
   _birdEye: {fileID: 562885678118560634}
-  _fixed: {fileID: 738646317883293536}
+  _fixed: {fileID: 5635784478211143974}
 --- !u!1001 &992011318114401031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -479,6 +522,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4643051390786920020}
     m_Modifications:
+    - target: {fileID: 1520238230735186783, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_Name
+      value: FixedViewSmartB
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.869385
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3839462
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.8741112
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9816829
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.116288394
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.14987594
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.017687608
+      objectReference: {fileID: 0}
     - target: {fileID: 6526519092973609874, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -519,15 +594,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6714619557801888553, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6785962605092412494, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       propertyPath: m_Name
       value: LotB
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263231658373240998, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.59
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2945633380699807625, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
     - {fileID: 8642542395528041410, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
     - {fileID: 8989838488889960225, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 6949064151956757046, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 7639052755373269558, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 8843487067045236454, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 8127088194245670630, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 2725343596355703883, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 3849279363005216923, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 1520238230735186783, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 405823409997498255, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 4752238324590842942, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+    - {fileID: 5857609937135089902, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7052440535468357272, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       insertIndex: 16
@@ -539,11 +632,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 723831057573042301, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &738646317883293536 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 541672067321644135, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+--- !u!114 &702269660951175657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 322750096026852078, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817592509341703968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarController
+--- !u!114 &1299294785171728570 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2291295029782483901, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7fc617eded4738aeb39a74db6fec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ValetAgent
+--- !u!1 &1817592509341703968 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1512426383825511463, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2229166797015265891 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1381411486748936548, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7fc617eded4738aeb39a74db6fec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ValetAgent
+--- !u!114 &2908171694162203160 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2711083098673670431, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9f6bcb2f975874e85290eb4525c033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingSlotAllocator
 --- !u!114 &4140025884236963581 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3796541713963410938, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -555,6 +692,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
+--- !u!114 &4505440374870206041 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3693760041006357854, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7805181649729220169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7fc617eded4738aeb39a74db6fec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ValetAgent
 --- !u!4 &4789660136149794945 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5745501918683134854, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -563,6 +711,16 @@ Transform:
 --- !u!4 &4930887578482132060 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5308157541949144923, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5607770779072946241 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4618046445177887558, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5635784478211143974 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6134600228109530124 stripped
@@ -585,6 +743,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7052440535468357272, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7805181649729220169 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7031744452504966478, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8287444631807190644 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9135199942081895795, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817592509341703968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59751e5bf8fca4022ba2784cf79ad595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RemoteParking
 --- !u!114 &8549327519177320576 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8890392760115860359, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -601,12 +775,23 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8147664947873033095, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7805181649729220169}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
+--- !u!114 &9127938039930618591 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8316079508511209944, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175463c797fa7e74b812c0e532d879a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReservationTable
 --- !u!1001 &4059279775641877013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -615,6 +800,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4643051390786920020}
     m_Modifications:
+    - target: {fileID: 1520238230735186783, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_Name
+      value: FixedViewSmart
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.869385
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3839462
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50.87411
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9816829
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.116288394
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.14987594
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895976939896914465, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.017687608
+      objectReference: {fileID: 0}
     - target: {fileID: 6526519092973609874, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -655,6 +872,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6714619557801888553, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6785962605092412494, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       propertyPath: m_Name
       value: LotA
@@ -665,6 +886,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+--- !u!114 &799294776208320331 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3693760041006357854, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6467366015158087515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7fc617eded4738aeb39a74db6fec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ValetAgent
 --- !u!114 &929276304110542831 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3796541713963410938, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -676,9 +908,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
---- !u!4 &1843989824095963665 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2432611800641138692, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+--- !u!114 &2146746718351119114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2711083098673670431, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9f6bcb2f975874e85290eb4525c033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingSlotAllocator
+--- !u!114 &2853353356129348008 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2291295029782483901, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7fc617eded4738aeb39a74db6fec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ValetAgent
+--- !u!114 &3134143736403932017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1381411486748936548, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7fc617eded4738aeb39a74db6fec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ValetAgent
+--- !u!1 &3217895302599450162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1512426383825511463, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 4059279775641877013}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &3629591176833065576 stripped
@@ -686,6 +951,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 723831057573042301, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 4059279775641877013}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4336921303063257339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 322750096026852078, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3217895302599450162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarController
 --- !u!114 &4842619118209640850 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8890392760115860359, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -702,12 +978,28 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8147664947873033095, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 4059279775641877013}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6467366015158087515}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
+--- !u!114 &5421721739396154317 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8316079508511209944, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175463c797fa7e74b812c0e532d879a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReservationTable
+--- !u!1 &6467366015158087515 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7031744452504966478, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6968012128822244638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6405859669979401995, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -731,5 +1023,10 @@ Transform:
 --- !u!4 &8640555004482109843 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5745501918683134854, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8666031468261859667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4618046445177887558, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 4059279775641877013}
   m_PrefabAsset: {fileID: 0}

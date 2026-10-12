@@ -20,6 +20,34 @@ public class _ParkingAreaTester : MonoBehaviour
 
     private CarController[] _cars;
 
+    //Valet 후진 테스트
+    [SerializeField]
+    private ParkingSlot _testSlot;
+    [SerializeField]
+    private CarController _testCar;
+
+    //Valet 에이전트 테스트
+    [SerializeField]
+    private ValetAgent _valetAgent;
+
+    //스마트키 원격 주차 테스트
+    [SerializeField]
+    private RemoteParking _remoteParking;
+
+    //발렛 에이전트 배열 테스트
+    [SerializeField]
+    private ValetAgent[] _valetAgents;
+    [SerializeField]
+    private ReservationTable _tableB;
+
+    // 스마트키 장면에서 시야를 가려 숨길 오브젝트 (예: Car_NPC2). 영역 진입·ResetArea 때 다시 보인다
+    [SerializeField]
+    private GameObject[] _hideInSmartKey;
+
+    // 발렛 장면에서 숨길 오브젝트 (스마트키 차와 그 옆 차). 스마트키 진입(9번) 때 다시 보인다
+    [SerializeField]
+    private GameObject[] _hideInValet;
+
     private void Start()
     {
         if (_area == null)
@@ -35,15 +63,49 @@ public class _ParkingAreaTester : MonoBehaviour
     private void Update()
     {
         Keyboard keyboard = Keyboard.current;
-        if (keyboard == null || _area == null || _cars == null)
+        if (keyboard == null)
             return;
 
-        if (keyboard.digit1Key.wasPressedThisFrame) EnterArea();
-        if (keyboard.digit2Key.wasPressedThisFrame) MoveCars();
-        if (keyboard.digit3Key.wasPressedThisFrame) StopCars();
-        if (keyboard.digit4Key.wasPressedThisFrame) ResetArea();
-        if (keyboard.digit5Key.wasPressedThisFrame) LogStartPoses();
-        if (keyboard.digit6Key.wasPressedThisFrame) AssignSlot();
+        if (_area != null && _cars != null)
+        {
+            if (keyboard.digit1Key.wasPressedThisFrame) EnterArea();
+            if (keyboard.digit2Key.wasPressedThisFrame) MoveCars();
+            if (keyboard.digit3Key.wasPressedThisFrame) StopCars();
+            if (keyboard.digit4Key.wasPressedThisFrame) ResetArea();
+            if (keyboard.digit5Key.wasPressedThisFrame) LogStartPoses();
+            if (keyboard.digit6Key.wasPressedThisFrame) AssignSlot();
+            if (keyboard.digit7Key.wasPressedThisFrame) ReverseTest();
+        }
+
+        if (keyboard.digit9Key.wasPressedThisFrame) SmartKeyEnter();
+
+        if (keyboard.digit0Key.wasPressedThisFrame) ToggleTableB();
+
+        if (keyboard.digit8Key.wasPressedThisFrame) StartAllAgents();
+
+        // 방향키 위/아래 - 누르는 동안 매 프레임 Press, 떼는 순간 Release
+        if (_remoteParking != null)
+        {
+            if (keyboard.upArrowKey.isPressed)
+            {
+                _remoteParking.Press(1);
+            }
+            if (keyboard.upArrowKey.wasReleasedThisFrame)
+            {
+                _remoteParking.Release();
+            }
+
+            if (keyboard.downArrowKey.isPressed)
+            {
+                _remoteParking.Press(-1);
+            }
+            if (keyboard.downArrowKey.wasReleasedThisFrame)
+            {
+                _remoteParking.Release();
+            }
+
+            if (keyboard.enterKey.wasPressedThisFrame) SmartKeyBoard();
+        }
     }
 
     // 영역에 들어갈 때 ModeManager가 하는 일을 흉내 낸다
@@ -52,6 +114,7 @@ public class _ParkingAreaTester : MonoBehaviour
         if (_area.Root != null)
             _area.Root.SetActive(true);
 
+        SetSmartKeyHidden(false);
         _area.ResetArea(_config);
         _area.OnEnter();
 
@@ -79,6 +142,7 @@ public class _ParkingAreaTester : MonoBehaviour
 
     private void ResetArea()
     {
+        SetSmartKeyHidden(false);
         _area.ResetArea(_config);
         Debug.Log("[_ParkingAreaTester] ResetArea 호출: 차량이 시작 위치로 돌아갔는지 확인", this);
     }
@@ -99,12 +163,16 @@ public class _ParkingAreaTester : MonoBehaviour
         float scale = Screen.height / 360f;
         GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
 
-        GUILayout.BeginArea(new Rect(8, 8, 190, 130), GUI.skin.box);
+        GUILayout.BeginArea(new Rect(8, 8, 210, 185), GUI.skin.box);
         GUILayout.Label("ParkingArea 테스트");
         GUILayout.Label("1 영역 진입   4 ResetArea");
         GUILayout.Label("2 차량 전진   3 차량 정지");
         GUILayout.Label("5 시작 위치 출력");
-        GUILayout.Label("6 주차면 배정");
+        GUILayout.Label("6 주차면 배정   7 후진 테스트");
+        GUILayout.Label("8 발렛 에이전트");
+        GUILayout.Label("9 스마트키 진입");
+        GUILayout.Label("↑/↓ 누르는 동안 이동");
+        GUILayout.Label("Enter 탑승");
         GUILayout.EndArea();
     }
     // 빈 주차면을 하나 배정받아 Id를 출력. null이면 만차
@@ -121,5 +189,126 @@ public class _ParkingAreaTester : MonoBehaviour
             Debug.Log("[_ParkingAreaTester] 만차 (AssignEmpty가 null 반환)", this);
         else
             Debug.Log($"[_ParkingAreaTester] 배정된 주차면 Id: {slot.Id}", this);
+    }
+    
+    //후진 테스트
+    private void ReverseTest()
+    {
+        if (_testSlot == null || _testCar == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] testSlot 또는 testCar가 비어 있음", this);
+            return;
+        }
+
+        Vector3[] route = _testSlot.GetReverseRoute();
+        _testCar.StopAllCoroutines();
+        _testCar.ResetPose(_testSlot.GetReverseStartPose());
+        _testCar.StartCoroutine(_testCar.Follow(route, 5f, true));
+        Debug.Log($"[_ParkingAreaTester] 후진 시작: 점 {route.Length}개, 목표 {_testSlot.transform.position}", this);
+    }
+
+    //발렛 에이전트 테스트
+    private void ValetTest()
+    {
+        if (_valetAgent == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] ValetAgent가 비어 있음", this);
+            return;
+        }
+
+        _valetAgent.StartCoroutine(_valetAgent.Go());
+        Debug.Log("[_ParkingAreaTester] ValetAgent.Go() 시작", this);
+    }
+
+    //스마트키 원격 주차 진입
+    private void SmartKeyEnter()
+    {
+        if (_switcher == null || _remoteParking == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] CameraSwitcher 또는 RemoteParking이 비어 있음", this);
+            return;
+        }
+
+        _remoteParking.SetActive(true);
+        _switcher.SetFixedView(true);
+        SetSmartKeyHidden(true);
+        Debug.Log("[_ParkingAreaTester] 스마트키 장면 진입: FixedView ON, RemoteParking ON", this);
+    }
+
+    // 스마트키 장면에서 가리는 오브젝트를 숨기거나 다시 보이게 한다
+    // hidden이 true면 스마트키 장면(발렛 차 일부를 숨김), false면 발렛 장면(스마트키 쪽 차를 숨김)
+    private void SetSmartKeyHidden(bool hidden)
+    {
+        SetObjectsActive(_hideInSmartKey, !hidden);
+        SetObjectsActive(_hideInValet, hidden);
+    }
+
+    private static void SetObjectsActive(GameObject[] objects, bool active)
+    {
+        if (objects == null)
+            return;
+
+        foreach (GameObject obj in objects)
+        {
+            if (obj != null)
+                obj.SetActive(active);
+        }
+    }
+
+    //스마트키 탑승
+    private void SmartKeyBoard()
+    {
+        if (_remoteParking == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] RemoteParking이 비어 있음", this);
+            return;
+        }
+
+        _remoteParking.Board();
+        Debug.Log("[_ParkingAreaTester] 탑승 시도", this);
+    }
+
+    //모든 발렛 에이전트 시작
+    private void StartAllAgents()
+    {
+        if (_valetAgents == null || _valetAgents.Length == 0)
+        {
+            Debug.LogError("[_ParkingAreaTester] _valetAgents가 비어 있음", this);
+            return;
+        }
+
+        // 먼저 모든 차가 서 있는 자리를 잡아 둔다. 안 그러면 먼저 출발한 차가 아직 서 있는 차의 자리를 예약해 버린다
+        foreach (ValetAgent agent in _valetAgents)
+        {
+            if (agent != null)
+            {
+                agent.ResetAgent();
+                agent.HoldPosition();
+            }
+        }
+
+        foreach (ValetAgent agent in _valetAgents)
+        {
+            if (agent != null)
+            {
+                agent.StartGo();
+            }
+        }
+
+        Debug.Log($"[_ParkingAreaTester] {_valetAgents.Length}개 발렛 에이전트 시작", this);
+    }
+
+    //예약 테이블 B 토글
+    private void ToggleTableB()
+    {
+        if (_tableB == null)
+        {
+            Debug.LogError("[_ParkingAreaTester] _tableB가 비어 있음", this);
+            return;
+        }
+
+        bool newState = !_tableB.IsOn;
+        _tableB.SetOn(newState);
+        Debug.Log($"[_ParkingAreaTester] ReservationTable B: {newState}", this);
     }
 }
