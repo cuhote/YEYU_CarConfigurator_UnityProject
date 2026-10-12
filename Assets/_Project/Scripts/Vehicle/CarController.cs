@@ -31,6 +31,7 @@ public class CarController : MonoBehaviour
     private float _spinAngle; //바퀴 회전각 (도)
 
     public float SpeedKmh => _speedMps * 3.6f;
+    public float SteerAngle => _frontSteerAngle;
 
     void Awake()
     {
