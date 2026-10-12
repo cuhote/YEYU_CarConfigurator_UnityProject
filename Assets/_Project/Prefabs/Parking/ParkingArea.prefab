@@ -54,7 +54,11 @@ MonoBehaviour:
   _mode: 2
   _ambientColor: {r: 0.24705884, g: 0.24705884, b: 0.24705884, a: 0}
   _map: {fileID: 0}
-  _slots: {fileID: 0}
+  _tableA: {fileID: 1222387936040819344}
+  _tableB: {fileID: 2695381436134857602}
+  _slots:
+  - {fileID: 2146746718351119114}
+  - {fileID: 2908171694162203160}
   _cars:
   - {fileID: 929276304110542831}
   - {fileID: 4842619118209640850}
@@ -70,6 +74,37 @@ MonoBehaviour:
   - {fileID: 4789660136149794945}
   - {fileID: 6368282505620398789}
   _smartKeyStarts: []
+--- !u!1 &1404301307798451744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2591768261979990286}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2591768261979990286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404301307798451744}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 19.97, y: 0.44, z: 11.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2437406897627401202}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4040178729575073973
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraAnchors
   _driver: {fileID: 6968012128822244638}
   _birdEye: {fileID: 3629591176833065576}
-  _fixed: {fileID: 1843989824095963665}
+  _fixed: {fileID: 1088665497624396134}
 --- !u!1 &5916216213873955014
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraAnchors
   _driver: {fileID: 6134600228109530124}
   _birdEye: {fileID: 562885678118560634}
-  _fixed: {fileID: 738646317883293536}
+  _fixed: {fileID: 4218351108823695476}
 --- !u!1001 &992011318114401031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -479,6 +514,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4643051390786920020}
     m_Modifications:
+    - target: {fileID: 1520238230735186783, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_Name
+      value: FixedViewSmartB
+      objectReference: {fileID: 0}
     - target: {fileID: 6526519092973609874, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -532,6 +571,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7052440535468357272, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       insertIndex: 16
       addedObject: {fileID: 604953184878707727}
+    - targetCorrespondingSourceObject: {fileID: 3177075825565184245, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2591768261979990286}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
 --- !u!4 &562885678118560634 stripped
@@ -539,11 +581,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 723831057573042301, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &738646317883293536 stripped
+--- !u!4 &2437406897627401202 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 541672067321644135, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3177075825565184245, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 992011318114401031}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2695381436134857602 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2928393275123441797, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 710c8aeec67a545d1812399071b1ac09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReservationTable
+--- !u!114 &2908171694162203160 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2711083098673670431, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9f6bcb2f975874e85290eb4525c033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingSlotAllocator
 --- !u!114 &4140025884236963581 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3796541713963410938, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -555,6 +619,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
+--- !u!4 &4218351108823695476 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3985337066621762419, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 992011318114401031}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4789660136149794945 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5745501918683134854, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
@@ -615,6 +684,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4643051390786920020}
     m_Modifications:
+    - target: {fileID: 1520238230735186783, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+      propertyPath: m_Name
+      value: FixedViewSmart
+      objectReference: {fileID: 0}
     - target: {fileID: 6526519092973609874, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -676,11 +749,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a99c3f7652b2664c9f7a58890e1f211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarController
---- !u!4 &1843989824095963665 stripped
+--- !u!4 &1088665497624396134 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2432611800641138692, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3985337066621762419, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
   m_PrefabInstance: {fileID: 4059279775641877013}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1222387936040819344 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2928393275123441797, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 710c8aeec67a545d1812399071b1ac09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReservationTable
+--- !u!114 &2146746718351119114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2711083098673670431, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
+  m_PrefabInstance: {fileID: 4059279775641877013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9f6bcb2f975874e85290eb4525c033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingSlotAllocator
 --- !u!4 &3629591176833065576 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 723831057573042301, guid: 1fdc5c8b1abcc1c40b7cdc55ae5da607, type: 3}
