@@ -44,6 +44,10 @@ public class _ParkingAreaTester : MonoBehaviour
     [SerializeField]
     private GameObject[] _hideInSmartKey;
 
+    // 발렛 장면에서 숨길 오브젝트 (스마트키 차와 그 옆 차). 스마트키 진입(9번) 때 다시 보인다
+    [SerializeField]
+    private GameObject[] _hideInValet;
+
     private void Start()
     {
         if (_area == null)
@@ -198,7 +202,7 @@ public class _ParkingAreaTester : MonoBehaviour
 
         Vector3[] route = _testSlot.GetReverseRoute();
         _testCar.StopAllCoroutines();
-        _testCar.ResetPose(_testSlot.GetEntryPose());
+        _testCar.ResetPose(_testSlot.GetReverseStartPose());
         _testCar.StartCoroutine(_testCar.Follow(route, 5f, true));
         Debug.Log($"[_ParkingAreaTester] 후진 시작: 점 {route.Length}개, 목표 {_testSlot.transform.position}", this);
     }
@@ -232,15 +236,22 @@ public class _ParkingAreaTester : MonoBehaviour
     }
 
     // 스마트키 장면에서 가리는 오브젝트를 숨기거나 다시 보이게 한다
+    // hidden이 true면 스마트키 장면(발렛 차 일부를 숨김), false면 발렛 장면(스마트키 쪽 차를 숨김)
     private void SetSmartKeyHidden(bool hidden)
     {
-        if (_hideInSmartKey == null)
+        SetObjectsActive(_hideInSmartKey, !hidden);
+        SetObjectsActive(_hideInValet, hidden);
+    }
+
+    private static void SetObjectsActive(GameObject[] objects, bool active)
+    {
+        if (objects == null)
             return;
 
-        foreach (GameObject obj in _hideInSmartKey)
+        foreach (GameObject obj in objects)
         {
             if (obj != null)
-                obj.SetActive(!hidden);
+                obj.SetActive(active);
         }
     }
 
@@ -264,6 +275,16 @@ public class _ParkingAreaTester : MonoBehaviour
         {
             Debug.LogError("[_ParkingAreaTester] _valetAgents가 비어 있음", this);
             return;
+        }
+
+        // 먼저 모든 차가 서 있는 자리를 잡아 둔다. 안 그러면 먼저 출발한 차가 아직 서 있는 차의 자리를 예약해 버린다
+        foreach (ValetAgent agent in _valetAgents)
+        {
+            if (agent != null)
+            {
+                agent.ResetAgent();
+                agent.HoldPosition();
+            }
         }
 
         foreach (ValetAgent agent in _valetAgents)

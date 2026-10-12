@@ -91,6 +91,20 @@ public class ReservationTable : MonoBehaviour
         return true;
     }
 
+    // 서 있는 차가 차지한 셀 하나를 잡는다. 비었거나 내 것이면 true, 다른 차 것이면 false
+    public bool TryHold(int carId, Vector2Int cell)
+    {
+        if (!_isOn)
+            return false;
+        if (_map != null && !_map.Contains(cell))
+            return false;
+        if (_reservations.TryGetValue(cell, out int occupantId) && occupantId != carId)
+            return false;
+
+        _reservations[cell] = carId;
+        return true;
+    }
+
     // 내 것일 때만 지운다
     public void Release(int carId, Vector2Int cell)
     {
