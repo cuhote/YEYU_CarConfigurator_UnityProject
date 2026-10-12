@@ -13,6 +13,9 @@ public class DrivingArea : AreaBase
 
     [SerializeField] private VirtualDriver _driverA;
     [SerializeField] private VirtualDriver _driverB;
+    [SerializeField] private DrivingDrawer _drawer;
+
+   
 
     public const int SceneNightVision = 0;
     public const int SceneRearSteer = 1;
@@ -32,7 +35,7 @@ public class DrivingArea : AreaBase
     public Pose GetStartPose(int scene, int car)
     {
         Transform[] starts;
-        if (scene == SceneNightVision) starts = _nightVisionStarts;
+        if (scene == SceneNightVision) starts = _nightVisionStarts; 
         else if (scene == SceneRearSteer) starts = _rearSteerStarts;
         else
         {
@@ -91,6 +94,14 @@ public class DrivingArea : AreaBase
             _rearSteer.ResetFeature();
             _rearSteer.SetActive(config != null && config.RearWheelSteering);
         }
+        
+        if (_drawer != null)
+        {
+            bool night = _scene == SceneNightVision;
+            _drawer.ShowCones(night);
+            _drawer.ShowThermalCone(night && config != null && config.NightVision);
+        }
+
 
         
     }
