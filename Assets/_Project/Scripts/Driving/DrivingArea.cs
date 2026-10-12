@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DrivingArea : AreaBase
 {
@@ -13,26 +14,83 @@ public class DrivingArea : AreaBase
 
     [SerializeField] private VirtualDriver _driverA;
     [SerializeField] private VirtualDriver _driverB;
+    [SerializeField] private DrivingDrawer _drawer;
+
+    [Header("유턴 장면 조명")]
+    [SerializeField] private Light _areaLight; // 영역 안의 Directional Light
+    [SerializeField] private float _nightLightIntensity = 0.07f;
+    [SerializeField] private float _turnLightIntensity = 0.8f;
+    [SerializeField] private Color _turnAmbient = new Color(0.45f, 0.47f, 0.52f);
+
+   
 
     public const int SceneNightVision = 0;
     public const int SceneRearSteer = 1;
 
     private int _scene;
 
+    [SerializeField] private float _sceneGap = 3f;
+
+    private CarConfig _config;
+    private bool _playBoth; // 두 기능을 다 골랐는지 
+
     public override void OnEnter()
     {
         base.OnEnter();
-        
+        StopAllCoroutines();
+        StartScene();
+        if (_playBoth) StartCoroutine(PlayNextScene());
+    }
+    public override void OnExit()
+    {
+        StopAllCoroutines();
+        base.OnExit();
+    }
+
+    private void StartScene()
+    {
         if(_scene == SceneNightVision)
         {
             if(_driverA != null) _driverA.Drive();
             if(_driverB != null) _driverB.Drive();
         }
+        else if(_scene == SceneRearSteer)
+        {
+            if(_driverA != null) _driverA.DriveUTurn();
+            if(_driverB != null) _driverB.DriveUTurn();
+        }
+    }
+
+    private IEnumerator PlayNextScene()
+    {
+        yield return new WaitForSeconds(2f); // 차가 출발할 시간을 준다
+
+        while (Mathf.Abs(_carA.SpeedKmh) > 0.1f || Mathf.Abs(_carB.SpeedKmh) > 0.1f)
+        {
+            yield return null; // 두 차가 모두 멈출 때까지
+        }
+        yield return new WaitForSeconds(_sceneGap);
+
+        _scene = SceneRearSteer;
+        SetupScene();
+        ApplyLighting();
+        StartScene();
+    }
+    protected override void ApplyLighting()
+    {
+        base.ApplyLighting(); // 밤 조명을 먼저 건다
+
+        bool turn = _scene == SceneRearSteer;
+        if (turn) RenderSettings.ambientLight = _turnAmbient;
+        if (_areaLight != null)
+        {
+            _areaLight.intensity = turn ? _turnLightIntensity : _nightLightIntensity;
+        }
     }
     public Pose GetStartPose(int scene, int car)
     {
         Transform[] starts;
-        if (scene == SceneNightVision) starts = _nightVisionStarts;
+        if (scene == SceneNightVision) starts = _nightVisionStarts; 
         else if (scene == SceneRearSteer) starts = _rearSteerStarts;
         else
         {
@@ -54,12 +112,20 @@ public class DrivingArea : AreaBase
     }
     public override void ResetArea(CarConfig config)
     {
-        _scene = SceneNightVision;
-        if(config != null && ! config.NightVision && config.RearWheelSteering)
-        {
-            _scene = SceneRearSteer;
-        } 
-    
+         _config = config;
+        bool nightVision = config != null && config.NightVision;
+        bool rearSteer = config != null && config.RearWheelSteering;
+
+        _playBoth = nightVision && rearSteer;
+        _scene = (!nightVision && rearSteer) ? SceneRearSteer : SceneNightVision;
+
+        SetupScene();
+    }
+
+    private void SetupScene()
+    {
+        bool night = _scene == SceneNightVision;
+
         if(_carA == null)
         {
             Debug.LogError("[DrivingArea] ResetArea: _carA가 비어 있음 (Inspector 연결 확인)");
@@ -84,14 +150,20 @@ public class DrivingArea : AreaBase
         if(_nightVisionSensor != null)
         {
             _nightVisionSensor.ResetFeature();
-            _nightVisionSensor.SetActive(config != null && config.NightVision);
+            _nightVisionSensor.SetActive(night&& _config != null &&_config.NightVision);
         }
         if(_rearSteer !=null)
         {
             _rearSteer.ResetFeature();
-            _rearSteer.SetActive(config != null && config.RearWheelSteering);
+            _rearSteer.SetActive(_config != null && _config.RearWheelSteering);
+        }
+        
+        if (_drawer != null)
+        {
+            _drawer.ShowCones(night);
+            _drawer.ShowThermalCone(night && _config != null && _config.NightVision);
         }
 
-        
     }
+           
 }
