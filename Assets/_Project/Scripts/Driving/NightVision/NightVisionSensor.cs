@@ -21,11 +21,12 @@ public class NightVisionSensor : MonoBehaviour,ICarFeature
     public float CurrentDistance {get; private set;} // 현재 거리 (m)
     public float CurrentTTC {get; private set;} // 현재 TTC (초)
     public bool IsWarning => _warning;
+    public bool IsActive => _active;
     public event Action<bool> WarningChanged; // 경고 상태가 바뀌면 호출됨 (true: 경고 시작, false: 경고 종료)
 
     public float CalcTTC(float distance, float speedMps)
     {
-        if(speedMps <= 0.1f) return float.PositiveInfinity;
+        if(speedMps <= 0.1f) return float.PositiveInfinity; 
         return distance / speedMps;
     }
     private void Update()
@@ -40,7 +41,7 @@ public class NightVisionSensor : MonoBehaviour,ICarFeature
         if(dot <= 0f || dot >_detectRange)
         {
             Target = null;
-            CurrentTTC = float.PositiveInfinity;
+            CurrentTTC = float.PositiveInfinity; // 충돌까지 남은 시간이 무한대 (충돌할 일이 없음)
             return;
         }
         Target = _pedestrian;
@@ -50,7 +51,7 @@ public class NightVisionSensor : MonoBehaviour,ICarFeature
         if(CurrentTTC <= _ttcWarn && _warning == false)
         {
             _warning = true;
-            WarningChanged?.Invoke(true);
+            WarningChanged?.Invoke(true); //경고 상태가 바뀌었다고 듣고 있는 쪽에 알려라 
         }
         if(CurrentTTC <= _ttcBrake && !_brakeRequested)
         {
