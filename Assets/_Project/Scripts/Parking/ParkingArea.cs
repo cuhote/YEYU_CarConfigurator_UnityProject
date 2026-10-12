@@ -11,8 +11,9 @@ public class ParkingArea : AreaBase
     private ReservationTable _tableB;
     [SerializeField]
     private ParkingSlotAllocator[] _slots;
-    //[SerializeField]
-    //private ParkingScenario _scenario;
+    // 비워 두면 시나리오 없이 영역만 켠다 (_ParkingAreaTester로 수동 테스트할 때)
+    [SerializeField]
+    private ParkingScenario _scenario;
     [SerializeField]
     private CarController[] _cars;
     [SerializeField]
@@ -24,8 +25,27 @@ public class ParkingArea : AreaBase
 
 
 
+    private CarConfig _config;
+
+    // 영역에 들어오면 시나리오를 첫 장면부터 시작한다 (ModeManager가 ResetArea 다음에 부른다)
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        if (_scenario != null)
+            _scenario.StartFirstScene(_config);
+    }
+
+    public override void OnExit()
+    {
+        if (_scenario != null)
+            _scenario.StopScenario();
+        base.OnExit();
+    }
+
     public override void ResetArea(CarConfig config)
     {
+        _config = config;
+
         for (int i=0;i<_cars.Length;i++)
         {
             if (_cars[i] == null)
@@ -77,7 +97,7 @@ public class ParkingArea : AreaBase
         else
         {
             Debug.LogError($"[ParkingArea] GetStartPose: scene은 0 또는 1이어야 함 (받은 값: {scene})");
-            return default; //(0,0,0,0) 쿼터니언 기본값 (0,0,0,1). identity
+            return new Pose(Vector3.zero, Quaternion.identity); //(0,0,0,0) 쿼터니언 기본값 (0,0,0,1). identity
         }
 
         if (car < 0 || car >= starts.Length || starts[car] == null)
