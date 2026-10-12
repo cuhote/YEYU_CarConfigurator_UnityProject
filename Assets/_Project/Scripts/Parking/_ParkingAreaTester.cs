@@ -40,6 +40,10 @@ public class _ParkingAreaTester : MonoBehaviour
     [SerializeField]
     private ReservationTable _tableB;
 
+    // 스마트키 장면에서 시야를 가려 숨길 오브젝트 (예: Car_NPC2). 영역 진입·ResetArea 때 다시 보인다
+    [SerializeField]
+    private GameObject[] _hideInSmartKey;
+
     private void Start()
     {
         if (_area == null)
@@ -67,7 +71,6 @@ public class _ParkingAreaTester : MonoBehaviour
             if (keyboard.digit5Key.wasPressedThisFrame) LogStartPoses();
             if (keyboard.digit6Key.wasPressedThisFrame) AssignSlot();
             if (keyboard.digit7Key.wasPressedThisFrame) ReverseTest();
-            if (keyboard.digit8Key.wasPressedThisFrame) ValetTest();
         }
 
         if (keyboard.digit9Key.wasPressedThisFrame) SmartKeyEnter();
@@ -107,6 +110,7 @@ public class _ParkingAreaTester : MonoBehaviour
         if (_area.Root != null)
             _area.Root.SetActive(true);
 
+        SetSmartKeyHidden(false);
         _area.ResetArea(_config);
         _area.OnEnter();
 
@@ -134,6 +138,7 @@ public class _ParkingAreaTester : MonoBehaviour
 
     private void ResetArea()
     {
+        SetSmartKeyHidden(false);
         _area.ResetArea(_config);
         Debug.Log("[_ParkingAreaTester] ResetArea 호출: 차량이 시작 위치로 돌아갔는지 확인", this);
     }
@@ -222,7 +227,21 @@ public class _ParkingAreaTester : MonoBehaviour
 
         _remoteParking.SetActive(true);
         _switcher.SetFixedView(true);
+        SetSmartKeyHidden(true);
         Debug.Log("[_ParkingAreaTester] 스마트키 장면 진입: FixedView ON, RemoteParking ON", this);
+    }
+
+    // 스마트키 장면에서 가리는 오브젝트를 숨기거나 다시 보이게 한다
+    private void SetSmartKeyHidden(bool hidden)
+    {
+        if (_hideInSmartKey == null)
+            return;
+
+        foreach (GameObject obj in _hideInSmartKey)
+        {
+            if (obj != null)
+                obj.SetActive(!hidden);
+        }
     }
 
     //스마트키 탑승

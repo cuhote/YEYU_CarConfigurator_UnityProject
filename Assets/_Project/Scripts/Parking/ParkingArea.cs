@@ -77,7 +77,7 @@ public class ParkingArea : AreaBase
         else
         {
             Debug.LogError($"[ParkingArea] GetStartPose: scene은 0 또는 1이어야 함 (받은 값: {scene})");
-            return default;
+            return default; //(0,0,0,0) 쿼터니언 기본값 (0,0,0,1). identity
         }
 
         if (car < 0 || car >= starts.Length || starts[car] == null)

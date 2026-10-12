@@ -26,7 +26,7 @@ public class DoorSwingDrawer : MonoBehaviour
 
         // LineRenderer 생성 (자식 오브젝트)
         GameObject lineObj = new GameObject("DoorArcRenderer");
-        lineObj.transform.SetParent(transform);
+        lineObj.transform.SetParent(transform,false);
         lineObj.transform.localPosition = Vector3.zero;
         lineObj.layer = _visualizationLayer;
 
@@ -67,7 +67,7 @@ public class DoorSwingDrawer : MonoBehaviour
 
             // 문이 열리는 방향: 경첩 x가 음수(-0.95)면 양수 방향으로 열림
             // _driverOnLeft가 true면 원래 방향, false면 반대 방향
-            float doorDir = (_hingeOffset.x < 0 ? 1f : -1f);
+            float doorDir = (_hingeOffset.x < 0 ? -1f : 1f);
             if (!_driverOnLeft)
             {
                 doorDir *= -1f;
@@ -122,7 +122,7 @@ public class DoorSwingDrawer : MonoBehaviour
         Vector3 doorBasePos = carPos + carRight * _hingeOffset.x + carForward * _hingeOffset.z;
 
         // 문이 열리는 방향 (경첩 x 기준, _driverOnLeft 미적용)
-        float doorDir = _hingeOffset.x < 0 ? 1f : -1f;
+        float doorDir = _hingeOffset.x < 0 ? -1f : 1f;
         Vector3 doorTipPos = doorBasePos + carRight * (_doorLength * doorDir);
 
         Vector3 boxCenter = (doorBasePos + doorTipPos) / 2f;
@@ -167,7 +167,7 @@ public class DoorSwingDrawer : MonoBehaviour
         Vector3 doorBasePos = carPos + carRight * _hingeOffset.x + carForward * _hingeOffset.z;
 
         // 문이 열리는 방향 (경첩 x 기준)
-        float doorDir = _hingeOffset.x < 0 ? 1f : -1f;
+        float doorDir = _hingeOffset.x < 0 ? -1f : 1f;
         Vector3 doorTipPos = doorBasePos + carRight * (_doorLength * doorDir);
 
         // BoxCast: 문 열림 영역 검사
