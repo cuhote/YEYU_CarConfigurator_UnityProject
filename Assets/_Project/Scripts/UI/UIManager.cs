@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _exteriorPanel; // 외관 선택 화면. 아직 없으면 비워 둔다
     [SerializeField] private GameObject _featurePanel;
     [SerializeField] private GameObject _sceneButtons;  // 주행·주차 화면의 운전석/버드뷰 버튼 묶음
+    [SerializeField] private Image _tabBackground; // 시점 탭 뒤의 둥근 배경 (_sceneButtons에 붙은 Image)
 
     [Header("시점 탭")]
     [SerializeField] private CameraSwitcher _cameraSwitcher;
@@ -55,6 +56,8 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogWarning("[UIManager] NavigationBar가 비어 있습니다");
         }
+
+        if (_sceneButtons != null) _tabBackground = _sceneButtons.GetComponent<Image>();
     }
     public void Start()
     {
@@ -153,6 +156,13 @@ public class UIManager : MonoBehaviour
         UpdateSideLabels();
 
         if (_cameraSwitcher == null) return;
+
+         // 스마트키 장면은 고정 시점이라 시점을 바꿀 수 없으므로 탭을 숨긴다
+        bool showTabs = _cameraSwitcher.CurrentView != CameraView.Fixed;
+        if (_driverTab != null) _driverTab.gameObject.SetActive(showTabs);
+        if (_birdTab != null) _birdTab.gameObject.SetActive(showTabs);
+        if (_tabBackground != null) _tabBackground.enabled = showTabs;
+
         PaintTab(_driverTab, _driverLabel, _cameraSwitcher.CurrentView == CameraView.Driver);
         PaintTab(_birdTab, _birdLabel, _cameraSwitcher.CurrentView == CameraView.BirdEye);
     }
