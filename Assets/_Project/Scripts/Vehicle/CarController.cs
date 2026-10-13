@@ -32,6 +32,8 @@ public class CarController : MonoBehaviour
 
     public float SpeedKmh => _speedMps * 3.6f;
     public float SteerAngle => _frontSteerAngle;
+    public float RearSteerAngle => _rearSteerAngle;
+    public float WheelBase => _wheelBase;
 
     void Awake()
     {
