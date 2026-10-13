@@ -70,7 +70,12 @@ public class ParkingScenario : ScenarioBase
         }
 
         if (_switcher != null)
+        {
             _switcher.SetFixedView(smartKey);
+            // 발렛 장면은 주차장 전체가 보이는 버드뷰로 시작한다 (고정 시점을 푼 다음에 바꿔야 한다)
+            if (!smartKey)
+                _switcher.Switch(CameraView.BirdEye);
+        }
     }
 
     protected override IEnumerator RunScene(int index)
