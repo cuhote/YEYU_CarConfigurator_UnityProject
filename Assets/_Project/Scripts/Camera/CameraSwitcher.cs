@@ -91,7 +91,7 @@ public class CameraSwitcher : MonoBehaviour
     }
 
     //[탑승] 누르면 오른쪽만 운전석 시점으로
-    public void SetRightDriverView()
+    public void SetRightDriverView(Transform anchor = null)
     {
         if(_right == null)
         {
@@ -99,6 +99,14 @@ public class CameraSwitcher : MonoBehaviour
             return;
         }
         ApplyView(_right, _rightAnchors, CameraView.Driver);
+
+        // 같은 운전석 시점 설정을 쓰되 자리만 지정한 차로 옮긴다
+        if (anchor != null)
+        {
+            _right.transform.SetParent(anchor, false);
+            _right.transform.localPosition = Vector3.zero;
+            _right.transform.localRotation = Quaternion.identity;
+        }   
     }
 
     // (지원) 카메라를 어떤 시점 앵커로 옮기는 작업

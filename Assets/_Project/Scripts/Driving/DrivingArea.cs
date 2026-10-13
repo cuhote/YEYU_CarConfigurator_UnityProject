@@ -82,7 +82,12 @@ public class DrivingArea : AreaBase
     }
     public override void ResetArea(CarConfig config)
     {
-         _config = config;
+        _config = config;
+        
+        // 외관 선택(색상·휠)을 차 두 대에 똑같이 적용 (FR-10)
+        ApplyAppearance(_carA);
+        ApplyAppearance(_carB);
+        
         bool nightVision = config != null && config.NightVision;
         bool rearSteer = config != null && config.RearWheelSteering;
 
@@ -142,5 +147,19 @@ public class DrivingArea : AreaBase
         }
 
     }
+
+    private void ApplyAppearance(CarController car)
+    {
+        if (car == null) return;
+
+        CarAppearance appearance = car.GetComponent<CarAppearance>();
+        if (appearance == null)
+        {
+            Debug.LogError($"[DrivingArea] ApplyAppearance: {car.name}에 CarAppearance가 없음");
+            return;
+        }
+        appearance.Apply(_config);
+    }
+
            
 }
