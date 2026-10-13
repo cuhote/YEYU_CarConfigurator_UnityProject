@@ -49,8 +49,8 @@ public class NavigationBar : MonoBehaviour
             return;
         }
 
-        ScreenHistory.ScreenId previousScreen = _screenHistory.Pop();
-        NavigateToScreen(previousScreen);
+        _screenHistory.Pop(); // 지금 화면을 꺼내고
+        NavigateToScreen(_screenHistory.Peek()); // 그 아래에 있던 화면으로 간다
     }
 
     public void OnHomeClicked()
@@ -79,12 +79,12 @@ public class NavigationBar : MonoBehaviour
 
             case ScreenHistory.ScreenId.DrivingScene:
                 Debug.Log("[NavigationBar] 주행 화면으로 이동 요청 (ParkingScenario 미구현)");
-                // TODO: ParkingScenario가 구현되면 _uiManager.ShowDrivingScene() 호출
+                _uiManager.ShowDrivingScene();
                 break;
 
             case ScreenHistory.ScreenId.ParkingScene:
                 Debug.Log("[NavigationBar] 주차 화면으로 이동 요청 (ParkingScenario 미구현)");
-                // TODO: ParkingScenario가 구현되면 _uiManager.ShowParkingScene() 호출
+                _uiManager.ShowParkingScene();
                 break;
 
             default:
