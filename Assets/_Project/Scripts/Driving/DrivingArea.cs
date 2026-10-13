@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+
 
 public class DrivingArea : AreaBase
 {
@@ -22,6 +22,7 @@ public class DrivingArea : AreaBase
     [SerializeField] private float _turnLightIntensity = 0.8f;
     [SerializeField] private Color _turnAmbient = new Color(0.45f, 0.47f, 0.52f);
 
+    [SerializeField] private DrivingScenario _scenario;
    
 
     public const int SceneNightVision = 0;
@@ -29,53 +30,22 @@ public class DrivingArea : AreaBase
 
     private int _scene;
 
-    [SerializeField] private float _sceneGap = 3f;
+
 
     private CarConfig _config;
-    private bool _playBoth; // 두 기능을 다 골랐는지 
+
 
     public override void OnEnter()
     {
         base.OnEnter();
-        StopAllCoroutines();
-        StartScene();
-        if (_playBoth) StartCoroutine(PlayNextScene());
+        if (_scenario != null) _scenario.StartFirstScene(_config);
     }
     public override void OnExit()
     {
-        StopAllCoroutines();
+        if (_scenario != null) _scenario.StopScenario();
         base.OnExit();
     }
 
-    private void StartScene()
-    {
-        if(_scene == SceneNightVision)
-        {
-            if(_driverA != null) _driverA.Drive();
-            if(_driverB != null) _driverB.Drive();
-        }
-        else if(_scene == SceneRearSteer)
-        {
-            if(_driverA != null) _driverA.DriveUTurn();
-            if(_driverB != null) _driverB.DriveUTurn();
-        }
-    }
-
-    private IEnumerator PlayNextScene()
-    {
-        yield return new WaitForSeconds(2f); // 차가 출발할 시간을 준다
-
-        while (Mathf.Abs(_carA.SpeedKmh) > 0.1f || Mathf.Abs(_carB.SpeedKmh) > 0.1f)
-        {
-            yield return null; // 두 차가 모두 멈출 때까지
-        }
-        yield return new WaitForSeconds(_sceneGap);
-
-        _scene = SceneRearSteer;
-        SetupScene();
-        ApplyLighting();
-        StartScene();
-    }
     protected override void ApplyLighting()
     {
         base.ApplyLighting(); // 밤 조명을 먼저 건다
@@ -116,11 +86,17 @@ public class DrivingArea : AreaBase
         bool nightVision = config != null && config.NightVision;
         bool rearSteer = config != null && config.RearWheelSteering;
 
-        _playBoth = nightVision && rearSteer;
         _scene = (!nightVision && rearSteer) ? SceneRearSteer : SceneNightVision;
 
         SetupScene();
     }
+    public void SetScene(int scene)
+    {
+        _scene = scene;
+        SetupScene();
+        ApplyLighting();
+    }
+
 
     private void SetupScene()
     {

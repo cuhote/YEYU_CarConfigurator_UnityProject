@@ -38,6 +38,9 @@ public class VirtualDriver : MonoBehaviour
     private float _reactionTimer; //발견한 뒤 흐른 시간 
     private bool _pedestrianDetected; //보행자 발견 여부
 
+    public bool IsDone { get; private set; }
+    public bool IsStopped =>_car !=null && Mathf.Abs(_car.SpeedKmh) <0.1f;
+
     public void Drive()
     {
         _driving = true;
@@ -54,16 +57,24 @@ public class VirtualDriver : MonoBehaviour
     public void ResetDriver()
     {
         StopAllCoroutines();
+        IsDone=false;
         _driving = false;
         _braking = false;
         _reactionTimer = 0f;
         _pedestrianDetected = false;
+        
     }
 
     public void DriveUTurn()
     {
         StopAllCoroutines();
+        IsDone=false;
         StartCoroutine(UTurnRoutine());
+    }
+    public void Stop()
+    {
+        ResetDriver();
+        if (_car != null) _car.Brake(_brakeDeceleration);
     }
 
     private IEnumerator UTurnRoutine()
@@ -117,6 +128,7 @@ public class VirtualDriver : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         _car.Brake(3f);
+        IsDone= true;
     }
 
     private float DistanceToUTurnPoint()

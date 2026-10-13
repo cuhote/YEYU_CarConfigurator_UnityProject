@@ -2207,6 +2207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8069550022007363362}
   - component: {fileID: 2600105455106629043}
+  - component: {fileID: 5419968107094996466}
   - component: {fileID: 4640711234931258199}
   m_Layer: 0
   m_Name: DrivingArea
@@ -2272,7 +2273,25 @@ MonoBehaviour:
   _nightLightIntensity: 0.07
   _turnLightIntensity: 0.8
   _turnAmbient: {r: 0.45, g: 0.47, b: 0.52, a: 1}
-  _sceneGap: 3
+  _scenario: {fileID: 5419968107094996466}
+--- !u!114 &5419968107094996466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965349748474046292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafd0896429403f4d88f83e09e929c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrivingScenario
+  _fadeTime: 0.5
+  _fade: {fileID: 0}
+  _area: {fileID: 2600105455106629043}
+  _driverA: {fileID: 4327892022662604392}
+  _driverB: {fileID: 5486029589161645515}
+  _resultHold: 3
 --- !u!114 &4640711234931258199
 MonoBehaviour:
   m_ObjectHideFlags: 0
