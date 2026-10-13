@@ -23,6 +23,9 @@ public class ParkingArea : AreaBase
     public const int SceneValet = 0;
     public const int SceneSmartKey = 1;
 
+    [SerializeField]
+    private CarAppearance[] _appearanceCars;
+
 
 
     private CarConfig _config;
@@ -45,6 +48,17 @@ public class ParkingArea : AreaBase
     public override void ResetArea(CarConfig config)
     {
         _config = config;
+
+        // 외관 선택(색상·휠)을 사용자 차에 적용 (FR-10)
+        for (int i = 0; i < _appearanceCars.Length; i++)
+        {
+            if (_appearanceCars[i] == null)
+            {
+                Debug.LogError($"[ParkingArea] ResetArea: _appearanceCars[{i}]가 비어 있음 (Inspector 연결 확인)");
+                continue;
+            }
+            _appearanceCars[i].Apply(config);
+        }
 
         for (int i=0;i<_cars.Length;i++)
         {
