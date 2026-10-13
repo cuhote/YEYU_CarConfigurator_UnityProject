@@ -9,7 +9,14 @@ public class CameraAnchors : MonoBehaviour
     [SerializeField]
     private Transform _fixed;
 
+    // 버드뷰에서 이 높이(월드 Y, m)보다 위에 있는 것은 그리지 않는다 (천장·배관 숨기기). 0이면 끔.
+    // 버드뷰 앵커가 바로 아래를 내려다볼 때만 높이가 정확히 맞는다
+    [SerializeField]
+    private float _birdEyeCutHeight = 0f;
+
     public Transform Driver => _driver;
+
+    public float BirdEyeCutHeight => _birdEyeCutHeight;
 
     public Transform BirdEye => _birdEye;
 

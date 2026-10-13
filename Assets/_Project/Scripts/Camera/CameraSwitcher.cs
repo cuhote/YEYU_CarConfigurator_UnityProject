@@ -10,6 +10,9 @@ public class CameraSwitcher : MonoBehaviour
     private CameraAnchors _leftAnchors;
     private CameraAnchors _rightAnchors;
 
+    // 카메라마다 처음 봤을 때의 nearClipPlane (버드뷰에서 바꾼 값을 되돌릴 때 쓴다)
+    private readonly System.Collections.Generic.Dictionary<Camera, float> _defaultNearClips = new System.Collections.Generic.Dictionary<Camera, float>();
+
     public CameraView CurrentView { get;private set; } = CameraView.Driver;
 
     // 영역에 들어올 때 카메라 2대를 받아서 보관 = 주차에 카메라2개, 주행에 카메라2대 등이 있음
@@ -127,6 +130,17 @@ public class CameraSwitcher : MonoBehaviour
         cam.transform.SetParent(target, false);
         cam.transform.localPosition = Vector3.zero;
         cam.transform.localRotation = Quaternion.identity;
+
+        // 버드뷰에서는 가까운 쪽 절단면을 내려서 천장 쪽 부품을 잘라 낸다. 다른 시점에서는 원래 값으로 되돌린다
+        if (!_defaultNearClips.TryGetValue(cam, out float defaultNear))
+        {
+            defaultNear = cam.nearClipPlane;
+            _defaultNearClips[cam] = defaultNear;
+        }
+        float nearClip = defaultNear;
+        if (view == CameraView.BirdEye && anchors.BirdEyeCutHeight > 0f)
+            nearClip = Mathf.Max(defaultNear, cam.transform.position.y - anchors.BirdEyeCutHeight);
+        cam.nearClipPlane = nearClip;
 
         //Visualization 레이어 처리
         if (layer == -1)
