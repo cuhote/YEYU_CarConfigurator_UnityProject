@@ -173,7 +173,7 @@ public class VehicleStatusLabel : MonoBehaviour
     }
 
     // 한글이 들어 있는 글꼴을 찾는다. TMP 기본 글꼴에는 한글이 없다
-    private static TMP_FontAsset GetKoreanFont()
+    public static TMP_FontAsset GetKoreanFont()
     {
         if (_fontSearched)
             return _sharedFont;
