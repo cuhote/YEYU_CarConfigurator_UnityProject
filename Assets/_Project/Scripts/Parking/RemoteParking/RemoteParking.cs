@@ -9,13 +9,28 @@ public class RemoteParking : MonoBehaviour, ICarFeature
     [SerializeField] private DoorSwingDrawer _doorDrawer;
     [SerializeField] private float _speedKmh = 3f;
     [SerializeField] private float _stopTime = 0.2f;
+    [SerializeField] private float _obstacleDecel = 50f;   // 장애물을 만났을 때 세우는 감속도 (m/s²). 거의 그 자리에 선다
+    // 처음 주차된 자리보다 뒤로는 가지 않는다. 뒤쪽 벽에 콜라이더가 없어도 벽에 닿지 않게 하는 한계다.
+    // 값은 처음 자리 앞쪽으로 남겨 두는 여유 (m)
+    [SerializeField] private float _reverseMargin = 0.05f;
 
     public RemoteState State { get; private set; } = RemoteState.Idle;
     public string FeatureId => "remoteParking";
+    // 앞이나 뒤가 막혀 원격 이동을 멈춘 상태 (FR-33). 손을 떼거나 반대로 움직이면 풀린다
+    public bool BlockedByObstacle { get; private set; }
 
     private CameraSwitcher _cameraSwitcher;
     private float _stopTimer = 0f;
     private bool _isMoving = false;
+    private int _moveDir;   // 지금 움직이는 방향 (1 전진, -1 후진)
+
+    // 장면을 시작한 뒤 처음 버튼을 눌렀을 때의 자리와 방향 (후진 한계의 기준)
+    private bool _hasStart;
+    private Vector3 _startPosition;
+    private Vector3 _startForward;
+
+    // [탑승] 뒤에 오른쪽 카메라가 옮겨 갈 이 차의 운전석 자리
+    [SerializeField] private Transform _driverAnchor;
 
     private void Start()
     {
@@ -42,6 +57,10 @@ public class RemoteParking : MonoBehaviour, ICarFeature
     {
         if (State == RemoteState.Idle || State == RemoteState.Boarded)
             return;
+
+        // 움직이는 방향이 막히면 바로 세운다. 버튼 입력이 끊겨도 벽에 닿지 않게 매 프레임 본다
+        if (_isMoving && IsBlocked(_moveDir))
+            StopForObstacle(_moveDir);
 
         // 정지 타이머 업데이트
         if (_stopTimer > 0)
@@ -87,11 +106,21 @@ public class RemoteParking : MonoBehaviour, ICarFeature
             return;
         }
 
-        if (_proximity != null && _proximity.IsBlocked)
+        // 차가 처음 자리로 되돌려진 뒤의 첫 입력에서 기준 자리를 잡는다
+        if (!_hasStart)
         {
-            Debug.Log("[RemoteParking] Press 취소: 전방/후방에 장애물이 있습니다 (IsBlocked=true)");
+            _hasStart = true;
+            _startPosition = _car.transform.position;
+            _startForward = _car.transform.forward;
+        }
+
+        // 가려는 쪽이 막혀 있으면 움직이지 않는다. 반대쪽으로는 빠져나갈 수 있다 (FR-33)
+        if (IsBlocked(dir))
+        {
+            StopForObstacle(dir);
             return;
         }
+        BlockedByObstacle = false;
 
         // Idle → Moving 또는 Boardable → Moving
         if (State == RemoteState.Idle || State == RemoteState.Boardable)
@@ -102,6 +131,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
         Debug.Log($"[RemoteParking] Press: {(dir > 0 ? "전진" : "후진")} {_speedKmh}km/h 시작");
         _isMoving = true;
+        _moveDir = dir > 0 ? 1 : -1;
         _stopTimer = _stopTime;
         _car.SetSpeed(dir > 0 ? _speedKmh : -_speedKmh);
     }
@@ -119,6 +149,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         Debug.Log("[RemoteParking] Release: 정지 신호 (5m/s² 감속)");
         _stopTimer = _stopTime;
         _isMoving = false;
+        BlockedByObstacle = false;
         _car.Brake(5f);
 
         // Moving → Idle, Boardable 유지
@@ -130,6 +161,43 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         else if (State == RemoteState.Boardable)
         {
             Debug.Log("[RemoteParking] State: Boardable 유지");
+        }
+    }
+
+    private bool IsBlocked(int dir)
+    {
+        if (dir < 0 && IsAtReverseLimit())
+            return true;
+        return _proximity != null && _proximity.IsBlockedInDirection(dir);
+    }
+
+    // 처음 주차된 자리까지 물러났는지 (그보다 뒤는 벽이다)
+    private bool IsAtReverseLimit()
+    {
+        if (!_hasStart || _car == null)
+            return false;
+
+        float travelled = Vector3.Dot(_car.transform.position - _startPosition, _startForward);
+        return travelled <= _reverseMargin;
+    }
+
+    // 장애물 앞에서 차를 그 자리에 세운다. 같은 장애물로 계속 막혀 있는 동안에는 로그를 한 번만 남긴다
+    private void StopForObstacle(int dir)
+    {
+        _isMoving = false;
+        _stopTimer = 0f;
+        if (_car != null)
+            _car.Brake(_obstacleDecel);
+
+        if (State == RemoteState.Moving)
+            State = RemoteState.Idle;
+
+        if (!BlockedByObstacle)
+        {
+            BlockedByObstacle = true;
+            Collider obstacle = _proximity != null ? _proximity.FindObstacle(dir) : null;
+            string obstacleName = obstacle != null ? obstacle.name : (dir < 0 && IsAtReverseLimit() ? "처음 주차 자리 한계" : "?");
+            Debug.Log($"[RemoteParking] {(dir > 0 ? "전방" : "후방")} 장애물({obstacleName}) 감지, 정지");
         }
     }
 
@@ -149,7 +217,7 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         if (_cameraSwitcher != null)
         {
             Debug.Log("[RemoteParking] Board: SetRightDriverView() 호출");
-            _cameraSwitcher.SetRightDriverView();
+            _cameraSwitcher.SetRightDriverView(_driverAnchor);
         }
         else
         {
@@ -173,6 +241,8 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         State = RemoteState.Idle;
         _stopTimer = 0f;
         _isMoving = false;
+        BlockedByObstacle = false;
+        _hasStart = false;
 
         if (_car != null)
         {
