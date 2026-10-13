@@ -140,6 +140,8 @@ classDiagram
     -_accel: float = 3
     +SpeedKmh: float
     +SteerAngle: float
+    +RearSteerAngle: float
+    +WheelBase: float
     +SetSpeed(float) void
     +SetSteer(float) void
     +SetRearSteer(float) void
@@ -293,6 +295,7 @@ classDiagram
 - 분할 화면 역할: 카메라 2대 켜기·끄기는 `AreaBase`, 시점 전환은 `CameraSwitcher`(영역에 들어올 때 `ModeManager`가 `Bind(LeftCam, RightCam)`).
 - `SetRightDriverView(Transform)`는 [탑승] 때 오른쪽 카메라만 옮긴다. 앵커를 주면 그 자리(스마트키 차의 운전석)로, 안 주면 `CameraAnchors.Driver`로 간다(FR-65).
 - 시점 탭 강조와 좌우 라벨 글자는 `ScenarioHUD`를 따로 두지 않고 `UIManager`에 넣었다. 파일을 늘리지 않기 위함이다.
+- 스마트키 장면처럼 시점이 고정(`CameraView.Fixed`)일 때는 `UIManager`가 시점 탭 두 개와 그 배경을 숨긴다. 시점을 바꿀 수 없는 장면에서 누를 수 없는 탭이 보이지 않게 하기 위함이다(FR-12).
 - `UIManager`는 화면(외관·기능·주행·주차)에 맞는 패널만 켠다. 시나리오 중 옵션 카드(`OptionCardPanel`)는 만들지 않았다.
 - `ExteriorPanel`은 버튼을 누를 때마다 `CarConfig`를 바꾸고 `ConfiguratorArea.ApplyAppearance`로 쇼룸 차에 바로 적용한다(FR-01·03·58).
 - `FeaturePanel`은 설명 문구 4개를 `TMP_Text` 필드에 Inspector로 직접 입력한다(SRS 부록 A 문구).
@@ -621,7 +624,7 @@ classDiagram
 | `Parking` | ParkingArea, ParkingScenario, GridMap, ParkingSlot, ParkingSlotAllocator, ReservationTable, ValetAgent, RemoteParking, SmartKeyUI, ProximityStop, ParkingDrawer, DoorSwingDrawer, VehicleStatusLabel | 13 |
 | 합계 |  | 38 |
 
-테스트 스크립트(`_CameraSwitcherTester`, `_ParkingAreaTester`)와 에디터 스크립트(`_ExteriorPanelBuilder`, `_FeaturePanelBuilder`, `_NavigationBarBuilder`, `_SmartKeyUIBuilder`, `_SceneViewCameraAligner`)는 표에서 뺐다.
+테스트 스크립트(`_CameraSwitcherTester`, `_ParkingAreaTester`)와 에디터 스크립트(`_ExteriorPanelBuilder`, `_FeaturePanelBuilder`, `_NavigationBarBuilder`, `_SmartKeyUIBuilder`, `_NumberPlateTextBuilder`, `_SceneViewCameraAligner`)는 표에서 뺐다.
 
 ## CarConfig 기능 값과 켜는 곳
 
