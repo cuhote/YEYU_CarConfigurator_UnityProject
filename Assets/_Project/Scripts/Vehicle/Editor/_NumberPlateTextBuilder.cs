@@ -12,8 +12,9 @@ public static class NumberPlateTextBuilder
     private const string PlateText = "YEYU_0204";
     private const string TextObjectName = "PlateText";
     private const float SurfaceGap = 0.003f;   // 판 표면에서 띄우는 거리 (m). 붙이면 판과 겹쳐 깜빡인다
-    private const float WidthRatio = 0.95f;    // 판 너비 중 글자가 쓰는 비율
-    private const float HeightRatio = 0.85f;   // 판 높이 중 글자가 쓰는 비율
+    private const float WidthRatio = 0.95f;    // 판 너비 중 글자 영역이 쓰는 비율
+    private const float HeightRatio = 0.85f;   // 판 높이 중 글자 영역이 쓰는 비율
+    private const float FontSize = 0.7f;       // 글자 크기. 글자 수를 바꾸면 판에 들어오는지 보고 맞춘다
 
     private static readonly Color TextColor = Color.black;
 
@@ -77,9 +78,17 @@ public static class NumberPlateTextBuilder
             text.color = TextColor;
             text.alignment = TextAlignmentOptions.Center;
             text.textWrappingMode = TextWrappingModes.NoWrap;
-            text.enableAutoSizing = true;   // 판 크기에 맞춰 글자 크기를 정한다
-            text.fontSizeMin = 0.05f;
-            text.fontSizeMax = 20f;
+            // 글자 크기는 고정한다. 자동 맞춤을 쓰면 차를 놓은 곳마다(씬, 영역 프리팹)
+            // 계산된 크기가 오버라이드로 쌓인다
+            text.enableAutoSizing = false;
+            text.fontSize = FontSize;
+
+            // TextMeshPro가 켜질 때 스스로 고쳐 쓰는 값도 미리 넣어, 오버라이드가 생기지 않게 한다
+            SerializedObject serialized = new SerializedObject(text);
+            serialized.FindProperty("m_fontSizeBase").floatValue = FontSize;
+            serialized.FindProperty("m_fontColor32").colorValue = TextColor;
+            serialized.FindProperty("m_TextStyleHashCode").intValue = TMP_Style.NormalStyle.hashCode;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
 
             Debug.Log($"[NumberPlateTextBuilder] {plateName}: 판 크기 {bounds.size.x:F3} x {bounds.size.y:F3} m, 두께 {bounds.size.z:F3} m");
             made++;
