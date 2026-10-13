@@ -325,13 +325,13 @@ public static class _FeaturePanelBuilder
         importer.SaveAndReimport();
     }
 
-    private static Sprite LoadSprite(string name)
+    internal static Sprite LoadSprite(string name)
     {
         return AssetDatabase.LoadAssetAtPath<Sprite>(IconDir + name + ".png");
     }
 
     // 한글은 글자 수가 많아 Dynamic 아틀라스로 만든다 (쓰인 글자만 런타임에 채워진다)
-    private static TMP_FontAsset LoadOrCreateFont(string name)
+    internal static TMP_FontAsset LoadOrCreateFont(string name)
     {
         string assetPath = FontDir + name + " SDF.asset";
         var fontAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(assetPath);
@@ -358,7 +358,7 @@ public static class _FeaturePanelBuilder
         return fontAsset;
     }
 
-    private static CarConfig FindConfig()
+    internal static CarConfig FindConfig()
     {
         string[] guids = AssetDatabase.FindAssets("t:CarConfig");
         return guids.Length > 0 ? AssetDatabase.LoadAssetAtPath<CarConfig>(AssetDatabase.GUIDToAssetPath(guids[0])) : null;
@@ -366,7 +366,7 @@ public static class _FeaturePanelBuilder
 
     // ---------- UI 조립 도우미 ----------
 
-    private static RectTransform CreateRect(string name, Transform parent)
+    internal static RectTransform CreateRect(string name, Transform parent)
     {
         var go = new GameObject(name, typeof(RectTransform));
         go.layer = LayerMask.NameToLayer("UI");
@@ -376,7 +376,7 @@ public static class _FeaturePanelBuilder
         return rect;
     }
 
-    private static Image CreateImage(string name, Transform parent, Sprite sprite, Color color, bool sliced)
+    internal static Image CreateImage(string name, Transform parent, Sprite sprite, Color color, bool sliced)
     {
         var image = CreateRect(name, parent).gameObject.AddComponent<Image>();
         image.sprite = sprite;
@@ -386,7 +386,7 @@ public static class _FeaturePanelBuilder
         return image;
     }
 
-    private static TMP_Text CreateText(string name, Transform parent, string text, TMP_FontAsset font, float size, Color color, TextAlignmentOptions alignment)
+    internal static TMP_Text CreateText(string name, Transform parent, string text, TMP_FontAsset font, float size, Color color, TextAlignmentOptions alignment)
     {
         var label = CreateRect(name, parent).gameObject.AddComponent<TextMeshProUGUI>();
         label.font = font;
@@ -400,7 +400,7 @@ public static class _FeaturePanelBuilder
     }
 
     // anchor 한 점에 고정. position은 anchor 기준 pivot 위치.
-    private static void Place(RectTransform rect, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
+    internal static void Place(RectTransform rect, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
     {
         rect.anchorMin = anchor;
         rect.anchorMax = anchor;
@@ -410,7 +410,7 @@ public static class _FeaturePanelBuilder
     }
 
     // 부모 위쪽에서 top만큼 내려온 가로 한 줄 (좌우 inset)
-    private static void PlaceRow(RectTransform rect, float inset, float top, float height)
+    internal static void PlaceRow(RectTransform rect, float inset, float top, float height)
     {
         rect.anchorMin = new Vector2(0f, 1f);
         rect.anchorMax = new Vector2(1f, 1f);
@@ -419,7 +419,7 @@ public static class _FeaturePanelBuilder
         rect.offsetMax = new Vector2(-inset, -top);
     }
 
-    private static void Stretch(RectTransform rect, float left, float top, float right, float bottom)
+    internal static void Stretch(RectTransform rect, float left, float top, float right, float bottom)
     {
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
@@ -427,7 +427,7 @@ public static class _FeaturePanelBuilder
         rect.offsetMax = new Vector2(-right, -top);
     }
 
-    private static void SetArray(SerializedObject so, string propertyName, Object[] values)
+    internal static void SetArray(SerializedObject so, string propertyName, Object[] values)
     {
         SerializedProperty property = so.FindProperty(propertyName);
         property.arraySize = values.Length;
