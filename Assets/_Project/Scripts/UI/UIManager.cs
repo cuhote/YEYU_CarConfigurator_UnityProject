@@ -21,6 +21,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Color _tabActiveTextColor = Color.white;
     [SerializeField] private Color _tabIdleTextColor = new Color32(0xC9, 0xCD, 0xD6, 0xFF);
 
+    [Header("좌우 라벨")]
+    // [SerializeField] private TMP_Text _leftLabel;
+    [SerializeField] private TMP_Text _rightLabel;
+    [SerializeField] private ScenarioBase _drivingScenario;
+    [SerializeField] private ScenarioBase _parkingScenario;
+    [SerializeField] private string[] _drivingSceneNames = { "나이트비전", "후륜 조향" };
+    [SerializeField] private string[] _parkingSceneNames = { "발렛 연동", "스마트키 주차" };
+
+    private ScreenHistory.ScreenId _currentScreen;
+    private ScenarioBase _labelScenario; // 라벨에 마지막으로 반영한 시나리오와 장면
+    private int _labelIndex = -1;
+
     private ModeManager _modeManager;
     private ScreenHistory _screenHistory;
 
@@ -51,6 +63,7 @@ public class UIManager : MonoBehaviour
 
     private void ShowOnly(ScreenHistory.ScreenId screen) //지금 화면에 해당하는 것만 킴 
     {
+        _currentScreen = screen;
         bool scene = screen == ScreenHistory.ScreenId.DrivingScene || screen == ScreenHistory.ScreenId.ParkingScene;
 
         if (_exteriorPanel != null) _exteriorPanel.SetActive(screen == ScreenHistory.ScreenId.Exterior);
@@ -136,10 +149,37 @@ public class UIManager : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   
+        UpdateSideLabels();
+
         if (_cameraSwitcher == null) return;
         PaintTab(_driverTab, _driverLabel, _cameraSwitcher.CurrentView == CameraView.Driver);
         PaintTab(_birdTab, _birdLabel, _cameraSwitcher.CurrentView == CameraView.BirdEye);
+    }
+    private void UpdateSideLabels()
+    {
+        ScenarioBase scenario = null;
+        string[] names = null;
+        if (_currentScreen == ScreenHistory.ScreenId.DrivingScene)
+        {
+            scenario = _drivingScenario;
+            names = _drivingSceneNames;
+        }
+        else if (_currentScreen == ScreenHistory.ScreenId.ParkingScene)
+        {
+            scenario = _parkingScenario;
+            names = _parkingSceneNames;
+        }
+        if (scenario == null || names == null) return;
+
+        int index = scenario.CurrentIndex;
+        if (index < 0 || index >= names.Length) return;
+        if (scenario == _labelScenario && index == _labelIndex) return;
+
+        _labelScenario = scenario;
+        _labelIndex = index;
+        // if (_leftLabel != null) _leftLabel.text = names[index] + " 미적용";
+        if (_rightLabel != null) _rightLabel.text = names[index] + " 적용 차량";
     }
 
     private void PaintTab(Button tab, TMP_Text label, bool active)
