@@ -1808,7 +1808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &621844898495151476
 Transform:
   m_ObjectHideFlags: 0
@@ -32086,6 +32086,7 @@ GameObject:
   - component: {fileID: 6367815862985723036}
   - component: {fileID: 2604845571164639031}
   - component: {fileID: 6110731772274536514}
+  - component: {fileID: 6332441365841144296}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -32177,20 +32178,67 @@ MonoBehaviour:
   _frontSteerPivots:
   - {fileID: 55409408050304239}
   - {fileID: 6259639908267387650}
+  - {fileID: 6589998396806664585}
+  - {fileID: 574511851862522906}
   _rearSteerPivots:
   - {fileID: 6669033302954508493}
   - {fileID: 8349125911611273534}
+  - {fileID: 4387652226219344839}
+  - {fileID: 934379156540577936}
   _wheelSpins:
   - {fileID: 528466300141775781}
   - {fileID: 7401650453009165552}
   - {fileID: 3608684668551282161}
   - {fileID: 6699102469590250514}
+  - {fileID: 8644342067049007713}
+  - {fileID: 6516896476377278761}
+  - {fileID: 945679316513578892}
+  - {fileID: 2365046506032098326}
   _wheelRadius: 0.33
   _groundMask:
     serializedVersion: 2
     m_Bits: 1
   _groundRayHeight: 5
   _groundRayLength: 20
+--- !u!114 &6332441365841144296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4920809740942151307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8c7c07ad281bc41b0dc97f99d0b46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarAppearance
+  _paintSlots:
+  - Renderer: {fileID: 8464539574393466812}
+    MaterialIndex: 0
+  - Renderer: {fileID: 4368413102735070293}
+    MaterialIndex: 0
+  - Renderer: {fileID: 5603138681991346084}
+    MaterialIndex: 0
+  - Renderer: {fileID: 903810771981965735}
+    MaterialIndex: 0
+  - Renderer: {fileID: 2511026354821471819}
+    MaterialIndex: 0
+  - Renderer: {fileID: 4528565149138324389}
+    MaterialIndex: 0
+  - Renderer: {fileID: 998683972901081473}
+    MaterialIndex: 0
+  - Renderer: {fileID: 2234730814692840134}
+    MaterialIndex: 0
+  - Renderer: {fileID: 2234730814692840134}
+    MaterialIndex: 1
+  _bodyMaterials:
+  - {fileID: 2100000, guid: 18f9413ed4fd68f488931ebb9c975525, type: 2}
+  - {fileID: 2100000, guid: 8d4a2e618e74f984a9a73e5d7da5c9b9, type: 2}
+  - {fileID: 2100000, guid: 174304caf36cdf545ad487f1d7bdb327, type: 2}
+  - {fileID: 2100000, guid: f1144bfb7c0a169448cf5b4e5d4c6461, type: 2}
+  _wheels:
+  - {fileID: 6912814372745744336}
+  - {fileID: 7643894677113245216}
 --- !u!1 &4929813398609776042
 GameObject:
   m_ObjectHideFlags: 0

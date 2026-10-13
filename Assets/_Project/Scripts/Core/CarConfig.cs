@@ -4,12 +4,14 @@ using UnityEngine;
 public class CarConfig : ScriptableObject
 {
     [SerializeField] private int _bodyColor;
-    [SerializeField] private int _trimIndex;
     [SerializeField] private int _wheelIndex;
     [SerializeField] private bool _nightVision = true;
     [SerializeField] private bool _rearWheelSteering = true;
     [SerializeField] private bool _valetParking = true;
     [SerializeField] private bool _remoteParking = true;
+
+    public int BodyColor { get => _bodyColor; set => _bodyColor = value; }
+    public int WheelIndex { get => _wheelIndex; set => _wheelIndex = value; }
 
     public bool NightVision { get => _nightVision; set => _nightVision = value; }
     public bool RearWheelSteering { get => _rearWheelSteering; set => _rearWheelSteering = value; }
