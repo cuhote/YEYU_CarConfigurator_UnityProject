@@ -138,6 +138,7 @@ public class DrivingArea : AreaBase
         {
             _drawer.ShowCones(night);
             _drawer.ShowThermalCone(night && _config != null && _config.NightVision);
+            _drawer.ShowTurn(!night);
         }
 
     }
