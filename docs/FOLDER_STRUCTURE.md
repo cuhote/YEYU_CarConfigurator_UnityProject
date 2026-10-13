@@ -27,7 +27,9 @@ YEYU_CarConfigurator_UnityProject/     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   ├── Vehicle/               ← 두 시나리오가 같이 쓰는 차량
 │   │   │   │   ├── CarController.cs
 │   │   │   │   ├── CarAppearance.cs
-│   │   │   │   └── ICarFeature.cs
+│   │   │   │   ├── ICarFeature.cs
+│   │   │   │   └── Editor/            ← 번호판 글자를 넣는 에디터 메뉴 (Yeyu > Vehicle)
+│   │   │   │       └── _NumberPlateTextBuilder.cs
 │   │   │   │
 │   │   │   ├── Camera/                ← 시점 전환 (분할 카메라 켜고 끄기는 AreaBase)
 │   │   │   │   ├── CameraSwitcher.cs
@@ -229,6 +231,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 | `Vehicle/CarController.cs` | 모든 차량의 유일한 구동부: 자전거 모델로 위치·방향 갱신(앞·뒷바퀴 조향), 속도·제동, 웨이포인트 추종(`Follow`), 지면 따라가기, 받은 시작 위치로 위치·속도·조향각 초기화(`ResetPose(Pose)`). 시작 위치는 직접 저장하지 않음 | FR-39, FR-41, FR-43, NFR-02 | 김예은 |
 | `Vehicle/CarAppearance.cs` | 색상·휠 교체. 차체 도장 칸의 머티리얼을 바꾸고 휠 세트를 켜고 끔 | FR-01, FR-03, FR-10 | 공동 |
 | `Vehicle/ICarFeature.cs` | 차량에 붙는 기능 공통 인터페이스 (`FeatureId`, `SetActive(bool)`, `ResetFeature()`). 구현: NightVisionSensor, RearWheelSteering, RemoteParking | NFR-06 | 김예은 |
+| `Vehicle/Editor/_NumberPlateTextBuilder.cs` | 에디터 메뉴 `Yeyu > Vehicle`: `Car` 프리팹의 앞뒤 번호판 메시 크기를 재서 그 위에 3D 글자(`PlateText`)를 올림. 글자 크기는 고정값 | - | 김예은 |
 | `Camera/CameraSwitcher.cs` | AreaBase가 켠 카메라 2대의 시점 전환: 운전석 ↔ 버드뷰 동시 전환, 스마트키 장면 고정 시점, [탑승] 시 오른쪽만 지정한 운전석으로. 버드뷰에서는 지정 높이 위를 그리지 않음 | FR-12, FR-31, FR-65 | 강유나 |
 | `Camera/CameraAnchors.cs` | 카메라 오브젝트에 붙는 시점 위치 보관: 운전석·버드뷰·고정 Transform 3개와 버드뷰 절단 높이를 Inspector로 연결, `CameraSwitcher`가 `Bind` 때 꺼내 사용 | FR-12, FR-31, FR-65 | 강유나 |
 | `Scenario/ScenarioBase.cs` | 시나리오 공통 흐름: 장면 목록, 꺼진 장면 건너뛰기, 장면 준비(`PrepareScene`), 자동 전환(0.5초 간격), 중단(`StopScenario`) | FR-11, FR-57, FR-62, NFR-02 | 공동 |
