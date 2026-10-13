@@ -112,7 +112,7 @@ gantt
 | 2.1 | `MainScene`, `ModeManager`, `AreaBase` 구현. 영역 씬 3개 Additive 로드, 루트 켜고 끄기, 활성 씬 지정, `ResetArea()` | 김예은 | 10/7 | `MainScene.unity`, `ModeManager.cs`, `AreaBase.cs` | FR-36~39 | ⬜ |
 | 2.2 | 공통 차량 프리팹, `CarController` (`WheelCollider`, 스크립트 입력으로 가속·조향·제동) | 김예은 | 10/7 | `Car.prefab`, `CarController.cs` | FR-10, NFR-02 | ⬜ |
 | 2.3 | `ConfiguratorArea` 쇼룸 (밝은 조명, 턴테이블), UI-01 외관 선택, UI-02 기능 선택 | 강유나 | 10/7 | `ConfiguratorArea.unity`, UI 패널 | FR-04~06 | ⬜ |
-| 2.4 | `CarConfig`, `CarAppearance` (색상·트림 파츠·휠 교체) | 강유나 | 10/7 | `CarConfig.cs`, `CarAppearance.cs` | FR-01~03 | ⬜ |
+| 2.4 | `CarConfig`, `CarAppearance` (색상·휠 교체) | 강유나 | 10/7 | `CarConfig.cs`, `CarAppearance.cs` | FR-01, FR-03 | ⬜ |
 | 2.5 | `SplitScreenManager`(카메라 2대 좌우 분할, 라벨), `CameraSwitcher`(운전석 ↔ 버드뷰) | 공동 | 10/8 오전 | `SplitScreenManager.cs`, `CameraSwitcher.cs` | FR-11, FR-12 | ⬜ |
 | 2.6 | 공통 기반 `dev` 병합, 두 PC에서 모드 전환 확인 | 공동 | 10/7 18:30 | - | M2 | ⬜ |
 

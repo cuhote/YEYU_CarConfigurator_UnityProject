@@ -17,9 +17,9 @@
 | 공개 메서드·프로퍼티 | `PascalCase` | `ResetArea()`, `FeatureId` |
 | private 필드 | `_camelCase` | `_detectRange` |
 | Inspector 노출 필드 | `[SerializeField] private` + `_camelCase` | `[SerializeField] private float _ttcWarn = 4f;` |
-| 씬·프리팹 | `PascalCase` | `DrivingArea.unity`, `NightRoadCourse.prefab` |
+| 씬·프리팹 | `PascalCase` | `MainScene.unity`, `DrivingArea.prefab` |
 | 머티리얼 | `M_` 접두사 | `M_Body_Red`, `M_Cone_IR` |
-| 네임스페이스 | `Yeyu.<폴더>` | `Yeyu.Core`, `Yeyu.Driving` |
+| 네임스페이스 | 사용하지 않음 (모든 클래스가 전역) | - |
 | 레이어·태그 | `PascalCase` | `Vehicle`, `NightVisionOnly`, `CourseA` |
 | 브랜치명 | 소문자 + 하이픈 | `feature/yuna-night-vision` |
 
@@ -68,7 +68,7 @@
 | Version Control Mode | Visible Meta Files | `.meta`를 Git이 추적할 수 있게 한다 |
 | Asset Serialization Mode | Force Text | 씬·프리팹을 텍스트로 저장해 diff·병합이 가능하게 한다 |
 | Unity Editor 버전 | 두 PC가 동일 (`ProjectSettings/ProjectVersion.txt`) | 버전이 다르면 열 때마다 에셋이 재직렬화돼 불필요한 변경이 생긴다 |
-| Build Settings 씬 순서 | `MainScene`(0) → `ConfiguratorArea` → `DrivingArea` → `ParkingArea` | `ModeManager`가 이 순서로 Additive 로드한다 |
+| Build Settings 씬 | `MainScene`(0) 하나 | 영역 3개는 씬이 아니라 프리팹으로 MainScene에 배치한다 |
 
 레이어·태그는 `ProjectSettings/TagManager.asset`에 저장되므로 한 사람이 처음에 한 번에 추가하고 커밋한다. 목록은 [`docs/FOLDER_STRUCTURE.md`](./docs/FOLDER_STRUCTURE.md) 7장을 본다.
 
@@ -80,9 +80,9 @@
 
 | 구분 | 대상 | 수정하는 사람 |
 |---|---|---|
-| 주행 전용 | `Scripts/Driving/`, `Prefabs/Driving/`, `DrivingArea.unity` | 김예은 |
-| 주차 전용 | `Scripts/Parking/`, `Prefabs/Parking/`, `ParkingArea.unity` | 강유나 |
-| 공통 | `Scripts/Core·Vehicle·Camera·Scenario·UI·Utils/`, `MainScene.unity`, `ConfiguratorArea.unity`, 공통 프리팹, `ProjectSettings/` | 담당자를 정한 뒤 그 사람만. 수정 전에 상대에게 알리고, 수정 후 바로 `dev`에 병합 |
+| 주행 전용 | `Scripts/Driving/`, `Prefabs/Driving/` (`DrivingArea.prefab` 포함) | 김예은 |
+| 주차 전용 | `Scripts/Parking/`, `Prefabs/Parking/` (`ParkingArea.prefab` 포함) | 강유나 |
+| 공통 | `Scripts/Core·Vehicle·Camera·Scenario·UI/`, `MainScene.unity`, `ConfiguratorArea.prefab`, 공통 프리팹, `ProjectSettings/` | 담당자를 정한 뒤 그 사람만. 수정 전에 상대에게 알리고, 수정 후 바로 `dev`에 병합 |
 | 외부 에셋 | `Assets/ThirdParty/` | 수정 금지. 바꿀 땐 `_Project/Prefabs`로 복사해서 수정 |
 
 - 공통 파일의 담당자는 [`docs/FOLDER_STRUCTURE.md`](./docs/FOLDER_STRUCTURE.md) 6장 표에서 정한다.
