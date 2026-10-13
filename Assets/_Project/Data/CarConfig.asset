@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: CarConfig
   m_EditorClassIdentifier: Assembly-CSharp::Yeyu.Core.CarConfig
   _bodyColor: 0
-  _trimIndex: 0
   _wheelIndex: 0
   _nightVision: 1
   _rearWheelSteering: 1
