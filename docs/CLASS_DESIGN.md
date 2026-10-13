@@ -27,6 +27,24 @@
 | --- | --- | --- |
 | 1 | `ReservationTable`이 `ICarFeature`를 구현하지만 주차장에 있어 `CarFeatureSwitch`가 찾을 수 없음 | `ICarFeature` 구현 제거. `ParkingArea.ResetArea(config)`가 `SetOn(valetParking)`으로 직접 켜고 끔. `ICarFeature` 구현은 차량에 붙는 3종(NightVisionSensor, RearWheelSteering, RemoteParking)만 남음 |
 | 2 | `ResetPose(Pose)`의 시작 위치를 누가 저장하는지 없음 | `DrivingArea`·`ParkingArea`에 장면별·차량별 시작 위치 `_startPoses`와 `GetStartPose(장면, 차량)` 추가. `CarController`는 위치를 저장하지 않고 받은 Pose로만 복귀 |
+- 2차 클래스다이어그램 피드백
+    
+    1.ReservationTable이 ICarFeature 구현 (필수수정) → 기능을 켜고 끄는 CarFeatureSwitch는 Car.prefab에 붙은 기능만 찾습니다. 그런데 ReservationTable은 차가 아니라 ParkingArea에 있어서 CarFeatureSwitch가 찾을 수 없습니다. ICarFeature를 빼고 ParkingArea.ResetArea(config)에서 valetParking 값으로 직접 켜고 끄는 게 더 단순함!
+    
+    2.ResetPose(Pose) → 시작 위치 Pose를 누가 저장하는지 정해야 함. DrivingArea와 ParkingArea가 차량별 시작 위치를 들고 있으면 될듯.
+    
+- 개발 과정 중 추가
+    
+    - 3차 반영: `CameraAnchors` 추가. 이유: `Bind(Camera, Camera)`만으로는 운전석·버드뷰·고정 시점의 목적지를 알 수 없어 카메라별로 앵커 3개를 보관하는 컴포넌트가 필요함 (클래스 41 → 42)
+    
+    - 4차 반영: `ParkingArea`의 `_startPoses`를 `_valetStarts`(6)·`_smartKeyStarts`(2)로 분리하고 `_cars`(6) 추가. 이유: 장면별 시작 위치를 인덱스 계산 없이 읽기 쉽게 하고, `ResetArea`가 차량 6대를 알아야 하기 때문
+    
+    - 5차 반영: ParkingSlot 추가. 이유: Allocator가 보관하는 주차면의 데이터(진입 준비 지점, 후진 웨이포인트, 점유 상태)를 담을 타입이 없었음 (클래스 43개)
+    
+    - 6차 반영: `ValetAgent`에 `StartGo()`·`_allocator`·`_assignedSlot` 추가, `_reverseRoute` 삭제. `ParkingSlot`에 `GetEntryPose()` 추가, 후진 경로를 런타임 계산(`GetReverseRoute()`)으로 변경. 이유: 후진 점을 Transform으로 미리 놓지 않고 형상 파라미터로 계산하는 방식이 튜닝에 빨랐음
+    
+    - 7차 반영: 트림 제외. `CarConfig._trimIndex`, `CarAppearance._trims`, `ExteriorPanel.OnTrimClicked()` 삭제. 이유: 외관 옵션을 색상과 휠로 한정 (SRS v0.9, FR-02·FR-07 삭제)
+    
 
 ## 표기법
 
@@ -94,7 +112,6 @@ classDiagram
   class CarConfig {
     <<ScriptableObject>>
     -_bodyColor: int
-    -_trimIndex: int
     -_wheelIndex: int
     -_nightVision: bool = true
     -_rearWheelSteering: bool = true
@@ -131,7 +148,6 @@ classDiagram
   }
   class CarAppearance {
     -_bodyMaterials: Material[4]
-    -_trims: GameObject[2]
     -_wheels: GameObject[2]
     +Apply(CarConfig) void
   }
@@ -187,11 +203,22 @@ classDiagram
   class CameraSwitcher {
     -_left: Camera
     -_right: Camera
-    +Current: CameraView
+    -_leftAnchors: CameraAnchors
+    -_rightAnchors: CameraAnchors
+    +CurrentView: CameraView
     +Bind(Camera, Camera) void
     +SwitchTo(CameraView) void
     +SetFixedView(bool) void
     +SetRightDriverView() void
+    -ApplyView(Camera,CameraAnchors,CameraView) void
+  }
+  class CameraAnchors {
+    -_driver: Transform
+    -_birdEye: Transform
+    -_fixed: Transform
+    +Driver: Transform
+    +BirdEye: Transform
+    +Fixed: Transform
   }
   class CameraView {
     <<enumeration>>
@@ -210,7 +237,6 @@ classDiagram
   class ExteriorPanel {
     -_summaryCard: TMP_Text
     +OnColorClicked(int) void
-    +OnTrimClicked(int) void
     +OnWheelClicked(int) void
   }
   class FeaturePanel {
@@ -245,6 +271,7 @@ classDiagram
   ScenarioBase "1" o-- "*" ScenarioTrigger
   ScenarioBase --> CameraSwitcher
   CameraSwitcher ..> CameraView
+  CameraSwitcher ..> CameraAnchors : Bind 때 꺼내 씀
   OptionCardPanel ..> ScenarioBase : RestartCurrentScene
   UIManager o-- ExteriorPanel
   UIManager o-- FeaturePanel
@@ -393,9 +420,11 @@ classDiagram
     -_map: GridMap
     -_tableA: ReservationTable
     -_tableB: ReservationTable
-    -_slots: ParkingSlotAllocator
+    -_slots: ParkingSlotAllocator[2]
     -_scenario: ParkingScenario
-    -_startPoses: Transform[*]
+    -_cars: CarController[6]
+    -_valetStarts: Transform[6]
+    -_smartKeyStarts: Transform[2]
     +ResetArea(CarConfig) void
     +GetStartPose(int, int) Pose
   }
@@ -413,6 +442,22 @@ classDiagram
     +WorldToCell(Vector3) Vector2Int
     +CellToWorld(Vector2Int) Vector3
   }
+  class ParkingSlot {
+    -_id: int
+    -_initiallyOccupied: bool
+    -_entryPoint: Transform
+    -_radius: float = 4.4
+    -_firstStraight: float = 1.5
+    -_laneZ: float
+    -_spacing: float = 0.5
+    -_entrySign: int
+    +Id: int
+    +IsOccupied: bool
+    +EntryPoint: Transform
+    +ResetSlot() void
+    +GetReverseRoute() Vector3[]
+    +GetEntryPose() Pose
+  }
   class ParkingSlotAllocator {
     -_slots: ParkingSlot[*]
     +AssignEmpty() ParkingSlot
@@ -429,12 +474,15 @@ classDiagram
   class ValetAgent {
     -_car: CarController
     -_route: Transform[*]
-    -_reverseRoute: Transform[*]
+    -_allocator: ParkingSlotAllocator
+    -_assignedSlot: ParkingSlot
+    -_currentCoroutine: Coroutine
     -_table: ReservationTable
     +State: AgentState
     +Go() IEnumerator
     -IsPathBlocked() bool
     +ResetAgent() void
+    +StartGo() void
   }
   class RemoteParking {
     -_car: CarController
@@ -471,11 +519,14 @@ classDiagram
   ParkingArea "1" *-- "1" GridMap
   ParkingArea "1" *-- "2" ReservationTable : SetOn(A false, B valetParking)
   ParkingScenario ..> ParkingArea : GetStartPose
-  ParkingArea "1" *-- "1" ParkingSlotAllocator
+  ParkingArea "1" *-- "2" ParkingSlotAllocator
+  ParkingSlotAllocator "1" o-- "*" ParkingSlot
   ParkingArea "1" *-- "1" ParkingScenario
   ParkingScenario "1" o-- "*" ValetAgent : E, NPC1, NPC2 x2
   ValetAgent --> CarController : 운전
   ValetAgent --> ReservationTable : 예약 요청
+  ValetAgent --> ParkingSlotAllocator : 슬롯 배정
+  ValetAgent --> ParkingSlot : 후진 경로
   ReservationTable --> GridMap
   RemoteParking --> CarController
   RemoteParking --> ProximityStop
@@ -494,13 +545,13 @@ classDiagram
 | --- | --- | --- |
 | `Yeyu.Core` | ModeManager, AreaBase, AppMode, CarConfig, ConfiguratorArea, ScreenHistory | 6 |
 | `Yeyu.Vehicle` | CarController, CarAppearance, CarFeatureSwitch, ICarFeature | 4 |
-| `Yeyu.Camera` | CameraSwitcher (+ CameraView), ShowroomCamera | 2 |
+| `Yeyu.Camera` | CameraSwitcher (+ CameraView), CameraAnchors, ShowroomCamera | 3 |
 | `Yeyu.Scenario` | ScenarioBase, ScenarioTrigger | 2 |
 | `Yeyu.UI` | UIManager, ExteriorPanel, FeaturePanel, ScenarioHUD, OptionCardPanel, NavigationBar | 6 |
 | `Yeyu.Utils` | Units | 1 |
 | `Yeyu.Driving` | DrivingArea, DrivingScenario, VirtualDriver, Pedestrian, NightVisionSensor, NightVisionDisplay, RearWheelSteering, TurningRadiusCalculator, DrivingDrawer | 9 |
-| `Yeyu.Parking` | ParkingArea, ParkingScenario, GridMap, ParkingSlotAllocator, ReservationTable, ValetAgent, RemoteParking, SmartKeyUI, ProximityStop, ParkingDrawer, DoorSwingDrawer | 11 |
-| 합계 | | 41 |
+| `Yeyu.Parking` | ParkingArea, ParkingScenario, GridMap, ParkingSlot,  ParkingSlotAllocator, ReservationTable, ValetAgent, RemoteParking, SmartKeyUI, ProximityStop, ParkingDrawer, DoorSwingDrawer | 12 |
+| 합계 |  | 43 |
 
 ## CarConfig 기능 값과 켜는 곳
 

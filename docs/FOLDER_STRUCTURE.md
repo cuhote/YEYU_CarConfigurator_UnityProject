@@ -35,6 +35,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   │
 │   │   │   ├── Camera/                ← 시점 전환 (분할 카메라 켜고 끄기는 AreaBase)
 │   │   │   │   ├── CameraSwitcher.cs
+│   │   │   │   ├── CameraAnchors.cs
 │   │   │   │   └── ShowroomCamera.cs
 │   │   │   │
 │   │   │   ├── Scenario/              ← 시나리오 공통 틀 (장면 순서, 재시작)
@@ -68,6 +69,7 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   │   │   ├── ParkingScenario.cs
 │   │   │   │   ├── Valet/
 │   │   │   │   │   ├── GridMap.cs
+│   │   │   │   │   ├── ParkingSlot.cs
 │   │   │   │   │   ├── ParkingSlotAllocator.cs
 │   │   │   │   │   ├── ReservationTable.cs
 │   │   │   │   │   └── ValetAgent.cs
@@ -85,7 +87,6 @@ YEYU-Configurator/                     ← GitHub 저장소 루트 = Unity 프�
 │   │   ├── Prefabs/
 │   │   │   ├── Vehicle/
 │   │   │   │   ├── Car.prefab
-│   │   │   │   ├── Trims/              ← 트림별 그릴·범퍼 파츠
 │   │   │   │   └── Wheels/             ← 휠 2종
 │   │   │   ├── Driving/
 │   │   │   │   ├── Pedestrian.prefab
@@ -184,7 +185,7 @@ ModeManager ──(SwitchTo)──▶ AreaBase  ── OnEnter(): 영역 조명 
    │                           └ ParkingArea      → ParkingScenario (ScenarioBase)
    │
    ├─ ScreenHistory : 거쳐 온 화면 기록 → NavigationBar의 뒤로가기·홈 (FR-53, FR-54)
-   └─ CarConfig (외관 3개 + 기능 4개) ◀── FeaturePanel 체크박스 · OptionCardPanel 토글 (FR-51)
+   └─ CarConfig (외관 2개 + 기능 4개) ◀── FeaturePanel 체크박스 · OptionCardPanel 토글 (FR-51)
           │
           ▼
    Car.prefab (주행·주차 공통)
@@ -220,19 +221,20 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 | `Core/ModeManager.cs` | 영역 씬 3개 Additive 로드, 영역 켜고 끄기, 활성 씬 지정, 일시정지 해제 후 전환 | FR-36~38 | 김예은 |
 | `Core/AreaBase.cs` | 영역 공통 부모: `Root`, `ResetArea(CarConfig)`, `OnEnter()`, `OnExit()`. `OnEnter()`에서 영역별 ambient 조명 적용, 영역 카메라 2대를 왼쪽·오른쪽 Viewport로 나눠 켜고 끔 | FR-11, FR-38, FR-39 | 김예은 |
 | `Core/AppMode.cs` | `enum AppMode { Configurator, Driving, Parking }` | FR-37 | 김예은 |
-| `Core/CarConfig.cs` | ScriptableObject: 외관 3개 + 기능 4개(초기값 모두 선택), 비교용 복사본 생성 | FR-01~11, FR-51 | 강유나 |
+| `Core/CarConfig.cs` | ScriptableObject: 외관 2개 + 기능 4개(초기값 모두 선택), 비교용 복사본 생성 | FR-01~11, FR-51 | 강유나 |
 | `Core/ConfiguratorArea.cs` | `AreaBase` 상속, 옵션 선택 영역: 미리보기 차량에 외관 적용, 쇼룸 카메라 켜기 | FR-01~04, FR-59 | 공동 |
 | `Core/ScreenHistory.cs` | 화면 이동 기록(외관 선택 → 기능 선택 → 장면). 건너뛴 장면은 쌓지 않음, 홈이면 비움 | FR-53, FR-54 | 강유나 |
 | `Vehicle/CarController.cs` | 모든 차량의 유일한 구동부: 자전거 모델로 위치·방향 갱신(앞·뒷바퀴 조향), 속도·제동, 웨이포인트 추종(`Follow`), 받은 시작 위치로 위치·속도·조향각 초기화(`ResetPose(Pose)`). 시작 위치는 직접 저장하지 않음 | FR-39, FR-41, FR-43, NFR-02 | 김예은 |
-| `Vehicle/CarAppearance.cs` | 색상·트림 파츠·휠 교체 | FR-01~03, FR-10 | 공동 |
+| `Vehicle/CarAppearance.cs` | 색상·휠 교체 | FR-01, FR-03, FR-10 | 공동 |
 | `Vehicle/CarFeatureSwitch.cs` | `CarConfig`대로 차량에 붙은 기능 컴포넌트 켜고 끄기 | FR-08, FR-09 | 김예은 |
 | `Vehicle/ICarFeature.cs` | 차량에 붙는 기능 공통 인터페이스 (`FeatureId`, `SetActive(bool)`, `ResetFeature()`). 구현: NightVisionSensor, RearWheelSteering, RemoteParking | NFR-06 | 김예은 |
 | `Camera/CameraSwitcher.cs` | AreaBase가 켠 카메라 2대의 시점 전환: 운전석 ↔ 버드뷰 동시 전환, 스마트키 장면 고정 시점, [탑승] 시 오른쪽만 운전석 시점 | FR-12, FR-31, FR-65 | 강유나 |
+| `Camera/CameraAnchors.cs` | 카메라 오브젝트에 붙는 시점 위치 보관: 운전석·버드뷰·고정 Transform 3개를 Inspector로 연결, `CameraSwitcher`가 `Bind` 때 꺼내 사용 | FR-12, FR-31, FR-65 | 강유나 |
 | `Camera/ShowroomCamera.cs` | 쇼룸 마우스 드래그 회전 | FR-04 | 공동 |
 | `Scenario/ScenarioBase.cs` | 시나리오 공통 흐름: 장면 목록, 꺼진 장면 건너뛰기, 동시 출발, 자동 전환(0.5초 페이드), 토글 시 재시작 | FR-11, FR-48, FR-57, FR-62, FR-63, NFR-02 | 공동 |
 | `Scenario/ScenarioTrigger.cs` | 구간 트리거 콜라이더 → 이벤트 발생 | FR-17, FR-21 | 공동 |
 | `UI/UIManager.cs` | 모드별 패널 전환 | FR-37 | 강유나 |
-| `UI/ExteriorPanel.cs` | UI-01 외관 선택 버튼, 선택 요약 카드 | FR-01~03, FR-58 | 공동 |
+| `UI/ExteriorPanel.cs` | UI-01 외관 선택 버튼, 선택 요약 카드 | FR-01, FR-03, FR-58 | 공동 |
 | `UI/FeaturePanel.cs` | UI-02 주행·주차 탭, 체크박스, 설명 문장 4개(`TMP_Text` 필드에 Inspector로 입력), 탭별 시작 버튼 | FR-05, FR-06, FR-60, FR-61 | 강유나 |
 | `UI/ScenarioHUD.cs` | UI-03·04 공통: 시점 버튼, 좌우 라벨("옵션 미적용/선택 옵션 적용"), 수치 표시 칸, 재시작 안내 문구, [일시 정지] | FR-11, FR-12, FR-14, FR-19, FR-52 | 김예은 |
 | `UI/OptionCardPanel.cs` | 오른쪽 위 옵션 카드 2개(ON/OFF 토글), 마지막 켜진 토글 잠금, `CarConfig` 연동 | FR-47~51 | 김예은 |
@@ -282,7 +284,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 | 영역 전환·조명·분할 카메라 | `ModeManager`, `AreaBase`, `AppMode` | 높음 (세 영역 모두 상속) | 김예은 | B.1 |
 | 차량 | `CarController`, `CarFeatureSwitch`, `ICarFeature` | 높음 (주행·주차 모든 차량이 의존) | 김예은 | B.2 |
 | 옵션 데이터 | `CarConfig`, `FeaturePanel` | 높음 (모든 파일이 참조) | 강유나 | B.4 |
-| 카메라 | `CameraSwitcher` | 중간 | 강유나 | B.5 |
+| 카메라 | `CameraSwitcher`, `CameraAnchors` | 중간 | 강유나 | B.5 |
 | 화면 이동 | `ScreenHistory`, `NavigationBar`, `UIManager` | 중간 | 강유나 | B.6 |
 | 외관·쇼룸 | `ConfiguratorArea`, `CarAppearance`, `ExteriorPanel`, `ShowroomCamera` | 중간 | 공동 | E.0 |
 | 시나리오 UI | `OptionCardPanel`, `ScenarioHUD` | 중간 | 김예은 | E.10 |
@@ -291,7 +293,7 @@ ScenarioBase : 장면 목록 → 꺼진 옵션 장면 건너뛰기(FR-62) → �
 
 **먼저 합의할 것 (코드 없이 이름만)**
 
-1. `CarConfig` 필드 이름 7개: SRS 6장 그대로(bodyColor, trimIndex, wheelIndex, nightVision, rearWheelSteering, valetParking, remoteParking)
+1. `CarConfig` 필드 이름 6개: SRS 6장 그대로(bodyColor, wheelIndex, nightVision, rearWheelSteering, valetParking, remoteParking)
 2. `AreaBase`의 메서드 이름: `ResetArea(CarConfig)`, `OnEnter()`, `OnExit()`
 3. `ICarFeature`의 메서드 이름: `SetActive(bool)`, `ResetFeature()`
 4. `CarController` 공개 함수 이름(주행·주차 공통): `SetSpeed(float)`, `SetSteer(float)`, `SetRearSteer(float)`, `Brake(float)`, `Follow(Vector3[], float, bool)`, `ResetPose(Pose)`
