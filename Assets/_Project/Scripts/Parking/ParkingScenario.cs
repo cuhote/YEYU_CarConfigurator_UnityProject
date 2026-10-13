@@ -18,6 +18,8 @@ public class ParkingScenario : ScenarioBase
     [SerializeField] private GameObject[] _hideInSmartKey;
     // 발렛 장면에서 숨길 오브젝트 (스마트키 차와 그 옆 차. 예: 각 주차장의 NarrowSlotSet)
     [SerializeField] private GameObject[] _hideInValet;
+    // 스마트키 화면(UI-06). 스마트키 장면에서만 켠다
+    [SerializeField] private GameObject _smartKeyUI;
 
     [SerializeField] private float _valetTimeout = 120f;   // 발렛 장면 최대 시간 (초). 교착 상태로 끝나지 않을 때 넘어간다
     [SerializeField] private float _resultHold = 2f;      // 장면이 끝난 뒤 결과를 보여 주는 시간 (초)
@@ -41,6 +43,8 @@ public class ParkingScenario : ScenarioBase
 
         if (_switcher == null)
             _switcher = FindAnyObjectByType<CameraSwitcher>();
+
+        SetSmartKeyUI(false);
     }
 
     protected override bool IsSceneEnabled(int index, CarConfig config)
@@ -62,6 +66,7 @@ public class ParkingScenario : ScenarioBase
         bool smartKey = index == SceneSmartKey;
         SetActive(_hideInValet, smartKey);
         SetActive(_hideInSmartKey, !smartKey);
+        SetSmartKeyUI(smartKey);
 
         for (int i = 0; i < _smartKeyCars.Length; i++)
         {
@@ -138,6 +143,7 @@ public class ParkingScenario : ScenarioBase
     protected override void OnStopped()
     {
         StopVehicles();
+        SetSmartKeyUI(false);
     }
 
     // 달리던 발렛 차와 스마트키 차를 세우고 상태를 처음으로 돌린다
@@ -147,6 +153,12 @@ public class ParkingScenario : ScenarioBase
             if (agent != null) agent.ResetAgent();
         if (_remote != null)
             _remote.ResetFeature();
+    }
+
+    private void SetSmartKeyUI(bool active)
+    {
+        if (_smartKeyUI != null)
+            _smartKeyUI.SetActive(active);
     }
 
     private static void SetActive(GameObject[] objects, bool active)
