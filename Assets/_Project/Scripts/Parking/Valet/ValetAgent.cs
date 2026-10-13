@@ -339,6 +339,12 @@ public class ValetAgent : MonoBehaviour
             if (_detectHits[i].transform.IsChildOf(t))
                 continue;
 
+            // 주차를 마친 차는 칸 안에 서 있으므로 막는 차로 보지 않는다.
+            // 감지 상자가 차 폭보다 넓어 옆 칸의 차가 걸리는데, 그 차는 비켜 주지 않으므로 영영 멈춰 서게 된다
+            ValetAgent other = _detectHits[i].GetComponentInParent<ValetAgent>();
+            if (other != null && other.State == AgentState.Parked)
+                continue;
+
             blocker = _detectHits[i];
             return true;
         }
