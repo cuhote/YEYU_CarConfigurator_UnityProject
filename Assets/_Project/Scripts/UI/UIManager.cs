@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _birdTab;
     [SerializeField] private TMP_Text _driverLabel;
     [SerializeField] private TMP_Text _birdLabel;
+    [SerializeField] private string _parkingBirdLabelText = "탑뷰"; // 주차 화면에서 버드뷰 탭에 쓰는 이름
     [SerializeField] private Color _accentColor = new Color32(0x28, 0x66, 0xF2, 0xFF);
     [SerializeField] private Color _tabIdleColor = new Color(1f, 1f, 1f, 0f);
     [SerializeField] private Color _tabActiveTextColor = Color.white;
@@ -33,6 +34,7 @@ public class UIManager : MonoBehaviour
     private ScreenHistory.ScreenId _currentScreen;
     private ScenarioBase _labelScenario; // 라벨에 마지막으로 반영한 시나리오와 장면
     private int _labelIndex = -1;
+    private string _defaultBirdLabelText; // 씬에 적어 둔 버드뷰 탭 이름
 
     private ModeManager _modeManager;
     private ScreenHistory _screenHistory;
@@ -58,6 +60,7 @@ public class UIManager : MonoBehaviour
         }
 
         if (_sceneButtons != null) _tabBackground = _sceneButtons.GetComponent<Image>();
+        if (_birdLabel != null) _defaultBirdLabelText = _birdLabel.text;
     }
     public void Start()
     {
@@ -72,6 +75,10 @@ public class UIManager : MonoBehaviour
         if (_exteriorPanel != null) _exteriorPanel.SetActive(screen == ScreenHistory.ScreenId.Exterior);
         if (_featurePanel != null) _featurePanel.SetActive(screen == ScreenHistory.ScreenId.Feature);
         if (_sceneButtons != null) _sceneButtons.SetActive(scene);
+
+        // 주차 화면에서는 버드뷰 탭 이름을 탑뷰로 바꾼다
+        if (_birdLabel != null)
+            _birdLabel.text = screen == ScreenHistory.ScreenId.ParkingScene ? _parkingBirdLabelText : _defaultBirdLabelText;
     }
 
     public void ShowExterior()
