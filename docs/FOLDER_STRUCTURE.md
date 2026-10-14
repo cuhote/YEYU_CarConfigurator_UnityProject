@@ -1,7 +1,7 @@
 # 프로젝트 파일 구조
 
 > 기능 중심 차량 컨피규레이터 · 팀 YEYU · 기준: SRS v1.0 (MainScene 하나 + 영역 프리팹 3개) · 2026.10.13 구현 결과 반영
-> 클래스 단위 설계(속성·메서드·관계)는 [`CLASS_DESIGN.md`](./CLASS_DESIGN.md), 장면별 수치는 SRS(`README.md`) 부록 A를 본다.
+> 클래스 단위 설계(속성·메서드·관계)는 [`CLASS_DESIGN.md`](./CLASS_DESIGN.md), 장면별 수치는 SRS([`SRS.md`](./SRS.md)) 부록 A를 본다.
 > 구현하지 않기로 한 파일(`CarFeatureSwitch`, `ScenarioTrigger`, `ShowroomCamera`, `ScenarioHUD`, `OptionCardPanel`, `Units`)은 이 문서에서 뺐다.
 
 ---
@@ -120,6 +120,7 @@ YEYU_CarConfigurator_UnityProject/     ← GitHub 저장소 루트 = Unity 프�
 ├── Packages/                          ← 커밋 O
 ├── ProjectSettings/                   ← 커밋 O (레이어·태그·빌드 설정)
 ├── docs/
+│   ├── SRS.md                         ← SRS (요구사항 명세서)
 │   ├── WBS.md
 │   ├── WBS.xlsx
 │   ├── FOLDER_STRUCTURE.md            ← 이 문서
@@ -135,8 +136,7 @@ YEYU_CarConfigurator_UnityProject/     ← GitHub 저장소 루트 = Unity 프�
 ├── COMMIT_RULES.md                    ← 브랜치 전략 · 커밋 메시지 · PR 규칙
 ├── CONVENTIONS.md                     ← 네이밍 · 파일 관리 · 폴더 담당 규칙
 ├── .gitignore
-├── .gitattributes                     ← Git LFS 설정, 줄바꿈 규칙
-└── README.md                          ← SRS (요구사항 명세서)
+└── .gitattributes                     ← Git LFS 설정, 줄바꿈 규칙
 ```
 
 `Library/`, `Temp/`, `Logs/`, `UserSettings/`, `Build/`는 `.gitignore`로 제외한다.
