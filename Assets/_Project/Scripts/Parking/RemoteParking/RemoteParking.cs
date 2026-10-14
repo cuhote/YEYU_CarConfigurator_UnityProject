@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RemoteParking : MonoBehaviour, ICarFeature
@@ -31,6 +32,11 @@ public class RemoteParking : MonoBehaviour, ICarFeature
 
     // [탑승] 뒤에 오른쪽 카메라가 옮겨 갈 이 차의 운전석 자리
     [SerializeField] private Transform _driverAnchor;
+    [SerializeField] private float _boardDoorHold = 0.4f;   // 문이 다 열린 뒤 운전석 시점으로 바꿀 때까지 (초)
+    [SerializeField] private float _boardDoorTimeout = 3f;  // 문이 다 열리기를 기다리는 최대 시간 (초)
+
+    private DoorBlockedIndicator _doorIndicator;   // 운전석 문을 여닫는다. 없으면 문 연출 없이 바로 탑승한다
+    private Coroutine _boardRoutine;
 
     private void Start()
     {
@@ -41,6 +47,8 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         }
 
         ValidateComponents();
+        if (_doorDrawer != null)
+            _doorIndicator = _doorDrawer.GetComponent<DoorBlockedIndicator>();
     }
 
     private void ValidateComponents()
@@ -94,9 +102,9 @@ public class RemoteParking : MonoBehaviour, ICarFeature
     {
         Debug.Log($"[RemoteParking] Press({dir}) 호출됨, 현재 State: {State}");
 
-        if (State == RemoteState.Boarded)
+        if (State == RemoteState.Boarded || _boardRoutine != null)
         {
-            Debug.Log("[RemoteParking] Press 취소: Boarded 상태에서는 조작 불가");
+            Debug.Log("[RemoteParking] Press 취소: 탑승 중이거나 Boarded 상태에서는 조작 불가");
             return;
         }
 
@@ -211,8 +219,35 @@ public class RemoteParking : MonoBehaviour, ICarFeature
             return;
         }
 
+        if (_boardRoutine != null)
+        {
+            Debug.Log("[RemoteParking] Board 취소: 이미 탑승 중");
+            return;
+        }
+
+        _boardRoutine = StartCoroutine(BoardRoutine());
+    }
+
+    // 운전석 문을 연 다음 운전석 시점으로 바꾸고, 문을 닫는다
+    private IEnumerator BoardRoutine()
+    {
+        if (_doorIndicator != null && _doorIndicator.isActiveAndEnabled)
+        {
+            _doorIndicator.OpenForBoarding();
+
+            float deadline = Time.time + _boardDoorTimeout;
+            while (!_doorIndicator.IsOpenForBoarding && Time.time < deadline)
+                yield return null;
+
+            yield return new WaitForSeconds(_boardDoorHold);
+        }
+
         State = RemoteState.Boarded;
         Debug.Log("[RemoteParking] State: Boarded");
+        _boardRoutine = null;
+
+        if (_doorIndicator != null)
+            _doorIndicator.CloseDoor();
 
         if (_cameraSwitcher != null)
         {
@@ -243,6 +278,15 @@ public class RemoteParking : MonoBehaviour, ICarFeature
         _isMoving = false;
         BlockedByObstacle = false;
         _hasStart = false;
+
+        // 탑승 연출 중에 장면이 바뀌면 그만두고 문을 닫는다
+        if (_boardRoutine != null)
+        {
+            StopCoroutine(_boardRoutine);
+            _boardRoutine = null;
+        }
+        if (_doorIndicator != null)
+            _doorIndicator.CloseDoor();
 
         if (_car != null)
         {
