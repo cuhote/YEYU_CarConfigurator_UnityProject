@@ -147,11 +147,11 @@ public class DrivingArea : AreaBase
             _drawer.ShowTurn(!night);
         }
 
-        // 열화상 몸체는 나이트 비전 장면에서만 보인다
+        // 보행자는 나이트 비전 장면에만 나온다. 유턴 장면에서는 본체와 열화상 몸체를 함께 숨긴다
         if (_pedestrians == null) _pedestrians = GetComponentsInChildren<Pedestrian>(true);
         foreach (Pedestrian pedestrian in _pedestrians)
         {
-            pedestrian.ShowThermalBody(night);
+            pedestrian.gameObject.SetActive(night);
         }
 
     }
