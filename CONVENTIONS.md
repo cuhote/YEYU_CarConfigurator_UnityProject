@@ -109,7 +109,7 @@
 ### 6.1 요구사항·테스트 ID
 
 - ID 체계는 SRS 1.5절을 따른다: 기능 요구사항 `FR-NN`, 비기능 `NFR-NN`, 화면 `UI-NN`, 테스트 케이스 `TC-NN`. 한 번 부여한 번호는 재사용하지 않는다.
-- 테스트 결과는 [`README.md`](./README.md) 7.2절 결과 열에 기록하고, 커밋은 `test(TC-NN): ...` 형식으로 남긴다 ([`COMMIT_RULES.md`](./COMMIT_RULES.md) 2절).
+- 테스트 결과는 [`docs/SRS.md`](./docs/SRS.md) 7.2절 결과 열에 기록하고, 커밋은 `test(TC-NN): ...` 형식으로 남긴다 ([`COMMIT_RULES.md`](./COMMIT_RULES.md) 2절).
 - 측정 원본(fps 로그, 캡처)을 남길 때는 파일명을 테스트 케이스 ID로 시작한다. 예: `docs/images/TC-17_fps.png`.
 
 ### 6.2 트러블슈팅 기록
@@ -123,5 +123,5 @@
 ### 6.3 README 규칙
 
 - 위치: 레포 루트에 하나만 둔다. 폴더별 README는 만들지 않는다.
-- 내용: 현재 루트 `README.md`는 SRS(요구사항 명세서) 본문이다. 리포 구조는 [`docs/FOLDER_STRUCTURE.md`](./docs/FOLDER_STRUCTURE.md), 협업 규칙은 [`COMMIT_RULES.md`](./COMMIT_RULES.md)와 이 문서에 둔다.
+- 내용: SRS(요구사항 명세서) 본문은 [`docs/SRS.md`](./docs/SRS.md)에 둔다. 리포 구조는 [`docs/FOLDER_STRUCTURE.md`](./docs/FOLDER_STRUCTURE.md), 협업 규칙은 [`COMMIT_RULES.md`](./COMMIT_RULES.md)와 이 문서에 둔다.
 - 갱신 시점: 동결 시점마다 갱신한다. 요구사항이 바뀌면 SRS 8장 변경 관리 절차에 따라 개정 이력과 함께 고친다.

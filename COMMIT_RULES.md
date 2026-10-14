@@ -112,4 +112,4 @@ git config core.hooksPath .githooks
 3. **반영**: 코드와 이 문서, [`CONVENTIONS.md`](./CONVENTIONS.md), [`docs/FOLDER_STRUCTURE.md`](./docs/FOLDER_STRUCTURE.md)를 같은 PR에서 함께 고친다. 문서를 나중에 고치면 반드시 어긋난다.
 4. **기록**: 커밋 메시지에 영향 받는 범위와 관련 테스트 케이스 ID를 적는다.
 
-요구사항(SRS) 자체의 변경은 [`README.md`](./README.md) 8장 변경 관리를 따른다.
+요구사항(SRS) 자체의 변경은 [`docs/SRS.md`](./docs/SRS.md) 8장 변경 관리를 따른다.
