@@ -74278,6 +74278,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4920809740942151307, guid: 77024cec8b8dcea4ba4e7d58f36e159c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3745379313819337999}
+    - targetCorrespondingSourceObject: {fileID: 4920809740942151307, guid: 77024cec8b8dcea4ba4e7d58f36e159c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8300000000000000011}
   m_SourcePrefab: {fileID: 100100000, guid: 77024cec8b8dcea4ba4e7d58f36e159c, type: 3}
 --- !u!114 &322750096026852078 stripped
 MonoBehaviour:
@@ -74341,6 +74344,18 @@ MonoBehaviour:
   _requiredGap: 0.6
   _hingeOffset: {x: -0.95, y: 0, z: 1.3}
   _driverOnLeft: 1
+--- !u!114 &8300000000000000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512426383825511463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0332a30b314e473987b5658bb8a2fcaa, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::DoorBlockedIndicator
 --- !u!4 &7238568388009201293 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3802025669430584353, guid: 77024cec8b8dcea4ba4e7d58f36e159c, type: 3}
