@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53cbd5e23f1c20741bb1ccb0cd59be3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pedestrian
+  _thermalBody: {fileID: 4470096711491829454}
 --- !u!136 &7162551496027976038
 CapsuleCollider:
   m_ObjectHideFlags: 0

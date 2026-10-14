@@ -33,6 +33,7 @@ public class DrivingArea : AreaBase
 
 
     private CarConfig _config;
+    private Pedestrian[] _pedestrians;
 
 
     public override void OnEnter()
@@ -144,6 +145,13 @@ public class DrivingArea : AreaBase
             _drawer.ShowCones(night);
             _drawer.ShowThermalCone(night && _config != null && _config.NightVision);
             _drawer.ShowTurn(!night);
+        }
+
+        // 열화상 몸체는 나이트 비전 장면에서만 보인다
+        if (_pedestrians == null) _pedestrians = GetComponentsInChildren<Pedestrian>(true);
+        foreach (Pedestrian pedestrian in _pedestrians)
+        {
+            pedestrian.ShowThermalBody(night);
         }
 
     }
