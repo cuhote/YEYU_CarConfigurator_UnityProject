@@ -36,7 +36,7 @@ public class DoorSwingDrawer : MonoBehaviour
         _lineRenderer.positionCount = SEGMENTS + 1;
 
         // 머티리얼 생성 (단색 Unlit)
-        _lineMaterial = new Material(Shader.Find("Unlit/Color"));
+        _lineMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
         _lineRenderer.material = _lineMaterial;
 
         // 호 점들 미리 계산 (로컬 좌표)
