@@ -6,7 +6,6 @@
 *.anim     text eol=lf merge=unityyamlmerge
 *.controller text eol=lf merge=unityyamlmerge
 *.meta     text eol=lf
-
 # 코드·문서
 *.cs       text eol=lf diff=csharp
 *.shader   text eol=lf
@@ -48,3 +47,4 @@
 # (!는 위에서 준 속성을 지정 안 함으로 되돌린다. -diff로 끄면 .md까지 diff가 안 보인다)
 docs/** !filter !diff !merge
 *SDF.asset filter=lfs diff=lfs merge=lfs -text
+BuildApp_*.zip filter=lfs diff=lfs merge=lfs -text
